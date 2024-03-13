@@ -51,7 +51,7 @@ pipeline {
 
         stage('SpringBoot 컨테이너 실행') {
       steps {
-        sh 'docker run --name springboot -d -p 8080:8080 b110/springboot'
+        sh 'docker run --name springboot -d -p 8081:8080 b110/springboot'
       }
         }
     }
