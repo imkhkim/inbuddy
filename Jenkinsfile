@@ -20,7 +20,7 @@ pipeline {
         sh '''
                     docker stop springboot || true &&
                     docker rm springboot || true &&
-                    docker rmi b112/springboot || true
+                    docker rmi b110/springboot || true
                 '''
       }
         }
@@ -36,8 +36,8 @@ pipeline {
         stage('SpringBoot 빌드') {
       steps {
         dir('server') {
-          sh 'chmod +x gradlew && ./gradlew clean --info build' // clean build with info
-        // sh 'chmod +x gradlew && ./gradlew build' // normal build
+          // sh 'chmod +x gradlew && ./gradlew clean --info build' // clean build with info
+          sh 'chmod +x gradlew && ./gradlew build' // normal build
         }
       }
         }
