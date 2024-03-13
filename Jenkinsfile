@@ -15,16 +15,6 @@ pipeline {
         }
         */
 
-        stage('이전 SpringBoot 컨테이너 삭제') {
-      steps {
-        sh '''
-                    docker stop springboot || true &&
-                    docker rm springboot || true &&
-                    docker rmi b110/springboot || true
-                '''
-      }
-        }
-
         stage('properties 복사') {
       steps {
         sh 'rm ./server/src/main/resources/application.properties || mkdir ./server/src/main/resources || true'
@@ -44,6 +34,9 @@ pipeline {
 
         stage('SpringBoot 도커 이미지 생성') {
       steps {
+          sh 'docker stop springboot || true'
+          sh 'docker rm springboot || true'
+          sh 'docker rmi b110/springboot || true'
           // sh 'docker build . -t b110/springboot'
           sh 'docker build -t b110/springboot -f /var/lib/jenkins/workspace/.Dockerfiles/dev/be/Dockerfile .'
       }
