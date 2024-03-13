@@ -29,7 +29,7 @@ pipeline {
       steps {
         sh 'pwd'
         sh 'rm ./server/src/main/resources/application.properties || mkdir ./server/src/main/resources || true'
-        sh 'cp /var/lib/jenkins/workspace/.properties/application.dev.properties ./server/src/main/resources/application.properties'
+        sh 'cp ../.properties/application.dev.properties ./server/src/main/resources/application.properties'
       }
         }
 
