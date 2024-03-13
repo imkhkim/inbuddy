@@ -27,6 +27,7 @@ pipeline {
 
         stage('properties 복사') {
       steps {
+        sh 'pwd'
         sh 'rm ./server/src/main/resources/application.properties || true'
         sh 'cp /var/lib/jenkins/workspace/.properties/application.dev.properties ./server/src/main/resources/application.properties'
       }
