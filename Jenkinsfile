@@ -15,7 +15,7 @@ pipeline {
         }
         */
 
-        stage('이전 컨테이너 삭제') {
+        stage('이전 SpringBoot 컨테이너 삭제') {
       steps {
         sh '''
                     docker stop springboot || true &&
@@ -42,7 +42,7 @@ pipeline {
       }
         }
 
-        stage('도커 이미지 생성') {
+        stage('SpringBoot 도커 이미지 생성') {
       steps {
           // sh 'docker build . -t b110/springboot'
           sh 'docker build -t b110/springboot -f /var/lib/jenkins/workspace/.Dockerfiles/dev/be/Dockerfile .'
