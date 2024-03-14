@@ -6,7 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="manifest" href="manifest.json" />
 
-  <script>navigator.serviceWorker.register("client/service-worker.js")</script> 
+    <script>
+      if (typeof navigator.serviceWorker !== "undefined") {
+        navigator.serviceWorker.register("client/pwabuilder-sw.js");
+      }
+    </script>
     <title>Vite + React</title>
   </head>
   <body>
