@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('properties 복사') {
             steps {
-                sh q'rm ./server/src/main/resources/application.properties || mkdir ./server/src/main/resources || true'
+                sh 'rm ./server/src/main/resources/application.properties || mkdir ./server/src/main/resources || true'
                 sh 'cp ../.properties/application.dev.properties ./server/src/main/resources/application.properties'
             }
         }
