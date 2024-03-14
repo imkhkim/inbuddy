@@ -3,48 +3,45 @@ pipeline {
 
     tools {
         gradle 'default'
+        nodejs 'default'
     }
 
     stages {
-        /*
-        stage('clone') {
-            steps {
-                sh 'echo 소스 코드를 최신화합니다.'
-                git credentialsId: 'personal_token', url: 'https://lab.ssafy.com/s10-webmobile1-sub3/S10P13B112.git'
-            }
-        }
-        */
-
         stage('properties 복사') {
       steps {
         sh 'rm ./server/src/main/resources/application.properties || mkdir ./server/src/main/resources || true'
-        sh 'cp ../.properties/application.dev.properties ./server/src/main/resources/application.properties'
+        sh 'cp ../.properties/application.release.properties ./server/src/main/resources/application.properties'
       }
         }
 
         stage('SpringBoot 빌드') {
       steps {
         dir('server') {
-          // sh 'chmod +x gradlew && ./gradlew clean --info build' // clean build with info
-          // sh 'chmod +x gradlew && ./gradlew build' // normal build
-          sh 'chmod +x gradlew && ./gradlew bootJar' // fast build
+          /** clean and slow build with info **/
+          // sh 'chmod +x gradlew && ./gradlew clean --info build'
+
+          /** normal build **/
+          // sh 'chmod +x gradlew && ./gradlew build'
+
+          /** fast build **/
+          sh 'chmod +x gradlew && ./gradlew bootJar'
         }
       }
         }
 
         stage('SpringBoot 도커 이미지 생성') {
       steps {
-          sh 'docker stop springboot || true'
-          sh 'docker rm springboot || true'
-          sh 'docker rmi b110/springboot || true'
-          // sh 'docker build . -t b110/springboot'
-          sh 'docker build -t b110/springboot -f /var/lib/jenkins/workspace/.Dockerfiles/dev/be/Dockerfile .'
+          /** server/main은 docker image 이름이면서, container의 이름 **/
+          sh 'docker stop server/main || true'
+          sh 'docker rm server/main || true'
+          sh 'docker rmi server/main || true'
+          sh 'docker build -t server/main -f /var/lib/jenkins/workspace/.Dockerfiles/main/be/Dockerfile .'
       }
         }
 
         stage('SpringBoot 컨테이너 실행') {
       steps {
-        sh 'docker run --name springboot -d -p 8081:8080 b110/springboot'
+        sh 'docker run --name server/main -d -p 8080:8080 server/main'
       }
         }
     }
