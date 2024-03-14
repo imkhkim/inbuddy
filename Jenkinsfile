@@ -31,9 +31,9 @@ pipeline {
 
         stage('SpringBoot 도커 이미지 생성') {
       steps {
-          /** server/main은 docker image 이름이면서, container의 이름 **/
-          sh 'docker stop server/main || true'
-          sh 'docker rm server/main || true'
+          /** server/main은 docker image 이름, server_main은 container의 이름 **/
+          sh 'docker stop server_main || true'
+          sh 'docker rm server_main || true'
           sh 'docker rmi server/main || true'
           sh 'docker build -t server/main -f /var/lib/jenkins/workspace/.Dockerfiles/main/be/Dockerfile .'
       }
@@ -41,7 +41,7 @@ pipeline {
 
         stage('SpringBoot 컨테이너 실행') {
       steps {
-        sh 'docker run --name server/main -d -p 8080:8080 server/main'
+        sh 'docker run --name server_main -d -p 8080:8080 server/main'
       }
         }
     }
