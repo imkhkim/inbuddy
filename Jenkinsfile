@@ -36,7 +36,7 @@ pipeline {
           sh 'docker rm server_main || true'
           sh 'docker rmi server/main || true'
           sh 'docker build -t server/main -f /var/lib/jenkins/workspace/.Dockerfiles/main/be/Dockerfile .'
-          sh 'docker run --name server_main - -p 8080:8080 server/main'
+          sh 'docker run --name server_main -d -p 8080:8080 server/main'
         }
       }
 
