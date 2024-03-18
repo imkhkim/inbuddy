@@ -1,14 +1,10 @@
-import {
-    Navigate,
-    RouterProvider,
-    createBrowserRouter,
-} from 'react-router-dom';
+import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import '../../app/globals.css';
 
-import App from '../App.jsx';
+import Test from '../Test.jsx';
 
 import BottomNav from '@/components/modules/BottomNav';
 import Login from '@/pages/Login.jsx';
@@ -23,11 +19,11 @@ const isLoggedIn = false; // 로그인 여부에 따라 조건 설정
 const router = createBrowserRouter([
     {
         path: '/',
-        element: isLoggedIn ? (
-            <Navigate to="/login" />
-        ) : (
-            <JourneyCollectionPage />
-        ),
+        element: isLoggedIn ? <Navigate to="/login" /> : <JourneyCollectionPage />,
+    },
+    {
+        path: '/test',
+        element: <Test />,
     },
     {
         path: '/login',

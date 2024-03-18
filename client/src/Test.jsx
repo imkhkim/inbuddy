@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Button } from '@/components/atoms/button.jsx';
-import { P } from '@/components/atoms/p.jsx';
+import { Button } from '@/components/atoms/Button.jsx';
+import { P } from '@/components/atoms/P.jsx';
+import { Div } from '@/components/atoms/Div';
 
-function App() {
+function Test() {
     const [count, setCount] = useState(0);
 
     return (
@@ -13,10 +14,16 @@ function App() {
                 <Button variant="secondary">Secondary</Button>
                 <Button variant="destructive">Destructive</Button>
                 <P>야호</P>
-                <P size="lg">야호</P>
+                <P color="sectionHeader" size="3xl">
+                    야호
+                </P>
+                <P color="subHeader" size="xs">
+                    야호
+                </P>
+                <Div borderColor="brand">어이</Div>
             </div>
         </>
     );
 }
 
-export default App;
+export default Test;
