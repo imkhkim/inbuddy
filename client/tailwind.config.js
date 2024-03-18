@@ -82,6 +82,10 @@ module.exports = {
                     500: 'hsl(var(--brand500))',
                 },
             },
+            fontFamily: {
+                pretendardRegular: ['Pretendard-Regular'], // Adds a new `font-display` class
+                pretendardBold: ['Pretendard-Bold'],
+            },
             borderRadius: {
                 lg: 'var(--radius)',
                 md: 'calc(var(--radius) - 2px)',
