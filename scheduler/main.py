@@ -17,7 +17,7 @@ if __name__ == "__main__":
     REDIS_PORT = os.getenv("REDIS_PORT")
 
     logger = Logger()
-    redis = RedisManager()
+    redis = RedisManager(REDIS_HOST, REDIS_PORT)
     scheduler = ScheduleManager()
 
     scheduler.create("flights_departure", func=fetch, interval=60)
