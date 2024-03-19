@@ -1,11 +1,8 @@
-import { useState } from 'react';
 import { Button } from '@/components/atoms/Button.jsx';
 import { P } from '@/components/atoms/P.jsx';
 import { Div } from '@/components/atoms/Div';
 
 function Test() {
-    const [count, setCount] = useState(0);
-
     return (
         <>
             <div>
@@ -20,7 +17,15 @@ function Test() {
                 <P color="subHeader" size="xs">
                     야호
                 </P>
-                <Div borderColor="brand">어이</Div>
+                <Div borderColor="success" textColor="success" size="sm">
+                    기내 수화물 가능
+                </Div>
+                <Div borderColor="success" textColor="success" size="default">
+                    기내 수화물 가능
+                </Div>
+                <Div className="font-pretendardBold" borderColor="success" textColor="success" size="lg">
+                    기내 수화물 가능
+                </Div>
             </div>
         </>
     );
