@@ -1,10 +1,10 @@
 import { Outlet, Link } from 'react-router-dom';
 
-import homeIcon from '@/assets/icons/home.png';
-import listChecksIcon from '@/assets/icons/list-checks.png';
-import baggageClaimIcon from '@/assets/icons/baggage-claim.png';
-import ticketIcon from '@/assets/icons/ticket.png';
-import settingsIcon from '@/assets/icons/settings.png';
+import homeIcon from '@/assets/icons/home.svg';
+import listChecksIcon from '@/assets/icons/list-checks.svg';
+import baggageClaimIcon from '@/assets/icons/baggage-claim.svg';
+import ticketIcon from '@/assets/icons/ticket.svg';
+import settingsIcon from '@/assets/icons/settings.svg';
 
 function BottomNav() {
     return (
