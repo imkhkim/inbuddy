@@ -16,7 +16,7 @@ pipeline {
             docker rm scheduler || true &&
             docker rmi scheduler || true &&
             docker build -t scheduler -f /var/lib/jenkins/workspace/.Dockerfiles/dev/scheduler/Dockerfile . &&
-            docker run --name scheduler -d -p 8001:8000
+            docker run --name scheduler -d -p 8001:8000 scheduler
           '''
         }
       }
