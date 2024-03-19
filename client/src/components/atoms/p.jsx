@@ -39,7 +39,7 @@ const pVariants = cva('text-base font-pretendardRegular', {
 });
 
 const P = React.forwardRef(({ className, color, size, font, asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : 'P';
+    const Comp = asChild ? Slot : 'p';
     return <Comp className={cn(pVariants({ color, size, font, className }))} ref={ref} {...props} />;
 });
 P.displayName = 'P';
