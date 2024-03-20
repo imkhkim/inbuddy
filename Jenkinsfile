@@ -10,7 +10,7 @@ pipeline {
       
       stage('Container 재시작') {
         steps {
-          sh 'docker-compose -f ~/workspace/inbuddy/.docker/docker-compose-dev.yml restart dev-scheduler'
+          sh 'docker compose -f ~/workspace/inbuddy/.docker/docker-compose-dev.yml restart dev-scheduler'
         }
       }
     }
