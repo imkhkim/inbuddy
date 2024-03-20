@@ -7,21 +7,7 @@ pipeline {
           sh 'rm -f ./scheduler/.env && cp ~/workspace/inbuddy/.env/.env ./scheduler/.env'
         }
       }
-
-      stage('requirements 설치') {
-        steps {
-          script {
-            def venvDir = './scheduler/.venv'
-
-            if (!fileExists(venvDir)) {
-                sh "python3 -m venv ${venvDir}"
-            }
-
-            sh ". ${venvDir}/bin/activate && pip install -r requirements.txt"
-          }
-        }
-      }
-
+      
       stage('Container 재시작') {
         steps {
           sh 'docker-compose -f ~/workspace/inbuddy/.docker/docker-compose-dev.yml restart dev-scheduler'
