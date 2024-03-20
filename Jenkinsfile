@@ -15,10 +15,9 @@ pipeline {
 
             if (!fileExists(venvDir)) {
                 sh "python3 -m venv ${venvDir}"
-                sh "source ${venvDir}/bin/activate"
             }
 
-            sh "source ${venvDir}/bin/activate"
+            sh ". ${venvDir}/bin/activate"
 
             sh 'pip install -r requirements.txt'
           }
