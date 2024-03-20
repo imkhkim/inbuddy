@@ -15,9 +15,6 @@ COLUMNS = ["날짜", "항공사", "편명", "출발지", "계획", "예상", "�
 PREFIX = "ddrivetip('"
 SUFFIX = "에 의한"
 
-redis = RedisManager()
-logger = Logger()
-
 
 def _request(date, dep_arr):
     def _extract(row):
@@ -78,6 +75,9 @@ def _request(date, dep_arr):
 
 
 def fetch():
+    redis = RedisManager()
+    logger = Logger()
+
     date = datetime.today().strftime("%Y%m%d")
 
     redis.select(redis.FLIGHTS)
