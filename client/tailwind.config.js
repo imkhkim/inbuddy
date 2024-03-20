@@ -1,12 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     darkMode: ['class'],
-    content: [
-        './pages/**/*.{js,jsx}',
-        './components/**/*.{js,jsx}',
-        './app/**/*.{js,jsx}',
-        './src/**/*.{js,jsx}',
-    ],
+    content: ['./pages/**/*.{js,jsx}', './components/**/*.{js,jsx}', './app/**/*.{js,jsx}', './src/**/*.{js,jsx}'],
     prefix: '',
     theme: {
         container: {
@@ -71,10 +66,10 @@ module.exports = {
                     400: 'hsl(var(--neutral400))',
                     500: 'hsl(var(--neutral500))',
                 },
-                header: {
-                    mainHeader: 'hsl(var(--mainHeader))',
-                    sectionHeader: 'hsl(var(--sectionHeader))',
-                    subHeader: 'hsl(var(--subHeader))',
+                text: {
+                    black: 'hsl(var(--black))',
+                    nileBlue: 'hsl(var(--nileBlue))',
+                    ming: 'hsl(var(--ming))',
                 },
                 brand: {
                     300: 'hsl(var(--brand300))',
