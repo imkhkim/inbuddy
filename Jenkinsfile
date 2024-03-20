@@ -17,9 +17,7 @@ pipeline {
                 sh "python3 -m venv ${venvDir}"
             }
 
-            sh ". ${venvDir}/bin/activate"
-
-            sh 'pip install -r requirements.txt'
+            sh ". ${venvDir}/bin/activate && pip install -r requirements.txt"
           }
         }
       }
