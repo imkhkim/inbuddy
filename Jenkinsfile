@@ -4,7 +4,19 @@ pipeline {
     stages {
       stage('.env 복사') {
         steps {
-          sh 'cp ~/.env/.env ./scheduler/.env'
+          sh 'rm -f ./scheduler/.env && cp ~/workspace/inbuddy/.env/.env ./scheduler/.env'
+        }
+      }
+
+      stage('requirements 설치') {
+        steps {
+          sh 'pip install -r requirements.txt'
+        }
+      }
+      
+      stage('Container 재시작') {
+        steps {
+          sh 'docker-compose -f ~/workspace/inbuddy/.docker/docker-compose-dev.yml restart dev-scheduler'
         }
       }
     }
