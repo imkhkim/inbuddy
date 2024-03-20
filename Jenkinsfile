@@ -10,19 +10,21 @@ pipeline {
 
       stage('requirements 설치') {
         steps {
-          def venv_dir = "./scheduler/.venv"
-          
-          if (!fileExists(venv_dir)) {
-              sh "python3 -m venv ${venv_dir}"
-              sh "source ${venv_dir}/bin/activate"
-          }
+          script {
+            def venvDir = './scheduler/.venv'
 
-          sh "source ${venv_dir}/bin/activate"
-          
-          sh 'pip install -r requirements.txt'
+            if (!fileExists(venvDir)) {
+                sh "python3 -m venv ${venvDir}"
+                sh "source ${venvDir}/bin/activate"
+            }
+
+            sh "source ${venvDir}/bin/activate"
+
+            sh 'pip install -r requirements.txt'
+          }
         }
       }
-      
+
       stage('Container 재시작') {
         steps {
           sh 'docker-compose -f ~/workspace/inbuddy/.docker/docker-compose-dev.yml restart dev-scheduler'
@@ -33,10 +35,10 @@ pipeline {
     post {
       success {
         script {
-          def authorName = sh(script: "git show -s --pretty=%an", returnStdout: true).trim()
-          def commiterName = sh(script: "git show -s --pretty=%cn", returnStdout: true).trim()
+          def authorName = sh(script: 'git show -s --pretty=%an', returnStdout: true).trim()
+          def commiterName = sh(script: 'git show -s --pretty=%cn', returnStdout: true).trim()
 
-          mattermostSend (
+          mattermostSend(
             color: 'good',
             message: "${env.BRANCH_NAME}: ${commiterName}님이 커밋하고 ${authorName}님이 요청한 ${env.BUILD_NUMBER}번째 Merge 나왔습니다~ (<${env.BUILD_URL}|상세정보>)",
             endpoint: 'https://meeting.ssafy.com/hooks/rwenugt7g3g6mb176qcwdefioo',
@@ -48,10 +50,10 @@ pipeline {
 
       failure {
         script {
-          def authorName = sh(script: "git show -s --pretty=%an", returnStdout: true).trim()
-          def commiterName = sh(script: "git show -s --pretty=%cn", returnStdout: true).trim()
+          def authorName = sh(script: 'git show -s --pretty=%an', returnStdout: true).trim()
+          def commiterName = sh(script: 'git show -s --pretty=%cn', returnStdout: true).trim()
 
-          mattermostSend (
+          mattermostSend(
             color: 'danger',
             message: "${env.BRANCH_NAME}: ${commiterName}님이 커밋하고 ${authorName}님이 요청한 ${env.BUILD_NUMBER}번째 Merge 아직 안 나왔습니다. (<${env.BUILD_URL}|상세정보>)",
             endpoint: 'https://meeting.ssafy.com/hooks/rwenugt7g3g6mb176qcwdefioo',
