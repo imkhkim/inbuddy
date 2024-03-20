@@ -20,9 +20,9 @@ function Login() {
                 />
 
                 <div className="absolute top-[80%] left-1/2 -translate-y-1/2 -translate-x-1/2 z-20 flex flex-col space-y-4 ">
-                    <img className="z-10 inset-0 mx-auto" src={naverLoginBtnImg} alt="네이버 로고 버튼" />
-                    <img className="z-10 inset-0 mx-auto" src={kakaoLoginBtnImg} alt="카카오 로고 버튼" />
-                    <img className="z-10 inset-0 mx-auto" src={chevronsDownIcon} alt="아래 스크롤 아이콘" />
+                    <img className="z-10 w-100 inset-0 mx-auto" src={naverLoginBtnImg} alt="네이버 로고 버튼" />
+                    <img className="z-10 w-100 inset-0 mx-auto" src={kakaoLoginBtnImg} alt="카카오 로고 버튼" />
+                    <img className="z-10 w-12 inset-0 mx-auto" src={chevronsDownIcon} alt="아래 스크롤 아이콘" />
                 </div>
             </div>
             <div className="h-[100vh]">아래 스크린</div>

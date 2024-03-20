@@ -18,7 +18,7 @@ const divVariants = cva(
                 brand: 'border-solid border border-brand-500',
             },
             textColor: {
-                default: 'text-header-mainHeader',
+                default: 'text-text-black',
                 neutral: 'text-neutral-500',
                 error: 'text-error-500',
                 warning: 'text-warning-500',
