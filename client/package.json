@@ -20,6 +20,10 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.3",
+    "react-svg": "^16.1.33",
+    "react-svg-pan-zoom": "^3.12.1",
+    "react-svg-pan-zoom-loader": "^1.6.1",
+    "react-zoom-pan-pinch": "^3.4.3",
     "sort-by": "^1.2.0",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7"
