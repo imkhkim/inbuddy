@@ -10,6 +10,15 @@ pipeline {
 
       stage('requirements 설치') {
         steps {
+          def venv_dir = "./scheduler/.venv"
+          
+          if (!fileExists(venv_dir)) {
+              sh "python3 -m venv ${venv_dir}"
+              sh "source ${venv_dir}/bin/activate"
+          }
+
+          sh "source ${venv_dir}/bin/activate"
+          
           sh 'pip install -r requirements.txt'
         }
       }
