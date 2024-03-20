@@ -1,6 +1,6 @@
 import { Button } from '@/components/atoms/Button.jsx';
 import { P } from '@/components/atoms/P.jsx';
-import { Div } from '@/components/atoms/Div';
+import { Div } from '@/components/atoms/Div.jsx';
 
 function Test() {
     return (
