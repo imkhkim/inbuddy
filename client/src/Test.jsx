@@ -26,6 +26,7 @@ function Test() {
                 <Div className="font-pretendardBold" borderColor="success" textColor="success" size="lg">
                     기내 수화물 가능
                 </Div>
+                {/* 변경을 위한 주석 테스트 */}
             </div>
         </>
     );
