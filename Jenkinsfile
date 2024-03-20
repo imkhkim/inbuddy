@@ -2,9 +2,10 @@ pipeline {
     agent any
 
     stages {
-      stage('.env 복사') {
+      stage('.env, start.sh 복사') {
         steps {
           sh 'rm -f ./scheduler/.env && cp ~/workspace/inbuddy/.env/.env ./scheduler/.env'
+          sh 'rm -f ./scheduler/start.sh && cp ~/workspace/inbuddy/.sh/start.sh ./scheduler/start.sh'
         }
       }
       
