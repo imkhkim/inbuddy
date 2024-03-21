@@ -8,6 +8,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class UserProfile {
+
     private String email;
     private String nickname;
 }

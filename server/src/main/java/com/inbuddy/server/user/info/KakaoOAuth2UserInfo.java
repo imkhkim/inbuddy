@@ -6,12 +6,12 @@ import lombok.Getter;
 @Getter
 public class KakaoOAuth2UserInfo implements OAuth2UserInfo {
 
-    private final OAuth2Provider provider = OAuth2Provider.KAKAO;
+    private final OAuth2Provider providerType = OAuth2Provider.KAKAO;
     private final Map<String, Object> attributes;
     private final String accessToken;
-    private final String id;
+    private final String providerId;
     private final String email;
-    private final String nickName;
+    private final String nickname;
 
     public KakaoOAuth2UserInfo(String accessToken, Map<String, Object> attributes) {
         this.accessToken = accessToken;
@@ -20,11 +20,11 @@ public class KakaoOAuth2UserInfo implements OAuth2UserInfo {
         Map<String, Object> kakaoProfile = (Map<String, Object>) kakaoAccount.get("profile");
         this.attributes = kakaoProfile;
 
-        this.id = ((Long) attributes.get("id")).toString();
+        this.providerId = ((Long) attributes.get("id")).toString();
         this.email = (String) kakaoAccount.get("email");
-        this.nickName = (String) kakaoProfile.get("nickname");
+        this.nickname = (String) kakaoProfile.get("nickname");
 
-        this.attributes.put("id", id);
+        this.attributes.put("providerId", providerId);
         this.attributes.put("email", this.email);
 
     }

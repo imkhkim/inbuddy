@@ -4,15 +4,15 @@ import java.util.Map;
 
 public interface OAuth2UserInfo {
 
-    OAuth2Provider getProvider();
+    OAuth2Provider getProviderType();
 
     Map<String, Object> getAttributes();
 
     String getAccessToken();
 
-//    String getId();
+    String getProviderId();
 
     String getEmail();
 
-    String getNickName();
+    String getNickname();
 }
