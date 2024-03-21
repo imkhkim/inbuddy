@@ -1,6 +1,6 @@
 import React from "react";
-import CheckInCounterInfoBox from "../CheckInCounterInfoBox";
-import CheckInCounterFlightInfo from "./CheckInCounterFlightInfo";
+import CheckInCounterInfoBox from "@/components/modules/CheckInCounterInfoBox";
+import CheckInCounterFlightInfo from "@/components/modules/CheckInCounterFlightInfo";
 
 function CheckInCounterInfo() {
 
