@@ -1,6 +1,12 @@
 pipeline {
   agent any
 
+  environment {
+    DEV_METADATA = '/var/lib/jenkins/workspace/inbuddy/dev'
+
+    SRC_RESOURCES = './server/src/main/resources/'
+  }
+
   tools {
       gradle 'default'
   }
@@ -8,8 +14,8 @@ pipeline {
   stages {
     stage('properties 복사') {
       steps {
-        sh 'rm -f ./server/src/main/resources/application.properties && mkdir ./server/src/main/resources || true'
-        sh 'cp ~/workspace/inbuddy/.properties/application.dev.properties ./server/src/main/resources/application.properties'
+        sh "rm -f ${env.SRC_RESOURCES}/application.properties && mkdir ${env.SRC_RESOURCES} || true"
+        sh "cp ${env.DEV_METADATA}/be/application.properties ${env.SRC_RESOURCES}/application.properties"
       }
     }
 
@@ -30,7 +36,7 @@ pipeline {
 
     stage('Container 재시작') {
       steps {
-        sh 'docker compose -f ~/workspace/inbuddy/.docker/docker-compose-dev.yml restart dev-be'
+        sh "docker compose -f ${env.DEV_METADATA}/docker-compose-dev.yml restart dev-be"
       }
     }
   }
