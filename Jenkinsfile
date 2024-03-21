@@ -2,8 +2,7 @@ pipeline {
   agent any
 
   environment {
-    JENKINS_WORKSPACE = '/var/lib/jenkins/workspace'
-    RELEASE_METADATA = JENKINS_WORKSPACE + '/inbuddy/release'
+    RELEASE_METADATA = '/var/lib/jenkins/workspace/inbuddy/release'
 
     SRC_RESOURCES = './server/src/main/resources/'
   }
