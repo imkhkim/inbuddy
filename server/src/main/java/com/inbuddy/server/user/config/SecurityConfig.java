@@ -1,6 +1,8 @@
 package com.inbuddy.server.user.config;
 
 
+import com.inbuddy.server.user.handler.OAuth2AuthenticationSuccessHandler;
+import com.inbuddy.server.user.repository.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.inbuddy.server.user.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -16,21 +18,25 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private final CustomOAuth2UserService customOAuth2UserService;
+    private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
+    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         http.csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .oauth2Login(oAuth2LoginConfigurer -> oAuth2LoginConfigurer
                         .authorizationEndpoint(authorization -> authorization
-                                .baseUri("/api/oauth2/authorization"))
-//                                .authorizationRequestRepository(
-//                                        httpCookieOAuth2AuthorizationRequestRepository))
+                                .baseUri("/api/oauth2/authorization")
+                                .authorizationRequestRepository(
+                                        httpCookieOAuth2AuthorizationRequestRepository))
                         .userInfoEndpoint(config -> config.userService(customOAuth2UserService))
                         .redirectionEndpoint(
                                 redirectionEndpointConfig -> redirectionEndpointConfig.baseUri(
-                                        "/api/login/oauth2/code/*")));
+                                        "/api/login/oauth2/code/*"))
+                        .successHandler(oAuth2AuthenticationSuccessHandler));
 
         return http.build();
     }
