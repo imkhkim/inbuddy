@@ -1,65 +1,63 @@
 pipeline {
-    agent any
+  agent any
 
-    tools {
-        gradle 'default'
-        nodejs 'default'
+  environment {
+    JENKINS_WORKSPACE = '/var/lib/jenkins/workspace'
+    RELEASE_METADATA = JENKINS_WORKSPACE + '/inbuddy/release'
+
+    SRC_RESOURCES = './server/src/main/resources/'
+  }
+
+  tools {
+      gradle 'default'
+      nodejs 'default'
+  }
+
+  stages {
+    // Spring Boot Application
+    stage('properties 복사') {
+      steps {
+        sh "rm -f ${env.SRC_RESOURCES}/application.properties && mkdir ${env.SRC_RESOURCES} || true"
+        sh "cp ${env.RELEASE_METADATA}/be/application.properties ${env.SRC_RESOURCES}/application.properties"
+      }
     }
 
-    stages {
-      stage('properties 복사') {
-        steps {
-          sh 'rm ./server/src/main/resources/application.properties || mkdir ./server/src/main/resources || true'
-          sh 'cp ../.properties/application.release.properties ./server/src/main/resources/application.properties'
-        }
-      }
+    stage('SpringBoot 빌드') {
+      steps {
+        dir('server') {
+          /** clean and slow build with info **/
+          // sh "chmod +x gradlew && ./gradlew clean --info build"
 
-      stage('SpringBoot 빌드') {
-        steps {
-          dir('server') {
-            /** clean and slow build with info **/
-            // sh 'chmod +x gradlew && ./gradlew clean --info build'
+          /** normal build **/
+          // sh "chmod +x gradlew && ./gradlew build"
 
-            /** normal build **/
-            // sh 'chmod +x gradlew && ./gradlew build'
-
-            /** fast build **/
-            sh 'chmod +x gradlew && ./gradlew bootJar'
-          }
-        }
-      }
-
-      stage('SpringBoot 도커 이미지 생성 후 실행') {
-        steps {
-          /** server/main은 docker image 이름, server_main은 container의 이름 **/
-          sh '''
-            docker stop server_main || true && 
-            docker rm server_main || true &&
-            docker rmi server/main || true &&
-            docker build -t server/main -f /var/lib/jenkins/workspace/.Dockerfiles/main/be/Dockerfile . &&
-            docker run --name server_main -d -p 8080:8080 server/main
-          '''
-        }
-      }
-
-      stage('React App 빌드') {
-        steps {
-          dir('client') {
-            sh 'npm i && npm run build'
-          }
-        }
-      }
-
-      stage('React App 도커 이미지 생성 후 실행') {
-        steps {
-          sh '''
-            docker stop client_main || true &&
-            docker rm client_main || true &&
-            docker rmi client/main || true &&
-            docker build -t client/main -f /var/lib/jenkins/workspace/.Dockerfiles/main/fe/Dockerfile . &&
-            docker run --name client_main -d -p 5173:5173 client/main
-          '''
+          /** fast build **/
+          sh 'chmod +x gradlew && ./gradlew bootJar'
         }
       }
     }
+
+    // React Application
+    stage('React App 빌드') {
+      steps {
+        dir('client') {
+          sh 'npm i && npm run build'
+        }
+      }
+    }
+
+    // Fast Api Application
+    stage('.env, start.sh 복사') {
+      steps {
+        sh "rm -f ./scheduler/.env && cp ${env.RELEASE_METADATA}/scheduler/.env ./scheduler/.env"
+        sh "rm -f ./scheduler/start.sh && cp ${env.RELEASE_METADATA}/scheduler/start.sh ./scheduler/start.sh"
+      }
+    }
+
+    stage('Container 재시작') {
+      steps {
+        sh "docker compose -f ${env.RELEASE_METADATA}/docker-compose-release.yml restart springboot react scheduler"
+      }
+    }
+  }
 }
