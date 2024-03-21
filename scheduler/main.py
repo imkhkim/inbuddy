@@ -5,24 +5,27 @@ import uvicorn
 from app.scheduler.scheduler import ScheduleManager
 from app.redis.redis import RedisManager
 from app.logger.logger import Logger
-from app.scheduler.flight_data_fetcher import fetch
+from app.scheduler import flight_data_fetcher, weather_data_fetcher
 from app.app import app
 
-from dotenv import load_dotenv
+global REDIS_HOST
 
 if __name__ == "__main__":
-    load_dotenv()
-
     REDIS_HOST = os.getenv("REDIS_HOST")
     REDIS_PORT = os.getenv("REDIS_PORT")
+    weather_data_fetcher.API_KEY = os.getenv("WEATHER_API_KEY")
 
     logger = Logger()
     redis = RedisManager(REDIS_HOST, REDIS_PORT)
     scheduler = ScheduleManager()
 
-    scheduler.create("flights_departure", func=fetch, interval=60)
+    scheduler.create("flights_departure", func=flight_data_fetcher.fetch,
+                     interval=60)
     # scheduler.create("flights_arrive", func=fetch, interval=60)
     scheduler.start("flights_departure")
+
+    scheduler.create("weather", func=weather_data_fetcher.fetch, interval=60)
+    scheduler.start("weather")
 
     log_config = uvicorn.config.LOGGING_CONFIG
     log_config["formatters"]["default"]["fmt"] \
