@@ -81,7 +81,7 @@ def fetch():
     # response_arrive = request(date, 'A')
 
     if response_departure is not None:
-        redis.select(redis.FLIGHTS)
+        redis.select(redis.FLIGHTS_API)
         redis.set(date + 'D', response_departure)
         log.info("Fetched Departure Flight Data")
     else:

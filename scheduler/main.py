@@ -8,6 +8,7 @@ from app.redis.redis import redis
 from app.logger.logger import log
 from app.scheduler.flight_data_fetcher import fetch as flight_fetch
 from app.scheduler.weather_data_fetcher import fetch as weather_fetch
+from app.scheduler.batch_save import save
 from app.scheduler import weather_data_fetcher
 
 from app.app import app
@@ -23,13 +24,15 @@ if __name__ == "__main__":
 
     redis.set_connection(REDIS_HOST, REDIS_PORT)
 
-    scheduler.create("flights_departure", func=flight_fetch,
-                     interval=60)
-    # scheduler.create("flights_arrive", func=fetch, interval=60)
-    scheduler.start("flights_departure")
+    scheduler.create("flights_departure", flight_fetch, trigger="cron",
+                     minute='*')
+    scheduler.create("weather", weather_fetch, trigger="cron", minute='*')
 
-    scheduler.create("weather", func=weather_fetch, interval=60)
+    scheduler.create("batch_save", save, trigger="cron", hour=0, minute=0)
+
+    scheduler.start("flights_departure")
     scheduler.start("weather")
+    scheduler.start("batch_save")
 
     uvicorn_log_config = uvicorn.config.LOGGING_CONFIG
     uvicorn_log_config["formatters"]["default"]["fmt"] \
