@@ -8,12 +8,11 @@ import PropTypes from 'prop-types';
 const pVariants = cva('', {
     variants: {
         variant: {
-            default: '',
-            mainHeader: '',
-            sectionHeader: '',
-            subHeader: '',
-            contentHeader: '',
-            content: '',
+            default: 'text-sm font-pretendardRegular text-text-black',
+            mainHeader: 'text-3xl font-pretendardBold text-text-black text-center',
+            sectionHeader: 'text-xl font-pretendardBold text-text-nileBlue',
+            subHeader: 'text-text-ming font-pretendardBold text-lg',
+            content: 'text-text-black font-pretendardBold text-base',
         },
         color: {
             black: 'text-text-black',

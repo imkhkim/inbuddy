@@ -33,9 +33,9 @@ const divVariants = cva(
             },
         },
         defaultVariants: {
-            variant: 'default',
+            borderColor: 'default',
+            textColor: 'default',
             size: 'default',
-            font: 'default',
         },
     }
 );
