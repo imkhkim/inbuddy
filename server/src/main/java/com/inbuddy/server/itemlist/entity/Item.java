@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.inbuddy.server.journey.entity.Journey;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -43,4 +44,15 @@ public class Item {
     @CreationTimestamp
     @Column(name = "item_modification_date", nullable = false)
     private Date itemModificationDate;
+
+    @Builder
+    private Item(Journey journey, String itemName){
+        this.journey = journey;
+        this.itemName = itemName;
+        this.itemDone = false;
+    }
+
+    public static Item createItem(Journey journey, String itemName){
+        return new Item(journey,itemName);
+    }
 }

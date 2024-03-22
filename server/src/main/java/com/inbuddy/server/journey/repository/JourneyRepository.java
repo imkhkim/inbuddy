@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface JourneyRepository extends JpaRepository<Journey,Integer> {
     List<Journey> findByUserUserId(int userId);
+    Journey findByJourneyId(int journeyId);
 }
