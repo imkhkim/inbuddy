@@ -3,10 +3,10 @@ import os
 import pandas as pd
 import requests
 
+from app.logger.logger import log
+from app.redis.redis import redis
 from datetime import datetime
 from bs4 import BeautifulSoup
-from app.redis.redis import RedisManager
-from app.logger.logger import Logger
 
 DOMAIN = "https://www.airportal.go.kr/life/airinfo/RbHanList.jsp"
 
@@ -75,23 +75,14 @@ def _request(date, dep_arr):
 
 
 def fetch():
-    redis = RedisManager()
-    logger = Logger()
-
     date = datetime.today().strftime("%Y%m%d")
-
-    redis.select(redis.FLIGHTS)
 
     response_departure = _request(date, 'D')
     # response_arrive = request(date, 'A')
 
     if response_departure is not None:
+        redis.select(redis.FLIGHTS)
         redis.set(date + 'D', response_departure)
-        logger.info(f"Fetched Departure Flight Data")
+        log.info("Fetched Departure Flight Data")
     else:
-        logger.error("Failed to Fetch Departure Flight Data")
-    # if response_arrive is None:
-    #     redis.set(date + 'A', response_arrive)
-    #     logger.info(f"Fetched Arrive Flight Data")
-    # else:
-    #     logger.error("Failed to Fetch Arrive Flight Data")
+        log.warning("Failed to Fetch Departure Flight Data")

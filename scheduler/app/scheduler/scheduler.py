@@ -13,9 +13,9 @@ class ScheduleManager:
         return cls._instance
 
     def create(self, name, func, interval):
-        scheduler = BackgroundScheduler(timezone='Asia/Seoul')
-        scheduler.add_job(func, trigger='interval', seconds=interval, id=name)
-        self.schedulers[name] = scheduler
+        _scheduler = BackgroundScheduler(timezone='Asia/Seoul')
+        _scheduler.add_job(func, trigger='interval', seconds=interval, id=name)
+        self.schedulers[name] = _scheduler
 
     def add_job(self, name, func, *args, **kwargs):
         if name in self.schedulers:
@@ -34,3 +34,6 @@ class ScheduleManager:
             self.schedulers[name].shutdown()
         else:
             self.logger.error(f"Scheduler '{name}' does not exist.")
+
+
+scheduler = ScheduleManager()

@@ -1,13 +1,11 @@
 import datetime
 import json
 
-from app.redis.redis import RedisManager
-from app.logger.logger import Logger
+from app.redis.redis import redis
 from fastapi import FastAPI, status
 from fastapi.responses import JSONResponse
 
 app = FastAPI()
-logger = Logger()
 
 
 @app.get("/")
@@ -18,7 +16,6 @@ async def root():
 
 @app.get("/api/flights/{flight_type}")
 def flights(flight_type):
-    redis = RedisManager()
     today = (datetime.datetime.today().strftime('%Y%m%d'))
     redis.select(redis.FLIGHTS)
 

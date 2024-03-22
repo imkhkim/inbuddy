@@ -1,4 +1,4 @@
-import redis
+import redis as _redis
 
 
 class RedisManager:
@@ -6,12 +6,15 @@ class RedisManager:
     FLIGHTS = 0
     WEATHERS = 1
 
-    def __new__(cls, host='localhost', port=6379):
+    def __new__(cls):
         if cls._instance is None:
             cls._instance = super().__new__(cls)
-            cls._instance.redis_connection = redis.StrictRedis(host=host,
-                                                               port=port)
+            cls._instance.redis_connection = None
         return cls._instance
+
+    def set_connection(self, host, port):
+        self._instance.redis_connection = _redis.StrictRedis(host=host,
+                                                             port=port)
 
     def select(self, db):
         self.redis_connection.select(db)
@@ -21,3 +24,6 @@ class RedisManager:
 
     def set(self, key, value):
         self.redis_connection.set(key, value)
+
+
+redis = RedisManager()
