@@ -14,7 +14,7 @@ import ticketIconColored from '@/assets/icons/ticket-colored.svg';
 import settingsIconColored from '@/assets/icons/settings-colored.svg';
 
 function BottomNav() {
-    const [isClicked, setIsClicked] = useState([true, false, false, false, false]);
+    const [isClicked, setIsClicked] = useState([false, false, false, false, false]);
 
     function handleClick(e, index) {
         const updatedClickedState = isClicked.map((value, i) => i === index);
@@ -23,11 +23,11 @@ function BottomNav() {
     }
 
     return (
-        <div className="flex items-center justify-center">
-            <div>
+        <div className="flex flex-col items-center min-h-screen ">
+            <div className="p-4 overflow-y-auto max-h-[calc(100lvh-96px)]">
                 <Outlet />
             </div>
-            <footer className="fixed bottom-0 flex items-center justify-center w-full border-t-2 border-black min-h-24">
+            <footer className="fixed bottom-0 flex items-center justify-center w-full bg-white border-t-2 border-black min-h-24">
                 <div className="flex flex-row items-center w-full justify-evenly">
                     <Link to="/main">
                         <img
