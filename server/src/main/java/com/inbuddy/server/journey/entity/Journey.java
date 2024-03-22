@@ -1,6 +1,9 @@
 package com.inbuddy.server.journey.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.inbuddy.server.itemlist.entity.Item;
+import com.inbuddy.server.takelist.entity.Tasklist;
 import com.inbuddy.server.users.entity.Users;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -11,12 +14,13 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor // 생성자 추가
 @NoArgsConstructor
 @Entity
-@Table(name= "journey")
+@Table(name= "journey_collection")
 public class Journey {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,6 +53,14 @@ public class Journey {
     @Column(name = "journey_modification_date", nullable = false)
     private Date journeyModificationDate;
 
+
+    @JsonBackReference
+    @OneToMany(mappedBy = "journey")
+    private List<Tasklist> taskLists;
+
+    @JsonBackReference
+    @OneToMany(mappedBy = "journey")
+    private List<Item> item;
 
     @Builder
     private Journey(Users user, String journeyName, String flightCode, Date journeyCreationDate, Date journeyModificationDate) {

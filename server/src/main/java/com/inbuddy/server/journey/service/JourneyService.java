@@ -1,9 +1,14 @@
 package com.inbuddy.server.journey.service;
 
+
 import com.inbuddy.server.journey.entity.Journey;
 import com.inbuddy.server.journey.repository.JourneyRepository;
 import com.inbuddy.server.users.entity.Users;
 import com.inbuddy.server.users.repository.UsersRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.ParameterMode;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.StoredProcedureQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +20,9 @@ import java.util.List;
 @Transactional(readOnly = true)
 @Service
 public class JourneyService {
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     private final JourneyRepository journeyRepository;
     private final UsersRepository usersRepository;
@@ -28,5 +36,4 @@ public class JourneyService {
         Journey journey = Journey.createJourney(user,journeyName,flightCode,journeyCreationDate,journeyModificationDate);
         journeyRepository.save(journey);
     }
-
 }
