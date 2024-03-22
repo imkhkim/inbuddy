@@ -45,6 +45,9 @@ class Logger:
     def info(self, message):
         self.logger.info(message)
 
+    def warning(self, message):
+        self.logger.warning(message)
+        
     def debug(self, message):
         self.logger.debug(message)
 
@@ -60,3 +63,6 @@ class Logger:
             if handler.level >= level:
                 logs.extend(handler.stream.getvalue().splitlines())
         return logs
+
+
+log = Logger()
