@@ -1,29 +1,27 @@
 pipeline {
-    agent any
+  agent any
 
-    tools {
-        nodejs 'default'
+  environment {
+    DEV_METADATA = '/var/lib/jenkins/workspace/inbuddy/dev'
+  }
+
+  tools {
+    nodejs 'default'
+  }
+
+  stages {
+    stage('React App 빌드') {
+      steps {
+        dir('client') {
+          sh 'npm i && npm run build'
+        }
+      }
     }
 
-    stages {
-        stage('React App 빌드') {
-            steps {
-                dir('client') {
-                    sh 'npm i && npm run build'
-                }
-            }
-        }
-
-        stage('React App 도커 이미지 생성') {
-            steps {
-              sh '''
-                docker stop client_dev || true &&
-                docker rm client_dev || true &&
-                docker rmi client/dev || true &&
-                docker build -t client/dev -f /var/lib/jenkins/workspace/.Dockerfiles/dev/fe/Dockerfile . &&
-                docker run --name client_dev -d -p 5174:5173 client/dev
-                '''
-            }
-        }
+    stage('Container 재시작') {
+      steps {
+        sh "docker compose -f ${env.DEV_METADATA}/docker-compose-dev.yml restart dev-fe"
+      }
     }
+  }
 }

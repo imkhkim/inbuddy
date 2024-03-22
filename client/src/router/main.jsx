@@ -14,6 +14,11 @@ import CheckListPage from '@/pages/CheckListPage.jsx';
 import CheckInCounterInfoPage from '@/pages/CheckInCounterInfoPage.jsx';
 import FlightTicketInfoPage from '@/pages/FlightTicketInfoPage.jsx';
 import SettingsPage from '@/pages/SettingsPage.jsx';
+import BaggageInfoPage from '@/pages/BagaggeInfoPage';
+import ExchangeInfoPage from '@/pages/ExchangeInfoPage';
+import PassportInfoPage from '@/pages/PassportInfoPage';
+import RoamingInfoPage from '@/pages/RoamingInfoPage';
+import TerminalTransportInfoPage from '@/pages/TerminalTransportInfoPage';
 
 const isLoggedIn = false; // 로그인 여부에 따라 조건 설정
 
@@ -54,6 +59,26 @@ const router = createBrowserRouter([
             {
                 path: '/settings',
                 element: <SettingsPage />,
+            },
+            {
+                path: '/info/exchange',
+                element: <ExchangeInfoPage />,
+            },
+            {
+                path: '/info/passport',
+                element: <PassportInfoPage />,
+            },
+            {
+                path: '/info/roaming',
+                element: <RoamingInfoPage />,
+            },
+            {
+                path: '/info/baggage',
+                element: <BaggageInfoPage />,
+            },
+            {
+                path: '/info/terminaltransport',
+                element: <TerminalTransportInfoPage />,
             },
         ],
     },
