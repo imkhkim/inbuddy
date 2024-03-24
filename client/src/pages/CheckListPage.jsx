@@ -5,9 +5,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/atoms/Tab
 import { Progress } from '@/components/atoms/progress';
 import { Input } from '@/components/atoms/input';
 import IconAndP from '@/components/modules/IconAndP';
+import PAndTabsList from '@/components/modules/PAndButton';
 import ToggleSupply from '@/components/modules/ToggleSupply';
+import ToggleCheck from '@/components/modules/ToggleCheck';
 
 import pointerIcon from '@/assets/icons/pointer.svg';
+import alertTriangleIcon from '@/assets/icons/alert-triangle.svg';
+import checkCircleIcon from '@/assets/icons/check-circle.svg';
+
+import { NewspaperIcon, BaggageClaimIcon, DollarSignIcon, WifiIcon, CircleIcon, CircleCheckIcon } from 'lucide-react';
 
 function CheckListPage() {
     const [progress, setProgress] = React.useState(13);
@@ -56,10 +62,10 @@ function CheckListPage() {
 
     return (
         <>
-            <Tabs defaultValue="supplies" className="text-center">
+            <Tabs defaultValue="checks" className="text-center">
                 <TabsList>
                     <TabsTrigger value="supplies">준비물 리스트</TabsTrigger>
-                    <TabsTrigger value="check">점검 리스트</TabsTrigger>
+                    <TabsTrigger value="checks">점검 리스트</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="supplies">
@@ -69,7 +75,11 @@ function CheckListPage() {
                     <P className="mb-2 text-neutral-400" variant="content">
                         여정에 필요한 준비물을 꼼꼼하게 검토해 보세요
                     </P>
-                    <IconAndP className="flex flex-row justify-center mb-4" svg={pointerIcon} />
+                    <IconAndP
+                        className="flex flex-row justify-center mb-4"
+                        svg={pointerIcon}
+                        text="기내 반입 제한물품에 대해 알아보기"
+                    />
                     <Progress className="mb-4" value={progress} />
                     <div>
                         {showInput && (
@@ -108,47 +118,115 @@ function CheckListPage() {
                             <div key={index}>{value}</div>
                         ))}
                         {true ? (
-                            <>
-                                <P variant="sectionHeader" size="sm">
-                                    준비물을 다 챙기셨군요!
-                                </P>
-                                <P className="mb-2" variant="sectionHeader" size="sm">
-                                    여정을 위한 다음 점검 리스트를 확인하러 가요
-                                </P>
-                                <TabsList className="bg-white">
-                                    <TabsTrigger className="text-white bg-brand-500 hover:bg-brand-400" value="check">
-                                        점검 리스트로 이동
-                                    </TabsTrigger>
-                                </TabsList>
-                            </>
+                            <PAndTabsList
+                                tabsContentValue="supplies"
+                                firstContent="준비물을 다 챙기셨군요!"
+                                secondContent="여정을 위한 다음 점검 리스트를 확인하러 가요"
+                                buttonContent="점검 리스트로 이동"
+                                isReady={true}
+                            />
                         ) : (
                             <>
-                                <P variant="sectionHeader" size="sm">
-                                    아직 준비물을 다 챙기지 않았어요
-                                </P>
-                                <P className="mb-2" variant="sectionHeader" size="sm">
-                                    빼먹은 준비물이 없는지 리스트를 다시 확인해주세요
-                                </P>
-                                <TabsList className="bg-white">
-                                    <TabsTrigger
-                                        className="text-white bg-neutral-500 hover:bg-neutral-400"
-                                        value="check"
-                                    >
-                                        점검 리스트로 이동
-                                    </TabsTrigger>
-                                </TabsList>
+                                <PAndTabsList
+                                    tabsContentValue="supplies"
+                                    firstContent="아직 준비물을 다 챙기지 않았어요"
+                                    secondContent="빼먹은 준비물이 없는지 리스트를 다시 확인해주세요"
+                                    buttonContent="점검 리스트로 이동"
+                                    isReady={false}
+                                />
                             </>
                         )}
                     </div>
                 </TabsContent>
 
-                <TabsContent value="check">
+                <TabsContent value="checks">
                     <P className="mb-2" variant="mainHeader">
                         탑승 전 점검 리스트
                     </P>
-                    <P className="text-neutral-400" variant="content">
+                    <P className="mb-2 text-neutral-400" variant="content">
                         공항에 도착했을 때 해야 할 일들을 점검해 보세요
                     </P>
+                    <Progress className="mb-4" value={progress} />
+                    {true ? (
+                        <>
+                            <TabsList className="bg-white">
+                                <TabsTrigger value="supplies">
+                                    <IconAndP
+                                        className="flex flex-row justify-center mb-4 hover:bg-success-300/50 hover:rounded"
+                                        svg={checkCircleIcon}
+                                        text="모든 준비물을 챙겼어요"
+                                        color="success"
+                                    />
+                                </TabsTrigger>
+                            </TabsList>
+                        </>
+                    ) : (
+                        <>
+                            <TabsList className="bg-white">
+                                <TabsTrigger value="supplies">
+                                    <IconAndP
+                                        className="flex flex-row justify-center mb-4 hover:bg-error-300/50 hover:rounded"
+                                        svg={alertTriangleIcon}
+                                        text="챙기지 않은 준비물이 ${itemCount}개 있어요!"
+                                        color="error"
+                                    />
+                                </TabsTrigger>
+                            </TabsList>
+                        </>
+                    )}
+                    <ToggleCheck
+                        iconLeft={<NewspaperIcon />}
+                        title="여권을 챙겼는지 확인했나요?"
+                        content="여권 미지참 시 출국이 불가해요."
+                        iconRight={true ? <CircleCheckIcon className="text-brand-500" /> : <CircleIcon />}
+                        footerQuote="여권이 없다면?"
+                        check={true}
+                        linkPage="/info/passport"
+                    />
+                    <ToggleCheck
+                        iconLeft={<BaggageClaimIcon />}
+                        title="탑승수속을 완료했나요?"
+                        content="수속/수화물 위탁은 출발 50분 전에 마감해요."
+                        iconRight={false ? <CircleCheckIcon className="text-brand-500" /> : <CircleIcon />}
+                        footerQuote="내 체크인 카운터는?"
+                        check={false}
+                        linkPage="/info/baggage"
+                    />
+                    <ToggleCheck
+                        iconLeft={<DollarSignIcon />}
+                        title="환전을 완료했나요?"
+                        content="카드가 있더라도 현금이 없다면 불편할 수 있어요."
+                        iconRight={false ? <CircleCheckIcon className="text-brand-500" /> : <CircleIcon />}
+                        footerQuote="환전할 곳을 찾는다면?"
+                        check={false}
+                        linkPage="/info/exchange"
+                    />
+                    <ToggleCheck
+                        iconLeft={<WifiIcon />}
+                        title="로밍 서비스를 신청했나요?"
+                        content="외국에서 인터넷을 위해 로밍 서비스는 필수에요."
+                        iconRight={false ? <CircleCheckIcon className="text-brand-500" /> : <CircleIcon />}
+                        footerQuote="로밍을 해줄 곳을 찾는다면?"
+                        check={false}
+                        linkPage="/info/roaming"
+                    />
+                    {true ? (
+                        <PAndTabsList
+                            tabsContentValue="checks"
+                            firstContent="출국을 위한 모든 점검이 끝났어요"
+                            secondContent="이제 비행기를 타러 갈 일만 남았군요!"
+                            buttonContent="출국 준비 완료"
+                            isReady={true}
+                        />
+                    ) : (
+                        <PAndTabsList
+                            tabsContentValue="checks"
+                            firstContent="모든 점검이 완료되지 않았어요"
+                            secondContent="빠진 것은 없는지 다시 한 번 확인해 주세요"
+                            buttonContent="출국 준비 완료"
+                            isReady={false}
+                        />
+                    )}
                 </TabsContent>
             </Tabs>
         </>

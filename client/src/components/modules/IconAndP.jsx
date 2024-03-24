@@ -4,11 +4,13 @@ import { cn } from '@/lib/utils';
 
 import { P } from '@/components/atoms/P.jsx';
 
-function IconAndP({ className, svg }) {
+function IconAndP({ className, svg, text, color }) {
     return (
         <div className={(cn('flex flex-row'), className)}>
             <img src={svg} alt="포인터 아이콘" />
-            <P variant="subHeader">&nbsp;&nbsp;기내 반입 제한물품에 대해 알아보기</P>
+            <P variant="subHeader" color={color}>
+                &nbsp;&nbsp;{text}
+            </P>
         </div>
     );
 }
@@ -16,6 +18,8 @@ function IconAndP({ className, svg }) {
 IconAndP.propTypes = {
     className: PropTypes.string,
     svg: PropTypes.string,
+    text: PropTypes.string,
+    color: PropTypes.string,
 };
 
 export default IconAndP;

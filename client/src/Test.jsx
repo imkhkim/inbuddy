@@ -4,7 +4,11 @@ import { Div } from '@/components/atoms/Div.jsx';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/atoms/Tabs';
 import { Progress } from '@/components/atoms/progress';
 import { Toggle } from '@/components/atoms/toggle';
+
 import ToggleSupply from '@/components/modules/ToggleSupply';
+import ToggleCheck from '@/components/modules/ToggleCheck';
+import { NewspaperIcon } from 'lucide-react';
+
 function Test() {
     return (
         <>
@@ -44,6 +48,13 @@ function Test() {
                 <Toggle variant="outline">텍스트</Toggle>
                 <ToggleSupply selected={true} supply="텍스트1"></ToggleSupply>
                 <ToggleSupply selected={false} supply="텍스트2"></ToggleSupply>
+                <ToggleCheck
+                    iconLeft={<NewspaperIcon />}
+                    title="title입니다"
+                    content="content입니다"
+                    iconRight={<NewspaperIcon />}
+                    footerQuote="인용입니까?"
+                />
             </div>
         </>
     );
