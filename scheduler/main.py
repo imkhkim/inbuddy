@@ -43,4 +43,4 @@ if __name__ == "__main__":
         = uvicorn_log_config["formatters"]["default"]["datefmt"] \
         = log.date_format
 
-    uvicorn.run(app)
+    uvicorn.run(app, reload=True)
