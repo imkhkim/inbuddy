@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/atoms/Button.jsx';
 import { P } from '@/components/atoms/P.jsx';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/atoms/Tabs';
@@ -75,11 +76,14 @@ function CheckListPage() {
                     <P className="mb-2 text-neutral-400" variant="content">
                         여정에 필요한 준비물을 꼼꼼하게 검토해 보세요
                     </P>
-                    <IconAndP
-                        className="flex flex-row justify-center mb-4"
-                        svg={pointerIcon}
-                        text="기내 반입 제한물품에 대해 알아보기"
-                    />
+                    <Link to="/info/baggage">
+                        <IconAndP
+                            className="flex flex-row justify-center mb-4"
+                            svg={pointerIcon}
+                            text="기내 반입 제한물품에 대해 알아보기"
+                        />
+                    </Link>
+
                     <Progress className="mb-4" value={progress} />
                     <div>
                         {showInput && (
@@ -190,7 +194,7 @@ function CheckListPage() {
                         iconRight={false ? <CircleCheckIcon className="text-brand-500" /> : <CircleIcon />}
                         footerQuote="내 체크인 카운터는?"
                         check={false}
-                        linkPage="/info/baggage"
+                        linkPage="/checkincounterinfo"
                     />
                     <ToggleCheck
                         iconLeft={<DollarSignIcon />}
