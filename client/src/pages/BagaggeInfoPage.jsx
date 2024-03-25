@@ -1,9 +1,10 @@
 import { P } from '@/components/atoms/P';
 import { Button } from '@/components/atoms/Button';
+import prohibitedStuffPNG from '@/assets/prohibited-stuff-icon.png';
 
 function BaggageInfoPage() {
     const commonStyle = {
-        backgroundImage: 'url("../src/assets/prohibited-stuff-icon.png")',
+        backgroundImage: `url(${prohibitedStuffPNG})`,
         backgroundSize: '537px 271px',
         height: '58px',
         border: '0',
