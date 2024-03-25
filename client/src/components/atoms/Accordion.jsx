@@ -47,7 +47,7 @@ AccordionItem.propTypes,
     AccordionTrigger.propTypes,
     (AccordionContent.propTypes = {
         className: PropTypes.string,
-        children: PropTypes.string,
+        children: PropTypes.any,
     });
 
 export { Accordion, AccordionItem, AccordionTrigger, AccordionContent };
