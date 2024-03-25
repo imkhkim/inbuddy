@@ -23,7 +23,7 @@ function ToggleCheck({ iconLeft, title, content, iconRight, footerQuote, check, 
                     <P font="font-pretendardRegular" size="lg" color={isCheck ? 'brand' : 'black'}>
                         {title}
                     </P>
-                    <P font="font-pretendardRegular" size="sm" color="neutral">
+                    <P font="font-pretendardRegular" size="xs" color="neutral">
                         {content}
                     </P>
                 </div>
