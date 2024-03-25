@@ -7,6 +7,7 @@ import csv
 from datetime import datetime
 from app.redis.redis import redis
 from app.logger.logger import log
+from app.producer.producer import live_weather_producer
 
 DOMAIN = "https://apihub.kma.go.kr/api/typ01/url/amos.php"
 
@@ -20,8 +21,9 @@ global API_KEY
 
 def test():
     global API_KEY
-    API_KEY = "zOtzJTt2Tx-rcyU7dv8fFA"
+    API_KEY = "_n1x6n-5Sji9cep_uVo4Uw"
     redis.set_connection("localhost", 6379)
+    live_weather_producer.set_producer("localhost:9093", "live_weather")
 
 
 def _parse_json(text):
@@ -42,10 +44,6 @@ def _parse_json(text):
 
 
 def _parse_csv(text):
-    # result = io.StringIO()
-    # csv_writer = csv.writer(result, lineterminator='\n')
-    # csv_writer.writerow(COLUMNS)
-
     result = []
     for line in text.split('\n'):
         line = line.strip()
@@ -54,7 +52,7 @@ def _parse_csv(text):
         if line.startswith('#'):
             continue
 
-        data = ','.join(line.split())
+        data = line.split()
         result.append(data)
 
     return result
@@ -93,20 +91,15 @@ def fetch():
         redis.select(redis.WEATHERS_API)
         redis.set(document["TM"],
                   json.dumps(document, indent=4, ensure_ascii=False))
-        log.info("Fetched Weather Data")
 
-    redis.select(redis.WEATHERS_BATCH)
-    
     for line in csv_data:
-        redis.set(line)
-    weathers = redis.get(now)
-    cat = []
-    if weathers is not None:
-        cat = weathers.split('\n')
+        redis.select(redis.WEATHERS_BATCH)
+        redis.set(line[1], ','.join(line))
 
-    # cat = list(set(weathers.split("\n") + weathers.split("\n")))
+    log.info("Fetched Weather Data")
 
-    log.info("weathers: " + str(weathers))
+    live_weather_producer.produce(topic="live_weather",
+                                  value=json.dumps(json_data))
 
 
 test()

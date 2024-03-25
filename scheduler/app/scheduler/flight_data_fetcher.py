@@ -5,6 +5,7 @@ import requests
 
 from app.logger.logger import log
 from app.redis.redis import redis
+from app.producer.producer import live_flight_producer
 from datetime import datetime
 from bs4 import BeautifulSoup
 
@@ -80,9 +81,23 @@ def fetch():
     response_departure = _request(date, 'D')
     # response_arrive = request(date, 'A')
 
+    # test code
+    redis.set_connection("localhost", 6379)
+    live_flight_producer.set_producer(server="localhost:9092",
+                                      client_id="live_flight")
+    # test code end
+
     if response_departure is not None:
         redis.select(redis.FLIGHTS_API)
         redis.set(date + 'D', response_departure)
+
         log.info("Fetched Departure Flight Data")
     else:
         log.warning("Failed to Fetch Departure Flight Data")
+
+    live_flight_producer.produce(topic='live_flight',
+                                 value=response_departure)
+
+
+# test code
+fetch()
