@@ -24,7 +24,7 @@ function BottomNav() {
 
     return (
         <div className="flex flex-col items-center min-h-screen ">
-            <div className="p-4 overflow-y-auto max-h-[calc(100lvh-96px)]">
+            <div className="p-4 overflow-x-hidden overflow-y-auto max-h-[calc(100vh-96px)]">
                 <Outlet />
             </div>
             <footer className="fixed bottom-0 flex items-center justify-center w-full bg-white border-t-2 border-black min-h-24">

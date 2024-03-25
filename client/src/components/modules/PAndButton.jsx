@@ -10,7 +10,7 @@ function PAndButton({ tabsContentValue, firstContent, secondContent, buttonConte
     let content = null;
     if (tabsContentValue === 'checks') {
         content = (
-            <Link to="checkincounterinfo">
+            <Link to="/checkincounterinfo">
                 <Button variant={isReady ? 'brand' : 'notReady'}>{buttonContent}</Button>
             </Link>
         );
