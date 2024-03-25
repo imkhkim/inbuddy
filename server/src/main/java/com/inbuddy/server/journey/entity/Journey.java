@@ -37,9 +37,6 @@ public class Journey {
     @Column(name = "journey_name", nullable = false, length = 255)
     private String journeyName;
 
-    @Column(name = "flight_code", length = 255)
-    private String flightCode;
-
     @Column(name = "journey_done", nullable = false)
     private boolean journeyDone;
 
@@ -63,22 +60,20 @@ public class Journey {
     private List<Item> item;
 
     @Builder
-    private Journey(Users user, String journeyName, String flightCode, Date journeyCreationDate, Date journeyModificationDate) {
+    private Journey(Users user, String journeyName,  Date journeyCreationDate, Date journeyModificationDate) {
         this.user = user;
         this.journeyName = journeyName;
-        this.flightCode = flightCode;
         this.journeyDone = false;
         this.journeyCreationDate = journeyCreationDate;
         this.journeyModificationDate = journeyModificationDate;
     }
-    public static Journey createJourney(Users user, String journeyName, String flightCode,Date journeyCreationDate, Date journeyModificationDate){
-        return new Journey(user,journeyName,flightCode,journeyCreationDate,journeyModificationDate);
+    public static Journey createJourney(Users user, String journeyName,Date journeyCreationDate, Date journeyModificationDate){
+        return new Journey(user,journeyName,journeyCreationDate,journeyModificationDate);
     }
 
     public void updateJourney(Users user, String journeyName, String flightCode, boolean journeyDone, Date journeyCreationDate, Date journeyModificationDate){
         this.user = user;
         this.journeyName = journeyName;
-        this.flightCode = flightCode;
         this.journeyDone = journeyDone;
         this.journeyCreationDate = journeyCreationDate;
         this.journeyModificationDate = journeyModificationDate;

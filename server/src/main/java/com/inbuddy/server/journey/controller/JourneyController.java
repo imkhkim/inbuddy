@@ -75,7 +75,7 @@ public class JourneyController {
     public ResponseEntity<Object> createJourney(@PathVariable("user_id") int userId, @RequestBody JourneyCreationRequest journeyRequest) {
         try {
             // JourneyService를 사용하여 여정 생성
-            journeyService.createJourney(userId, journeyRequest.getJourneyName(), journeyRequest.getFlightCode(), journeyRequest.getJourneyCreationDate(), journeyRequest.getJourneyModificationDate());
+            journeyService.createJourney(userId, journeyRequest.getJourneyName(), journeyRequest.getJourneyCreationDate(), journeyRequest.getJourneyModificationDate());
             // 생성된 여정을 반환 (여정 생성 성공 시 반환하는 것이 좋습니다)
             Message message = new Message("200", "여정 생성에 성공했습니다.");
             return new ResponseEntity<>(message, HttpStatus.OK);

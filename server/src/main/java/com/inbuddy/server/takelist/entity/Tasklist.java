@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.inbuddy.server.journey.entity.Journey;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -38,4 +39,15 @@ public class Tasklist {
     @CreationTimestamp
     @Column(name = "task_modification_date", nullable = false)
     private Date taskModificationDate;
+
+    @Builder
+    private Tasklist(Journey journey, String taskName){
+        this.journey = journey;
+        this.taskName = taskName;
+        this.taskDone = false;
+    }
+
+    public static Tasklist crateTasklist(Journey journey, String taskName){
+        return new Tasklist(journey, taskName);
+    }
 }

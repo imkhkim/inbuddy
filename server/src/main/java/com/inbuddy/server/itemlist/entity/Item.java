@@ -55,4 +55,17 @@ public class Item {
     public static Item createItem(Journey journey, String itemName){
         return new Item(journey,itemName);
     }
+
+    
+    // 체크표시했나 안했나
+    public void checkItem(){
+        this.itemDone = !this.itemDone;
+    }
+
+    // 아이템 1개 추가
+    public void updateItem(String itemName){
+        this.itemName = itemName;
+        this.itemModificationDate = new Date();
+    }
+
 }
