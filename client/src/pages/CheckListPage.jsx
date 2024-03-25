@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/atoms/Tab
 import { Progress } from '@/components/atoms/progress';
 import { Input } from '@/components/atoms/input';
 import IconAndP from '@/components/modules/IconAndP';
-import PAndTabsList from '@/components/modules/PAndButton';
+import PAndButton from '@/components/modules/PAndButton';
 import ToggleSupply from '@/components/modules/ToggleSupply';
 import ToggleCheck from '@/components/modules/ToggleCheck';
 
@@ -118,7 +118,7 @@ function CheckListPage() {
                             <div key={index}>{value}</div>
                         ))}
                         {true ? (
-                            <PAndTabsList
+                            <PAndButton
                                 tabsContentValue="supplies"
                                 firstContent="준비물을 다 챙기셨군요!"
                                 secondContent="여정을 위한 다음 점검 리스트를 확인하러 가요"
@@ -127,7 +127,7 @@ function CheckListPage() {
                             />
                         ) : (
                             <>
-                                <PAndTabsList
+                                <PAndButton
                                     tabsContentValue="supplies"
                                     firstContent="아직 준비물을 다 챙기지 않았어요"
                                     secondContent="빼먹은 준비물이 없는지 리스트를 다시 확인해주세요"
@@ -211,7 +211,7 @@ function CheckListPage() {
                         linkPage="/info/roaming"
                     />
                     {true ? (
-                        <PAndTabsList
+                        <PAndButton
                             tabsContentValue="checks"
                             firstContent="출국을 위한 모든 점검이 끝났어요"
                             secondContent="이제 비행기를 타러 갈 일만 남았군요!"
@@ -219,7 +219,7 @@ function CheckListPage() {
                             isReady={true}
                         />
                     ) : (
-                        <PAndTabsList
+                        <PAndButton
                             tabsContentValue="checks"
                             firstContent="모든 점검이 완료되지 않았어요"
                             secondContent="빠진 것은 없는지 다시 한 번 확인해 주세요"
