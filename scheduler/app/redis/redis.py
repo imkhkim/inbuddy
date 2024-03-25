@@ -30,5 +30,9 @@ class RedisManager:
     def delete(self, key):
         self.redis_connection.delete(key)
 
+    def delete_many(self, *args):
+        if args is not None and len(args) > 0:
+            self.redis_connection.delete(*args)
+
 
 redis = RedisManager()
