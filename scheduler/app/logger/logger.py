@@ -1,28 +1,19 @@
-import os
 import logging
+
 import colorlog
 
-from config import LOG_FORMAT, LOG_DATE_FORMAT, LOG_COLORS
-
-
-def _create_or_get_default_path():
-    path = "inbuddy.log"
-    return path
+from config import LOG_FORMAT, LOG_DATE_FORMAT, LOG_COLORS, LOGFILE_PATH
 
 
 class Logger:
     _instance = None
 
-    def __new__(cls, filepath=None, console_log_level=logging.DEBUG,
+    def __new__(cls, filepath=LOGFILE_PATH, console_log_level=logging.DEBUG,
             file_log_level=logging.INFO):
-
         if cls._instance is None:
             cls._instance = super().__new__(cls)
             cls._instance.logger = logging.getLogger("inbuddy.scheduler")
             cls._instance.logger.setLevel(logging.DEBUG)
-
-            if filepath is None:
-                filepath = _create_or_get_default_path()
 
             file_handler = logging.FileHandler(filepath)
             file_handler.setLevel(file_log_level)
@@ -37,8 +28,7 @@ class Logger:
             console_handler.setFormatter(formatter)
             file_handler.setFormatter(logging.Formatter(
                     fmt=LOG_FORMAT.replace('%(log_color)s', '').replace(
-                            '%(reset)s', ''),
-                    datefmt=LOG_DATE_FORMAT))
+                            '%(reset)s', ''), datefmt=LOG_DATE_FORMAT))
 
             cls._instance.logger.addHandler(file_handler)
             cls._instance.logger.addHandler(console_handler)

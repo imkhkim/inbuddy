@@ -3,6 +3,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# Directory
+PROJECT_ROOT = os.path.dirname(__file__)
+LOGFILE_PATH = os.path.join(PROJECT_ROOT, 'log', 'scheduler.log')
+
 # Flight API
 FLIGHT_API_DOMAIN = "https://www.airportal.go.kr/life/airinfo/RbHanList.jsp"
 FLIGHT_DATA_COLUMNS = ["날짜", "항공사", "편명", "도착지", "계획", "예상", "출발", "구분", "현황",
@@ -62,12 +66,12 @@ UVICORN_LOG_CONFIG = {
         "file": {
             "class": "logging.FileHandler",
             "formatter": "simple",
-            "filename": "app/logger/inbuddy.log",
+            "filename": LOGFILE_PATH,
         },
     },
     "loggers": {
-        "uvicorn.error": {"handlers": ["default"], "level": "INFO"},
-        "uvicorn.access": {"handlers": ["default"], "level": "INFO"},
+        "uvicorn.error": {"handlers": ["default", "file"], "level": "INFO"},
+        "uvicorn.access": {"handlers": ["default", "file"], "level": "INFO"},
         "inbuddy.scheduler": {"handlers": ["default", "file"],
                               "level": "DEBUG"},
     },
