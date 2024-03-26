@@ -1,4 +1,5 @@
 from confluent_kafka import Producer
+
 from app.producer.ack import ack
 
 
@@ -7,11 +8,11 @@ class KafkaProducer:
     def __init__(self):
         self.producer = None
 
-    def set_producer(self, server, client_id, config=None):
+    def set_producer(self, servers, client_id, config=None):
         if config is None:
             config = {}
-        if server is not None:
-            config['bootstrap.servers'] = server
+        if servers is not None:
+            config['bootstrap.servers'] = servers
         if client_id is not None:
             config['client.id'] = client_id
 
