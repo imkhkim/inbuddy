@@ -1,11 +1,12 @@
 import os
 
 import uvicorn
+from uvicorn.config import LOGGING_CONFIG
 
+from app.logger.logger import log
 from dotenv import load_dotenv
 from app.scheduler.scheduler import scheduler
 from app.redis.redis import redis
-from app.logger.logger import log
 from app.scheduler.flight_data_fetcher import fetch as flight_fetch
 from app.scheduler.weather_data_fetcher import fetch as weather_fetch
 from app.scheduler.batch_save import save
@@ -24,20 +25,22 @@ if __name__ == "__main__":
     redis.set_connection(REDIS_HOST, REDIS_PORT)
 
     KAFKA_HOST = os.getenv("KAFKA_HOST")
-    KAFKA_FLIGHT_BROKER_PORT = os.getenv("KAFKA_FLIGHT_BROKER_PORT")
-    KAFKA_WEATHER_BROKER_PORT = os.getenv("KAFKA_WEATHER_BROKER_PORT")
+    KAFKA_BROKER_PORTS = os.getenv("KAFKA_BROKER_PORTS")
+
+    servers = ','.join(
+            [f"{KAFKA_HOST}:{PORT}" for PORT in KAFKA_BROKER_PORTS.split(',')])
 
     live_flight_producer.set_producer(
-            server=f"{KAFKA_HOST}:{KAFKA_FLIGHT_BROKER_PORT}",
+            servers=servers,
             client_id="live_flight")
     live_weather_producer.set_producer(
-            server=f"{KAFKA_HOST}:{KAFKA_WEATHER_BROKER_PORT}",
+            servers=servers,
             client_id="live_weather")
     batch_flight_producer.set_producer(
-            server=f"{KAFKA_HOST}:{KAFKA_FLIGHT_BROKER_PORT}",
+            servers=servers,
             client_id="batch_weather")
     batch_weather_producer.set_producer(
-            server=f"{KAFKA_HOST}:{KAFKA_WEATHER_BROKER_PORT}",
+            servers=servers,
             client_id="batch_weather")
 
     log.info("Starting scheduler...")
@@ -54,13 +57,33 @@ if __name__ == "__main__":
 
     log.info("Scheduler started.")
 
-    uvicorn_log_config = uvicorn.config.LOGGING_CONFIG
-    uvicorn_log_config["formatters"]["default"]["fmt"] \
-        = uvicorn_log_config["formatters"]["access"]["fmt"] \
-        = log.format
+    log_config = {
+        "version": 1,
+        "formatters": {
+            "default": {
+                "()": "colorlog.ColoredFormatter",
+                "format": "%(log_color)s%(asctime)s - %(levelname)-5s - %(message)s",
+                "datefmt": "%Y-%m-%d %H:%M:%S",
+                "log_colors": {
+                    'DEBUG': 'cyan',
+                    'INFO': 'white',
+                    'WARNING': 'yellow',
+                    'ERROR': 'red',
+                    'CRITICAL': 'red,bg_white',
+                },
+            },
+        },
+        "handlers": {
+            "default": {
+                "formatter": "default",
+                "class": "logging.StreamHandler",
+                "stream": "ext://sys.stdout",
+            },
+        },
+        "loggers": {
+            "uvicorn.error": {"handlers": ["default"], "level": "INFO"},
+            "uvicorn.access": {"handlers": ["default"], "level": "INFO"},
+        },
+    }
 
-    uvicorn_log_config["formatters"]["access"]["datefmt"] \
-        = uvicorn_log_config["formatters"]["default"]["datefmt"] \
-        = log.date_format
-
-    uvicorn.run(app)
+    uvicorn.run(app, log_config=log_config)

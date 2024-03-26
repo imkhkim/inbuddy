@@ -1,5 +1,6 @@
-import logging
 import os
+import logging
+import colorlog
 
 
 def _create_or_get_default_path():
@@ -9,37 +10,47 @@ def _create_or_get_default_path():
 
 class Logger:
     _instance = None
-    format = '%(asctime)s - %(levelname)-5s - %(message)s'
+    format = '%(log_color)s%(asctime)s - %(levelname)-5s - %(message)s'
     date_format = "%Y-%m-%d %H:%M:%S"
+    log_colors = {
+        'DEBUG': 'cyan',
+        'INFO': 'green',
+        'WARNING': 'yellow',
+        'ERROR': 'red',
+        'CRITICAL': 'red,bg_white',
+    }
 
-    def __new__(cls, filepath=None, console_log_level=logging.INFO,
-            file_log_level=logging.DEBUG):
+    def __new__(cls, filepath=None, console_log_level=logging.DEBUG,
+            file_log_level=logging.INFO):
 
         if cls._instance is None:
             cls._instance = super().__new__(cls)
             cls._instance.logger = logging.getLogger("schedule-logger")
             cls._instance.logger.setLevel(logging.DEBUG)
+            cls._instance.logger.handlers.clear()
 
             if filepath is None:
                 filepath = _create_or_get_default_path()
-            # 로그 파일 핸들러 설정
+
             file_handler = logging.FileHandler(filepath)
             file_handler.setLevel(file_log_level)
 
-            # 콘솔 핸들러 설정
-            console_handler = logging.StreamHandler()
+            console_handler = colorlog.StreamHandler()
             console_handler.setLevel(console_log_level)
 
-            # 로그 포매터 설정
-            formatter = logging.Formatter(fmt=cls.format,
-                                          datefmt=cls.date_format)
+            formatter = colorlog.ColoredFormatter(fmt=cls.format,
+                                                  datefmt=cls.date_format,
+                                                  log_colors=cls.log_colors)
 
-            file_handler.setFormatter(formatter)
+            file_handler.setFormatter(logging.Formatter(
+                    fmt=cls.format.replace('%(log_color)s', '').replace(
+                            '%(reset)s', ''),
+                    datefmt=cls.date_format))
             console_handler.setFormatter(formatter)
 
-            # 핸들러를 로거에 추가
             cls._instance.logger.addHandler(file_handler)
             cls._instance.logger.addHandler(console_handler)
+
         return cls._instance
 
     def info(self, message):
@@ -47,7 +58,7 @@ class Logger:
 
     def warning(self, message):
         self.logger.warning(message)
-        
+
     def debug(self, message):
         self.logger.debug(message)
 
@@ -56,13 +67,6 @@ class Logger:
 
     def set_log_level(self, level):
         self.logger.setLevel(level)
-
-    def get_logs_of_level_or_above(self, level):
-        logs = []
-        for handler in self.logger.handlers:
-            if handler.level >= level:
-                logs.extend(handler.stream.getvalue().splitlines())
-        return logs
 
 
 log = Logger()
