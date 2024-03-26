@@ -19,13 +19,6 @@ COLUMNS = ["S", "TM", "L_VIS", "R_VIS", "L_RVR", "R_RVR", "CH_MIN", "TA", "TD",
 global API_KEY
 
 
-def test():
-    global API_KEY
-    API_KEY = "_n1x6n-5Sji9cep_uVo4Uw"
-    redis.set_connection("localhost", 6379)
-    live_weather_producer.set_producer("localhost:9093", "live_weather")
-
-
 def _parse_json(text):
     result = []
     for line in text.split('\n'):
@@ -99,8 +92,4 @@ def fetch():
     log.info("Fetched Weather Data")
 
     live_weather_producer.produce(topic="live_weather",
-                                  value=json.dumps(json_data))
-
-
-test()
-fetch()
+                                  value=json.dumps(json_data), key=now)

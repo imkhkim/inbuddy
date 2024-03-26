@@ -6,15 +6,7 @@ from datetime import datetime, timedelta
 from app.redis.redis import redis
 from app.logger.logger import log
 from app.producer.producer import batch_flight_producer, batch_weather_producer
-
-
-def test():
-    redis.set_connection('localhost', 6379)
-    batch_flight_producer.set_producer(server="127.0.0.7:9092",
-                                       client_id="batch_weather")
-
-    batch_weather_producer.set_producer(server="127.0.0.7:9093",
-                                        client_id="batch_weather")
+from app.redis.redis import redis
 
 
 def flight_save():
