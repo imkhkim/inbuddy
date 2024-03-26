@@ -20,7 +20,7 @@ public class RefreshTokenService {
     @Transactional
     public void saveRefreshToken(String refreshToken) {
         redisTemplate.opsForValue().set(AuthenticationUtils.getCurrentProviderId(), refreshToken,
-            Duration.ofSeconds(REFRESH_TOKEN_EXPIRE_TIME_IN_SECONDS));
+                Duration.ofSeconds(REFRESH_TOKEN_EXPIRE_TIME_IN_SECONDS));
     }
 
     @Transactional
@@ -32,8 +32,20 @@ public class RefreshTokenService {
     @Transactional
     public String getProviderIdFromRefreshToken(String providerId) {
         return redisTemplate.opsForValue()
-            .get(Optional.ofNullable(redisTemplate.opsForValue().get(providerId))
-                .orElseThrow(RefreshTokenExpiredException::new));
+                .get(Optional.ofNullable(redisTemplate.opsForValue().get(providerId))
+                        .orElseThrow(RefreshTokenExpiredException::new));
+    }
+
+    @Transactional
+    public void deleteCurrentUserRefreshToken() {
+
+        String providerId = AuthenticationUtils.getCurrentProviderId();
+        deleteRefreshTokenByProviderId(providerId);
+    }
+
+    @Transactional
+    public void deleteRefreshTokenByProviderId(String providerId) {
+        redisTemplate.delete(providerId);
     }
 
     @Transactional
