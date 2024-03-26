@@ -6,15 +6,7 @@ import requests
 from app.logger.logger import log
 from app.producer.producer import live_weather_producer
 from app.redis.redis import redis
-
-DOMAIN = "https://apihub.kma.go.kr/api/typ01/url/amos.php"
-
-COLUMNS = ["S", "TM", "L_VIS", "R_VIS", "L_RVR", "R_RVR", "CH_MIN", "TA", "TD",
-           "HM", "PS", "PA", "RN", "예비1", "예비2", "WD02", "WD02_MAX", "WD02_MIN",
-           "WS02", "WS02_MAX", "WS02_MIN", "WD10", "WD10_MAX", "WD10_MIN",
-           "WS10", "WS10_MAX", "WS10_MIN"]
-
-global API_KEY
+from config import WEATHER_API_DOMAIN, WEATHER_DATA_COLUMNS, WEATHER_API_KEY
 
 
 def _parse_json(text):
@@ -27,7 +19,8 @@ def _parse_json(text):
             continue
 
         data = line.split()
-        record = {column: int(value) for column, value in zip(COLUMNS, data)}
+        record = {column: int(value) for column, value in
+                  zip(WEATHER_DATA_COLUMNS, data)}
 
         result.append(record)
 
@@ -50,9 +43,10 @@ def _parse_csv(text):
 
 
 def _request(now):
-    params = {"tm": now, "dtm": 3, "stn": 113, "help": 0, "authKey": API_KEY, }
+    params = {"tm": now, "dtm": 3, "stn": 113, "help": 0,
+              "authKey": WEATHER_API_KEY, }
 
-    url = DOMAIN + '?' + '&'.join(
+    url = WEATHER_API_DOMAIN + '?' + '&'.join(
             [f"{key}={value}" for key, value in params.items()])
 
     response = requests.get(url).text

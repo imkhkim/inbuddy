@@ -1,6 +1,7 @@
 import json
 from datetime import datetime, timedelta
 
+from config import FLIGHT_DATA_COLUMNS
 from app.logger.logger import log
 from app.producer.producer import batch_flight_producer, batch_weather_producer
 from app.redis.redis import redis
@@ -16,8 +17,14 @@ def flight_save():
     old_flight_data = {} if old_flight_data is None else json.loads(
             old_flight_data)
 
+    old_flight_csv_data = ""
+    for document in old_flight_data:
+        old_flight_csv_data += ','.join(
+                [str(document[column]) for column in
+                 FLIGHT_DATA_COLUMNS]) + '\n'
+
     batch_flight_producer.produce(topic="batch_flight",
-                                  value=json.dumps(old_flight_data),
+                                  value=old_flight_csv_data,
                                   key=old_flight_data_key)
 
     redis.delete(old_flight_data_key)

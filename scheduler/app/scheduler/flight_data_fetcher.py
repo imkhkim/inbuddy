@@ -7,10 +7,7 @@ from bs4 import BeautifulSoup
 from app.logger.logger import log
 from app.producer.producer import live_flight_producer
 from app.redis.redis import redis
-
-DOMAIN = "https://www.airportal.go.kr/life/airinfo/RbHanList.jsp"
-
-COLUMNS = ["날짜", "항공사", "편명", "출발지", "계획", "예상", "도착", "구분", "현황", "사유"]
+from config import FLIGHT_API_DOMAIN, FLIGHT_DATA_COLUMNS
 
 PREFIX = "ddrivetip('"
 SUFFIX = "에 의한"
@@ -34,15 +31,14 @@ def _request(date, dep_arr):
         map(lambda x: x.encode('cp949', 'ignore').decode('cp949'), row_data)
         return row_data
 
-    cat = pd.DataFrame(columns=COLUMNS)
+    cat = pd.DataFrame(columns=FLIGHT_DATA_COLUMNS)
 
     params = {"gubun": "c_getList", "depArr": dep_arr, "current_date": date,
               "airport": "RKSI", "al_icao": "", "fp_id": ""}
 
-    url = DOMAIN + '?' + '&'.join(
+    url = FLIGHT_API_DOMAIN + '?' + '&'.join(
             [f"{key}={value}" for key, value in params.items()])
 
-    # request
     response = requests.get(url)
 
     soup = BeautifulSoup(response.text, 'html.parser')
