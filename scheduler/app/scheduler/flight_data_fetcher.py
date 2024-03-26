@@ -1,13 +1,12 @@
-import os
+from datetime import datetime
 
 import pandas as pd
 import requests
+from bs4 import BeautifulSoup
 
 from app.logger.logger import log
-from app.redis.redis import redis
 from app.producer.producer import live_flight_producer
-from datetime import datetime
-from bs4 import BeautifulSoup
+from app.redis.redis import redis
 
 DOMAIN = "https://www.airportal.go.kr/life/airinfo/RbHanList.jsp"
 
@@ -28,23 +27,17 @@ def _request(date, dep_arr):
 
             if i == 14:
                 success = '출발' if dep_arr == 'D' else '도착'
-                row_data.append(
-                        string[string.find(PREFIX) + len(PREFIX):string.find(
-                                SUFFIX)] if text != success else '')
+                row_data.append(string[
+                                string.find(PREFIX) + len(PREFIX):string.find(
+                                        SUFFIX)] if text != success else '')
 
         map(lambda x: x.encode('cp949', 'ignore').decode('cp949'), row_data)
         return row_data
 
     cat = pd.DataFrame(columns=COLUMNS)
 
-    params = {
-        "gubun": "c_getList",
-        "depArr": dep_arr,
-        "current_date": date,
-        "airport": "RKSI",
-        "al_icao": "",
-        "fp_id": ""
-    }
+    params = {"gubun": "c_getList", "depArr": dep_arr, "current_date": date,
+              "airport": "RKSI", "al_icao": "", "fp_id": ""}
 
     url = DOMAIN + '?' + '&'.join(
             [f"{key}={value}" for key, value in params.items()])

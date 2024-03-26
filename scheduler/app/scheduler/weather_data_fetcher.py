@@ -1,13 +1,11 @@
-import io
+import json
+from datetime import datetime
 
 import requests
-import json
-import csv
 
-from datetime import datetime
-from app.redis.redis import redis
 from app.logger.logger import log
 from app.producer.producer import live_weather_producer
+from app.redis.redis import redis
 
 DOMAIN = "https://apihub.kma.go.kr/api/typ01/url/amos.php"
 
@@ -52,13 +50,7 @@ def _parse_csv(text):
 
 
 def _request(now):
-    params = {
-        "tm": now,
-        "dtm": 3,
-        "stn": 113,
-        "help": 0,
-        "authKey": API_KEY,
-    }
+    params = {"tm": now, "dtm": 3, "stn": 113, "help": 0, "authKey": API_KEY, }
 
     url = DOMAIN + '?' + '&'.join(
             [f"{key}={value}" for key, value in params.items()])

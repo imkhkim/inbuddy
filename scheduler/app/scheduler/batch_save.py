@@ -1,9 +1,6 @@
-import csv
-import io
 import json
 from datetime import datetime, timedelta
 
-from app.redis.redis import redis
 from app.logger.logger import log
 from app.producer.producer import batch_flight_producer, batch_weather_producer
 from app.redis.redis import redis
@@ -22,8 +19,6 @@ def flight_save():
     batch_flight_producer.produce(topic="batch_flight",
                                   value=json.dumps(old_flight_data),
                                   key=old_flight_data_key)
-
-    log.info(f"Old Flight Data: {old_flight_data_key} Produced")
 
     redis.delete(old_flight_data_key)
 
@@ -53,12 +48,8 @@ def weather_save():
         date += timedelta(minutes=1)
 
     if old_weather_data:
-        batch_weather_producer.produce(topic="batch_weather",
-                                       value='\n'.join(
-                                           old_weather_data).encode(),
-                                       key=old_weather_data_key)
-
-        log.info(f"Old Weather Data: {old_weather_data_key} Produced")
+        batch_weather_producer.produce(topic="batch_weather", value='\n'.join(
+                old_weather_data).encode(), key=old_weather_data_key)
 
     redis.delete_many(*old_weather_data_keys)
 
