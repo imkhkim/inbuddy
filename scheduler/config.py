@@ -47,6 +47,11 @@ UVICORN_LOG_CONFIG = {
             "datefmt": LOG_DATE_FORMAT,
             "log_colors": LOG_COLORS,
         },
+        "simple": {
+            "format": LOG_FORMAT.replace('%(log_color)s', '').replace(
+                    '%(reset)s', ''),
+            "datefmt": LOG_DATE_FORMAT
+        },
     },
     "handlers": {
         "default": {
@@ -54,9 +59,16 @@ UVICORN_LOG_CONFIG = {
             "class": "logging.StreamHandler",
             "stream": "ext://sys.stdout",
         },
+        "file": {
+            "class": "logging.FileHandler",
+            "formatter": "simple",
+            "filename": "app/logger/inbuddy.log",
+        },
     },
     "loggers": {
         "uvicorn.error": {"handlers": ["default"], "level": "INFO"},
         "uvicorn.access": {"handlers": ["default"], "level": "INFO"},
+        "inbuddy.scheduler": {"handlers": ["default", "file"],
+                              "level": "DEBUG"},
     },
 }

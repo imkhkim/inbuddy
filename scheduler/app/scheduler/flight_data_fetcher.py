@@ -1,9 +1,8 @@
-from datetime import datetime
-
-import pandas as pd
 import requests
-from bs4 import BeautifulSoup
+import pandas as pd
 
+from datetime import datetime
+from bs4 import BeautifulSoup
 from app.logger.logger import log
 from app.producer.producer import live_flight_producer
 from app.redis.redis import redis

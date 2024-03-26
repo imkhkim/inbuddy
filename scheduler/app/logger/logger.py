@@ -6,7 +6,7 @@ from config import LOG_FORMAT, LOG_DATE_FORMAT, LOG_COLORS
 
 
 def _create_or_get_default_path():
-    path = os.path.join(os.path.dirname(__file__), 'logs')
+    path = "inbuddy.log"
     return path
 
 
@@ -18,7 +18,7 @@ class Logger:
 
         if cls._instance is None:
             cls._instance = super().__new__(cls)
-            cls._instance.logger = logging.getLogger("schedule-logger")
+            cls._instance.logger = logging.getLogger("inbuddy.scheduler")
             cls._instance.logger.setLevel(logging.DEBUG)
 
             if filepath is None:
