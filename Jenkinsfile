@@ -16,7 +16,6 @@ pipeline {
       steps {
         sh "rm -f ${env.SRC_RESOURCES}/application.properties && mkdir ${env.SRC_RESOURCES} || true"
         sh "cp ${env.DEV_METADATA}/be/application.properties ${env.SRC_RESOURCES}/application.properties"
-        sh "chmod +x ./wait-for-it.sh"
       }
     }
 
