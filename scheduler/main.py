@@ -29,9 +29,11 @@ if __name__ == "__main__":
     scheduler.create("flights_departure", flight_fetch, trigger="cron",
                      minute='*')
 
-    scheduler.create("weather", weather_fetch, trigger="cron", minute='*')
+    scheduler.create("weather", weather_fetch, trigger="cron", minute='*',
+                     second=20)
 
-    scheduler.create("batch_save", save, trigger="cron", hour=0, minute=0)
+    scheduler.create("batch_save", save, trigger="cron", hour=0, minute=0,
+                     second=40)
 
     scheduler.start("flights_departure")
     scheduler.start("weather")

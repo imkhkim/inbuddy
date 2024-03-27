@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 from app.logger.logger import log
 from app.producer.producer import live_flight_producer
 from app.redis.redis import redis
-from config import FLIGHT_API_DOMAIN, FLIGHT_DATA_COLUMNS
+from config import FLIGHT_API_DOMAIN, FLIGHT_DATA_COLUMNS, resource_lock
 
 PREFIX = "ddrivetip('"
 SUFFIX = "에 의한"
@@ -69,13 +69,15 @@ def fetch():
     response_departure = _request(date, 'D')
     # response_arrive = request(date, 'A')
 
-    if response_departure is not None:
+    if response_departure is None:
+        log.warning("Failed to Fetch Departure Flight Data")
+        return
+
+    log.info("Fetched Departure Flight Data")
+    
+    with resource_lock:
         redis.select(redis.FLIGHTS_API)
         redis.set(date + 'D', response_departure)
-
-        log.info("Fetched Departure Flight Data")
-    else:
-        log.warning("Failed to Fetch Departure Flight Data")
 
     live_flight_producer.produce(topic='live_flight', value=response_departure,
                                  key=date + 'D')

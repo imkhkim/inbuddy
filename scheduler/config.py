@@ -1,7 +1,11 @@
 import os
 from dotenv import load_dotenv
+from threading import Lock
 
 load_dotenv()
+
+# Resource Lock
+resource_lock = Lock()
 
 # Directory
 PROJECT_ROOT = os.path.dirname(__file__)
