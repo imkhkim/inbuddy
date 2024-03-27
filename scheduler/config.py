@@ -9,7 +9,11 @@ resource_lock = Lock()
 
 # Directory
 PROJECT_ROOT = os.path.dirname(__file__)
-LOGFILE_PATH = os.path.join(PROJECT_ROOT, 'log', 'scheduler.log')
+LOG_DIRECTORY = os.path.join(PROJECT_ROOT, 'log')
+if not os.path.exists(LOG_DIRECTORY):
+    os.makedirs(LOG_DIRECTORY)
+
+LOGFILE_PATH = os.path.join(LOG_DIRECTORY, 'scheduler.log')
 
 # Flight API
 FLIGHT_API_DOMAIN = "https://www.airportal.go.kr/life/airinfo/RbHanList.jsp"
