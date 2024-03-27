@@ -15,11 +15,19 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class RefreshTokenService {
 
+//    TODO : redis에 데이터 저장할 때 key prefix 수정, 데이터 조회 코드 수정,
+//             blacklist 잘 되는지 확인, 다른 소셜 로그인 구현 마무리
+
     private final RedisTemplate<String, String> redisTemplate;
+    String key = String.format("user:%s:refresh_token",
+            AuthenticationUtils.getCurrentProviderId());
 
     @Transactional
     public void saveRefreshToken(String refreshToken) {
-        redisTemplate.opsForValue().set(AuthenticationUtils.getCurrentProviderId(), refreshToken,
+        String key = String.format("user:%s:refresh_token",
+                AuthenticationUtils.getCurrentProviderId());
+
+        redisTemplate.opsForValue().set(key, refreshToken,
                 Duration.ofSeconds(REFRESH_TOKEN_EXPIRE_TIME_IN_SECONDS));
     }
 
