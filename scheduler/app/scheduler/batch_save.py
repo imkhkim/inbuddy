@@ -35,15 +35,15 @@ def flight_save():
 def weather_save():
     redis.select(redis.WEATHERS_BATCH)
 
-    today = datetime.combine(datetime.today(), datetime.min.time())
-    yesterday = today - timedelta(days=1)
+    yesterday = datetime.combine(datetime.today() - timedelta(days=1),
+                                 datetime.min.time())
+    date = yesterday - timedelta(days=1)
 
     old_weather_data_keys = []
-    old_weather_data_key = yesterday.strftime("%Y%m%d")
+    old_weather_data_key = date.strftime("%Y%m%d")
     old_weather_data = []
 
-    date = yesterday
-    while date < today:
+    while date < yesterday:
         data_key = date.strftime("%Y%m%d%H%M")
         data = redis.get(data_key)
 
