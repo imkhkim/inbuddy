@@ -4,7 +4,6 @@ import com.inbuddy.server.user.dto.UserProfile;
 import com.inbuddy.server.user.entity.User;
 import com.inbuddy.server.user.exception.UserNotFoundException;
 import com.inbuddy.server.user.info.OAuth2UserInfo;
-import com.inbuddy.server.user.repository.TokenRepository;
 import com.inbuddy.server.user.repository.UserRepository;
 import com.inbuddy.server.user.utils.AuthenticationUtils;
 import java.util.Optional;
@@ -18,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final TokenRepository tokenRepository;
 
     public void saveUser(User user) {
         userRepository.save(user);
@@ -33,7 +31,7 @@ public class UserService {
                     .email(userInfo.getEmail())
                     .nickname(userInfo.getNickname())
                     .providerId(userInfo.getProviderId())
-                    .providerType(userInfo.getProviderType().toString()).build();
+                    .providerType(String.valueOf(userInfo.getProviderType())).build();
             saveUser(user);
         }
 

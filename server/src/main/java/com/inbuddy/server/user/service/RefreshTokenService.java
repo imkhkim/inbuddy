@@ -26,22 +26,7 @@ public class RefreshTokenService {
     @Transactional
     public String findRefreshTokenByProviderId(String providerId) {
         return Optional.ofNullable(redisTemplate.opsForValue().get(providerId))
-                .orElseThrow(RefreshTokenExpiredException::new);
-    }
-
-    @Transactional
-    public String findCurrentUserRefreshToken() {
-        String providerId = AuthenticationUtils.getCurrentProviderId();
-        return findRefreshTokenByProviderId(providerId);
-    }
-
-    @Transactional
-    public void findCurrentUserRefreshTokenAndCompareWith(String requestRefreshToken) {
-        String refreshToken = findCurrentUserRefreshToken();
-
-        if (!refreshToken.equals(requestRefreshToken)) {
-            throw new RefreshTokenExpiredException();
-        }
+            .orElseThrow(RefreshTokenExpiredException::new);
     }
 
     @Transactional
@@ -49,6 +34,32 @@ public class RefreshTokenService {
         return redisTemplate.opsForValue()
                 .get(Optional.ofNullable(redisTemplate.opsForValue().get(providerId))
                         .orElseThrow(RefreshTokenExpiredException::new));
+    }
+
+    @Transactional
+    public void deleteCurrentUserRefreshToken() {
+
+        String providerId = AuthenticationUtils.getCurrentProviderId();
+        deleteRefreshTokenByProviderId(providerId);
+    }
+
+    @Transactional
+    public void deleteRefreshTokenByProviderId(String providerId) {
+        redisTemplate.delete(providerId);
+    }
+
+    @Transactional
+    public String findCurrentUserRefreshToken() {
+        String id = AuthenticationUtils.getCurrentProviderId();
+        return findRefreshTokenByProviderId(id);
+    }
+
+    @Transactional
+    public void findCurrentUserRefreshTokenAndCompareWith(String requestRefreshToken) {
+        String token = findCurrentUserRefreshToken();
+        if (!token.equals(requestRefreshToken)) {
+            throw new RefreshTokenExpiredException();
+        }
     }
 
     @Transactional
@@ -68,4 +79,6 @@ public class RefreshTokenService {
     public void deleteRefreshTokenByProviderId(String providerId) {
         redisTemplate.delete(providerId);
     }
+
+
 }

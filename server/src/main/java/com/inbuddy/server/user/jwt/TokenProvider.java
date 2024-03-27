@@ -8,7 +8,6 @@ import com.inbuddy.server.user.utils.AuthenticationUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.Jwts.SIG;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
@@ -42,7 +41,7 @@ public class TokenProvider {
     public static final long ACCESS_TOKEN_EXPIRE_TIME_IN_MILLISECONDS = 1000L * 60L * 30L; // 30min
     public static final int ACCESS_TOKEN_EXPIRE_TIME_IN_SECONDS = 60 * 30; // 30min
     public static final long REFRESH_TOKEN_EXPIRE_TIME_IN_MILLISECONDS =
-            1000L * 60L * 60L * 24L * 14L; // 2weeks
+        1000L * 60L * 60L * 24L * 14L; // 2weeks
     public static final int REFRESH_TOKEN_EXPIRE_TIME_IN_SECONDS = 60 * 60 * 24 * 14;
     public static final String ISSUER = "inbuddy";
 
@@ -55,8 +54,10 @@ public class TokenProvider {
     @PostConstruct
     public void init() {
         // 시크릿 값을 복호화(decode) 하여 키 변수에 할당
+
         byte[] keyBytes = Decoders.BASE64.decode(secret);
         this.key = Keys.hmacShaKeyFor(keyBytes);
+        this.key = Jwts.SIG.HS512.key().build();
     }
 
     public String createAccessToken() {
@@ -65,10 +66,10 @@ public class TokenProvider {
 
     public String createAccessToken(Authentication authentication) {
         String providerId = Optional.ofNullable(
-                        ((OAuth2UserPrincipal) (authentication.getPrincipal())).getUserInfo()
-                                .getProviderId())
-                .orElseThrow(
-                        NotAuthenticatedException::new);
+                ((OAuth2UserPrincipal) (authentication.getPrincipal())).getUserInfo()
+                    .getProviderId())
+            .orElseThrow(
+                NotAuthenticatedException::new);
         return this.createAccessToken(providerId);
     }
 
@@ -77,17 +78,15 @@ public class TokenProvider {
         Date date = new Date();
         Date expiredAt = new Date(date.getTime() + ACCESS_TOKEN_EXPIRE_TIME_IN_MILLISECONDS);
 
-        key = SIG.HS512.key().build();
-
         return Jwts.builder()
-                .claim("type", ACCESS_TOKEN_NAME)
-                .issuer(ISSUER)
-                .subject(providerId)
-                .expiration(expiredAt)
-                .notBefore(date)
-                .issuedAt(date)
-                .signWith(key)
-                .compact();
+            .claim("type", ACCESS_TOKEN_NAME)
+            .issuer(ISSUER)
+            .subject(providerId)
+            .expiration(expiredAt)
+            .notBefore(date)
+            .issuedAt(date)
+            .signWith(key)
+            .compact();
     }
 
 
@@ -97,10 +96,10 @@ public class TokenProvider {
 
     public String createRefreshToken(Authentication authentication) {
         String providerId = Optional.ofNullable(
-                        ((OAuth2UserPrincipal) (authentication.getPrincipal())).getUserInfo()
-                                .getProviderId())
-                .orElseThrow(
-                        NotAuthenticatedException::new);
+                ((OAuth2UserPrincipal) (authentication.getPrincipal())).getUserInfo()
+                    .getProviderId())
+            .orElseThrow(
+                NotAuthenticatedException::new);
         return this.createRefreshToken(providerId);
     }
 
@@ -108,22 +107,23 @@ public class TokenProvider {
         Date date = new Date();
         Date expiredAt = new Date(date.getTime() + REFRESH_TOKEN_EXPIRE_TIME_IN_MILLISECONDS);
 
-        key = SIG.HS512.key().build();
-
         return Jwts.builder()
-                .claim("type", REFRESH_TOKEN_NAME)
-                .issuer(ISSUER)
-                .subject(providerId)
-                .expiration(expiredAt)
-                .notBefore(date)
-                .issuedAt(date)
-                .signWith(key)
-                .compact();
+            .claim("type", REFRESH_TOKEN_NAME)
+            .issuer(ISSUER)
+            .subject(providerId)
+            .expiration(expiredAt)
+            .notBefore(date)
+            .issuedAt(date)
+            .signWith(key)
+            .compact();
     }
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().verifyWith(key).build().parseSignedClaims(token);
+            Jwts.parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token);
 
             return true;
         } catch (UnsupportedJwtException | MalformedJwtException exception) {
@@ -151,11 +151,11 @@ public class TokenProvider {
 
     public Authentication getAuthentication(String token) {
         Claims payload = Jwts.parser().verifyWith(key).build().parseSignedClaims(token)
-                .getPayload();
+            .getPayload();
 
         OAuth2User user = new OAuth2UserPrincipal(new DefaultOAuth2UserInfo(payload.getSubject()));
         return new OAuth2AuthenticationToken(user, Collections.emptyList(),
-                OAuth2Provider.DEFAULT.getRegistrationId());
+            OAuth2Provider.DEFAULT.getRegistrationId());
 
     }
 }
