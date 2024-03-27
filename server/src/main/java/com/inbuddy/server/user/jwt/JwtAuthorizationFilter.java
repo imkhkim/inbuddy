@@ -1,5 +1,6 @@
 package com.inbuddy.server.user.jwt;
 
+import com.inbuddy.server.user.service.BlackListTokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     private final TokenProvider tokenProvider;
+    private final BlackListTokenService blackListTokenService;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
@@ -25,7 +27,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain) throws ServletException, IOException {
 
         String token = tokenProvider.resolveToken(request);
-        if (StringUtils.hasText(token) && tokenProvider.validateToken(token)) {
+        if (StringUtils.hasText(token)
+                && !blackListTokenService.findAccessTokenInBlackList(token)
+                && tokenProvider.validateToken(token)) {
             Authentication authentication = tokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
