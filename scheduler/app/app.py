@@ -17,7 +17,7 @@ async def root():
 @app.get("/api/flights/{flight_type}")
 def flights(flight_type):
     today = (datetime.datetime.today().strftime('%Y%m%d'))
-    redis.select(redis.FLIGHTS)
+    redis.select(redis.FLIGHTS_API)
 
     data = {}
     status_code = status.HTTP_400_BAD_REQUEST

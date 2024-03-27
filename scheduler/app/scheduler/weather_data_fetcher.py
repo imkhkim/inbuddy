@@ -1,18 +1,15 @@
-import requests
 import json
+import requests
 
-from datetime import datetime
-from app.redis.redis import redis
+from datetime import datetime, timedelta
 from app.logger.logger import log
+from app.producer.producer import live_weather_producer
+from app.redis.redis import redis
+from config import WEATHER_API_DOMAIN, WEATHER_DATA_COLUMNS, WEATHER_API_KEY, \
+    resource_lock
 
-DOMAIN = "https://apihub.kma.go.kr/api/typ01/url/amos.php"
-
-COLUMNS = ["S", "TM", "L_VIS", "R_VIS", "L_RVR", "R_RVR", "CH_MIN", "TA", "TD",
-           "HM", "PS", "PA", "RN", "예비1", "예비2", "WD02", "WD02_MAX", "WD02_MIN",
-           "WS02", "WS02_MAX", "WS02_MIN", "WD10", "WD10_MAX", "WD10_MIN",
-           "WS10", "WS10_MAX", "WS10_MIN"]
-
-global API_KEY
+_last_received = None
+_FORMAT = "%Y%m%d%H%M"
 
 
 def _parse_json(text):
@@ -21,44 +18,78 @@ def _parse_json(text):
         line = line.strip()
         if line is None or len(line) == 0:
             break
-        if not line.startswith('#'):
-            data = line.split()
-            record = {column: int(value) for column, value in
-                      zip(COLUMNS, data)}
+        if line.startswith('#'):
+            continue
 
-            result.append(record)
+        data = line.split()
+        record = {column: int(value) for column, value in
+                  zip(WEATHER_DATA_COLUMNS, data)}
+
+        result.append(record)
+
+    return result
+
+
+def _parse_csv(text):
+    result = []
+    for line in text.split('\n'):
+        line = line.strip()
+        if line is None or len(line) == 0:
+            break
+        if line.startswith('#'):
+            continue
+
+        data = line.split()
+        result.append(data)
 
     return result
 
 
 def _request(now):
-    params = {
-        "tm": now,
-        "dtm": 3,
-        "stn": 113,
-        "help": 0,
-        "authKey": API_KEY,
-    }
+    minutes = 3 if _last_received is None else round(
+        (now - _last_received).total_seconds() / 60) - 1
+    log.debug(f"Weather Data Delta Time: {minutes} minutes")
 
-    url = DOMAIN + '?' + '&'.join(
+    params = {"tm": now.strftime(_FORMAT), "dtm": minutes, "stn": 113,
+              "help": 0,
+              "authKey": WEATHER_API_KEY}
+
+    url = WEATHER_API_DOMAIN + '?' + '&'.join(
             [f"{key}={value}" for key, value in params.items()])
 
     response = requests.get(url).text
 
-    return _parse_json(response)
+    csv_data = _parse_csv(response)
+    json_data = _parse_json(response)
+
+    return csv_data, json_data
 
 
 def fetch():
-    now = datetime.now().strftime("%Y%m%d%H%M")
+    global _last_received
 
-    response = _request(now)
+    now = datetime.now().replace(second=0, microsecond=0)
 
-    if response is None:
+    csv_data, json_data = _request(now)
+
+    if csv_data is None or json_data is None:
         log.warning("Failed to Fetch Weather Data")
         return
 
-    for document in response:
-        redis.select(redis.WEATHERS)
-        redis.set(document["TM"],
-                  json.dumps(document, indent=4, ensure_ascii=False))
-        log.info("Fetched Weather Data")
+    log.info("Fetched Weather Data")
+
+    with resource_lock:
+        redis.select(redis.WEATHERS_BATCH)
+        for line in csv_data:
+            redis.set(line[1], ','.join(line))
+
+        redis.select(redis.WEATHERS_API)
+        for document in json_data:
+            dump = json.dumps(document, ensure_ascii=False)
+            redis.set(document["TM"], dump)
+
+            key = str(document["TM"])
+            _last_received = datetime.strptime(key, _FORMAT)
+            live_weather_producer.produce(topic="live_weather",
+                                          value=dump,
+                                          key=key)

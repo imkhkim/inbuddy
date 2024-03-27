@@ -1,16 +1,12 @@
-import os
-
-import pandas as pd
 import requests
+import pandas as pd
 
-from app.logger.logger import log
-from app.redis.redis import redis
 from datetime import datetime
 from bs4 import BeautifulSoup
-
-DOMAIN = "https://www.airportal.go.kr/life/airinfo/RbHanList.jsp"
-
-COLUMNS = ["날짜", "항공사", "편명", "출발지", "계획", "예상", "도착", "구분", "현황", "사유"]
+from app.logger.logger import log
+from app.producer.producer import live_flight_producer
+from app.redis.redis import redis
+from config import FLIGHT_API_DOMAIN, FLIGHT_DATA_COLUMNS, resource_lock
 
 PREFIX = "ddrivetip('"
 SUFFIX = "에 의한"
@@ -27,28 +23,21 @@ def _request(date, dep_arr):
 
             if i == 14:
                 success = '출발' if dep_arr == 'D' else '도착'
-                row_data.append(
-                        string[string.find(PREFIX) + len(PREFIX):string.find(
-                                SUFFIX)] if text != success else '')
+                row_data.append(string[
+                                string.find(PREFIX) + len(PREFIX):string.find(
+                                        SUFFIX)] if text != success else '')
 
         map(lambda x: x.encode('cp949', 'ignore').decode('cp949'), row_data)
         return row_data
 
-    cat = pd.DataFrame(columns=COLUMNS)
+    cat = pd.DataFrame(columns=FLIGHT_DATA_COLUMNS)
 
-    params = {
-        "gubun": "c_getList",
-        "depArr": dep_arr,
-        "current_date": date,
-        "airport": "RKSI",
-        "al_icao": "",
-        "fp_id": ""
-    }
+    params = {"gubun": "c_getList", "depArr": dep_arr, "current_date": date,
+              "airport": "RKSI", "al_icao": "", "fp_id": ""}
 
-    url = DOMAIN + '?' + '&'.join(
+    url = FLIGHT_API_DOMAIN + '?' + '&'.join(
             [f"{key}={value}" for key, value in params.items()])
 
-    # request
     response = requests.get(url)
 
     soup = BeautifulSoup(response.text, 'html.parser')
@@ -80,9 +69,15 @@ def fetch():
     response_departure = _request(date, 'D')
     # response_arrive = request(date, 'A')
 
-    if response_departure is not None:
-        redis.select(redis.FLIGHTS)
-        redis.set(date + 'D', response_departure)
-        log.info("Fetched Departure Flight Data")
-    else:
+    if response_departure is None:
         log.warning("Failed to Fetch Departure Flight Data")
+        return
+
+    log.info("Fetched Departure Flight Data")
+    
+    with resource_lock:
+        redis.select(redis.FLIGHTS_API)
+        redis.set(date + 'D', response_departure)
+
+    live_flight_producer.produce(topic='live_flight', value=response_departure,
+                                 key=date + 'D')

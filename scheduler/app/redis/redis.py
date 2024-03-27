@@ -3,8 +3,10 @@ import redis as _redis
 
 class RedisManager:
     _instance = None
-    FLIGHTS = 0
-    WEATHERS = 1
+    FLIGHTS_API = 0
+    WEATHERS_API = 1
+    FLIGHTS_BATCH = 2
+    WEATHERS_BATCH = 3
 
     def __new__(cls):
         if cls._instance is None:
@@ -24,6 +26,13 @@ class RedisManager:
 
     def set(self, key, value):
         self.redis_connection.set(key, value)
+
+    def delete(self, key):
+        self.redis_connection.delete(key)
+
+    def delete_many(self, *args):
+        if args is not None and len(args) > 0:
+            self.redis_connection.delete(*args)
 
 
 redis = RedisManager()

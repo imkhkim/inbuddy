@@ -12,9 +12,9 @@ class ScheduleManager:
             cls._instance.logger = Logger()
         return cls._instance
 
-    def create(self, name, func, interval):
+    def create(self, name, func, *args, **kwargs):
         _scheduler = BackgroundScheduler(timezone='Asia/Seoul')
-        _scheduler.add_job(func, trigger='interval', seconds=interval, id=name)
+        _scheduler.add_job(func, *args, **kwargs)
         self.schedulers[name] = _scheduler
 
     def add_job(self, name, func, *args, **kwargs):
