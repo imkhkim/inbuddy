@@ -16,19 +16,20 @@ pipeline {
       steps {
         sh "rm -f ${env.SRC_RESOURCES}/application.properties && mkdir ${env.SRC_RESOURCES} || true"
         sh "cp ${env.DEV_METADATA}/be/application.properties ${env.SRC_RESOURCES}/application.properties"
+        sh "chmod +x ./wait-for-it.sh"
       }
     }
 
     stage('SpringBoot 빌드') {
       steps {
         dir('server') {
-                  /** clean and slow build with info **/
-                  // sh 'chmod +x gradlew && ./gradlew clean --info build'
+          /** clean and slow build with info **/
+          // sh 'chmod +x gradlew && ./gradlew clean --info build'
 
-                  /** normal build **/
-                  // sh 'chmod +x gradlew && ./gradlew build'
+          /** normal build **/
+          // sh 'chmod +x gradlew && ./gradlew build'
 
-                  /** fast build **/
+          /** fast build **/
           sh 'chmod +x gradlew && ./gradlew bootJar'
         }
       }
