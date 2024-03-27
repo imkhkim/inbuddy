@@ -27,11 +27,9 @@ public class UserService {
 
         if (findUser.isEmpty()) {
 
-            User user = User.builder()
-                    .email(userInfo.getEmail())
-                    .nickname(userInfo.getNickname())
+            User user = User.builder().email(userInfo.getEmail()).nickname(userInfo.getNickname())
                     .providerId(userInfo.getProviderId())
-                    .providerType(String.valueOf(userInfo.getProviderType())).build();
+                    .providerType(userInfo.getProviderType().toString()).build();
             saveUser(user);
         }
 
@@ -42,10 +40,7 @@ public class UserService {
         User user = userRepository.findByProviderId(providerId)
                 .orElseThrow(UserNotFoundException::new);
 
-        return UserProfile.builder()
-                .email(user.getEmail())
-                .nickname(user.getNickname())
-                .build();
+        return UserProfile.builder().email(user.getEmail()).nickname(user.getNickname()).build();
     }
 
     public UserProfile findCurrentUser() {

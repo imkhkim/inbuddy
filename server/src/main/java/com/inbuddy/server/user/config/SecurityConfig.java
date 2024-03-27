@@ -1,10 +1,10 @@
 package com.inbuddy.server.user.config;
 
 
-import com.inbuddy.server.user.handler.CusotmLogoutSuccessHandler;
 import com.inbuddy.server.user.handler.CustomAccessDeniedHandler;
 import com.inbuddy.server.user.handler.CustomAuthenticationEntryPoint;
 import com.inbuddy.server.user.handler.CustomLogoutHandler;
+import com.inbuddy.server.user.handler.CustomLogoutSuccessHandler;
 import com.inbuddy.server.user.handler.OAuth2AuthenticationFailureHandler;
 import com.inbuddy.server.user.handler.OAuth2AuthenticationSuccessHandler;
 import com.inbuddy.server.user.jwt.JwtAuthorizationFilter;
@@ -31,7 +31,7 @@ public class SecurityConfig {
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
-    private final CusotmLogoutSuccessHandler cusotmLogoutSuccessHandler;
+    private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
@@ -55,7 +55,7 @@ public class SecurityConfig {
                 ).logout(logoutConfigurer -> logoutConfigurer
                         .logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
                         .addLogoutHandler(customLogoutHandler)
-                        .logoutSuccessHandler(cusotmLogoutSuccessHandler)
+                        .logoutSuccessHandler(customLogoutSuccessHandler)
                         .deleteCookies("JSESSIONID", "access_token", "refresh_token")
                         .invalidateHttpSession(true)
                         .clearAuthentication(true))

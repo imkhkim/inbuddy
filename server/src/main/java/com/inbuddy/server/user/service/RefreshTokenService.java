@@ -39,8 +39,8 @@ public class RefreshTokenService {
 
     @Transactional
     public String findCurrentUserRefreshToken() {
-        String id = AuthenticationUtils.getCurrentProviderId();
-        return findRefreshTokenByProviderId(id);
+        String providerId = AuthenticationUtils.getCurrentProviderId();
+        return findRefreshTokenByProviderId(providerId);
     }
 
     @Transactional

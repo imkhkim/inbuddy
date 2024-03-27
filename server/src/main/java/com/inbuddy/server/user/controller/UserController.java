@@ -36,7 +36,7 @@ public class UserController {
     public ResponseEntity<?> refresh(HttpServletRequest request, HttpServletResponse response) {
 
         refreshTokenService.findCurrentUserRefreshTokenAndCompareWith(
-            tokenProvider.resolveToken(request));
+                tokenProvider.resolveToken(request));
 
         String accessToken = tokenProvider.createAccessToken();
         String refreshToken = tokenProvider.createRefreshToken();
@@ -44,9 +44,9 @@ public class UserController {
         refreshTokenService.reissueCurrentUserRefreshToken(refreshToken);
 
         CookieUtils.setCookie(response, ACCESS_TOKEN_NAME, accessToken,
-            ACCESS_TOKEN_EXPIRE_TIME_IN_SECONDS);
+                ACCESS_TOKEN_EXPIRE_TIME_IN_SECONDS);
         CookieUtils.setCookie(response, REFRESH_TOKEN_NAME, refreshToken,
-            REFRESH_TOKEN_EXPIRE_TIME_IN_SECONDS);
+                REFRESH_TOKEN_EXPIRE_TIME_IN_SECONDS);
 
         return ResponseEntity.ok().build();
     }

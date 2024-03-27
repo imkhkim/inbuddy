@@ -12,8 +12,8 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
-        AuthenticationException exception)
-        throws IOException {
+            AuthenticationException exception)
+            throws IOException {
         exception.fillInStackTrace();
         response.sendError(401, exception.getLocalizedMessage());
     }

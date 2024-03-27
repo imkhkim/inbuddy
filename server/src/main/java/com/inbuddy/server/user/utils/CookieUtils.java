@@ -23,7 +23,7 @@ public class CookieUtils {
     }
 
     public static void setCookie(HttpServletResponse response, String name, String value,
-        int maxAge) {
+            int maxAge) {
 
         Cookie cookie = new Cookie(name, value);
 
@@ -36,7 +36,7 @@ public class CookieUtils {
 
 
     public static void deleteCookie(HttpServletRequest request, HttpServletResponse response,
-        String name) {
+            String name) {
 
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
@@ -58,9 +58,9 @@ public class CookieUtils {
     }
 
     public static <T> T deserialize(Cookie cookie,
-        Class<T> cls) {
+            Class<T> cls) {
         return cls.cast(
-            SerializationUtils.deserialize(Base64.getUrlDecoder().decode(cookie.getValue())));
+                SerializationUtils.deserialize(Base64.getUrlDecoder().decode(cookie.getValue())));
     }
 
 }

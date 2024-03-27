@@ -13,7 +13,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response,
-        AccessDeniedException exception) throws IOException {
+            AccessDeniedException exception) throws IOException {
         exception.fillInStackTrace();
         response.sendError(403, exception.getLocalizedMessage());
     }
