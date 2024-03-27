@@ -46,4 +46,18 @@ public class UserService {
     public UserProfile findCurrentUser() {
         return findUserByProviderId(AuthenticationUtils.getCurrentProviderId());
     }
+
+    // 이예진 추가 부분이요~
+    public User findByUserId(int userId){
+        return userRepository.findByUserId(userId);
+    }
+
+    public User findUserInfoByProviderId(String providerId){
+        return userRepository.findByProviderId(providerId)
+                .orElseThrow(UserNotFoundException::new);
+    }
+
+    public User findCurrentUserInfo(){
+        return findUserInfoByProviderId(AuthenticationUtils.getCurrentProviderId());
+    }
 }
