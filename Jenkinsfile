@@ -17,43 +17,47 @@ pipeline {
     stage('스크립트 로드') {
       steps {
         script {
-          def branchName = env.BRANCH_NAME
+          def branchName = env.BRANCH_NAME.replaceAll('/', '-')
           def scriptPath = ''
           
           switch(branchName) {
-            case 'dev/be':
+            case 'dev-be':
               scriptPath = 'server/Jenkinsfile'
               break
 
-            case 'dev/fe':
+            case 'dev-fe':
               scriptPath = 'client/Jenkinsfile'
               break;
 
-            case 'dev/scheduler':
+            case 'dev-scheduler':
               scriptPath = 'scheduler/Jenkinsfile'
               break;
+          }
+
+          if (scriptPath != '' && fileExists(scriptPath)) {
+            echo "Load build script for branch ${branchName}."
+            def script = load scriptPath
+            script.build()
+          } else {
+            echo "No build script found for branch ${branchName}, using default build process."
           }
         }
       }
     }
 
-    stage('properties 복사') {
+    stage('파일 복사') {
       when {
         branch 'main'
       }
       steps {
         sh "rm -f ${env.SRC_RESOURCES}/application.properties && mkdir ${env.SRC_RESOURCES} || true"
         sh "cp ${env.RELEASE_METADATA}/be/application.properties ${env.SRC_RESOURCES}/application.properties"
-      }
-    }
+        
+        sh "rm -f ./scheduler/.env; cp ${env.RELEASE_METADATA}/scheduler/.env ./scheduler/.env"
+        sh "rm -f ./scheduler/start.sh; cp ${env.RELEASE_METADATA}/scheduler/start.sh ./scheduler/start.sh"
 
-    stage('.env, start.sh 복사') {
-      when {
-        branch 'main'
-      }
-      steps {
-        sh "rm -f ./scheduler/.env && cp ${env.RELEASE_METADATA}/scheduler/.env ./scheduler/.env"
-        sh "rm -f ./scheduler/start.sh && cp ${env.RELEASE_METADATA}/scheduler/start.sh ./scheduler/start.sh"
+        sh "rm -f ./scheduler/wait-for-it.sh; cp ${env.RELEASE_METADATA}/wait-for-it.sh ./scheduler/wait-for-it.sh"
+        sh "rm -f ./server/wait-for-it.sh; cp ${env.RELEASE_METADATA}/wait-for-it.sh ./server/wait-for-it.sh"
       }
     }
 
