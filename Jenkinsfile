@@ -96,7 +96,7 @@ pipeline {
         branch 'main'
       }
       steps {
-        sh "docker compose -f ${env.RELEASE_METADATA}/docker-compose-release.yml restart springboot react scheduler"
+        sh "docker compose -f ${env.RELEASE_METADATA}/docker-compose-release.yml restart be fe scheduler"
       }
     }
   }
