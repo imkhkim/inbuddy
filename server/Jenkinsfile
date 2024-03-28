@@ -1,6 +1,5 @@
 def build() {
     DEV_METADATA = '/var/lib/jenkins/workspace/inbuddy/dev'
-
     SRC_RESOURCES = './server/src/main/resources'
 
     // 파일 복사
