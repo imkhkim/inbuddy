@@ -45,23 +45,19 @@ pipeline {
       }
     }
 
-    stage('properties 복사') {
+    stage('파일 복사') {
       when {
         branch 'main'
       }
       steps {
         sh "rm -f ${env.SRC_RESOURCES}/application.properties && mkdir ${env.SRC_RESOURCES} || true"
         sh "cp ${env.RELEASE_METADATA}/be/application.properties ${env.SRC_RESOURCES}/application.properties"
-      }
-    }
-
-    stage('.env, start.sh 복사') {
-      when {
-        branch 'main'
-      }
-      steps {
+        
         sh "rm -f ./scheduler/.env && cp ${env.RELEASE_METADATA}/scheduler/.env ./scheduler/.env"
         sh "rm -f ./scheduler/start.sh && cp ${env.RELEASE_METADATA}/scheduler/start.sh ./scheduler/start.sh"
+
+        sh "rm -f ./scheduler/wait-for-it.sh && cp ${env.RELEASE_METADATA}/wait-for-it.sh ./scheduler/wait-for-it.sh"
+        sh "rm -f ./server/wait-for-it.sh && cp ${env.RELEASE_METADATA}/wait-for-it.sh ./server/wait-for-it.sh"
       }
     }
 
