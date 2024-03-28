@@ -17,19 +17,19 @@ pipeline {
     stage('스크립트 로드') {
       steps {
         script {
-          def branchName = env.BRANCH_NAME
+          def branchName = env.BRANCH_NAME.replaceAll('/', '-')
           def scriptPath = ''
           
           switch(branchName) {
-            case 'dev/be':
+            case 'dev-be':
               scriptPath = 'server/Jenkinsfile'
               break
 
-            case 'dev/fe':
+            case 'dev-fe':
               scriptPath = 'client/Jenkinsfile'
               break;
 
-            case 'dev/scheduler':
+            case 'dev-scheduler':
               scriptPath = 'scheduler/Jenkinsfile'
               break;
           }
