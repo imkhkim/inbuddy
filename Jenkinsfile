@@ -1,29 +1,132 @@
 pipeline {
-    agent any
+  agent any
 
-    tools {
-        nodejs 'default'
+  environment {
+    RELEASE_METADATA = '/var/lib/jenkins/workspace/inbuddy/release'
+
+    SRC_RESOURCES = './server/src/main/resources'
+  }
+
+  tools {
+      gradle 'default'
+      nodejs 'default'
+  }
+
+
+  stages {
+    stage('스크립트 로드') {
+      steps {
+        script {
+          def branchName = env.BRANCH_NAME
+          def scriptPath = ''
+          
+          switch(branchName) {
+            case 'dev/be':
+              scriptPath = 'server/Jenkinsfile'
+              break
+
+            case 'dev/fe':
+              scriptPath = 'client/Jenkinsfile'
+              break;
+
+            case 'dev/scheduler':
+              scriptPath = 'scheduler/Jenkinsfile'
+              break;
+          }
+        }
+      }
     }
 
-    stages {
+    stage('properties 복사') {
+      when {
+        branch 'main'
+      }
+      steps {
+        sh "rm -f ${env.SRC_RESOURCES}/application.properties && mkdir ${env.SRC_RESOURCES} || true"
+        sh "cp ${env.RELEASE_METADATA}/be/application.properties ${env.SRC_RESOURCES}/application.properties"
+      }
+    }
+
+    stage('.env, start.sh 복사') {
+      when {
+        branch 'main'
+      }
+      steps {
+        sh "rm -f ./scheduler/.env && cp ${env.RELEASE_METADATA}/scheduler/.env ./scheduler/.env"
+        sh "rm -f ./scheduler/start.sh && cp ${env.RELEASE_METADATA}/scheduler/start.sh ./scheduler/start.sh"
+      }
+    }
+
+    stage('빌드') {
+      when {
+        branch 'main'
+      }
+      parallel {
+        stage("Spring Boot App 빌드") {
+          steps {
+            dir('server') {
+              /** clean and slow build with info **/
+              // sh "chmod +x gradlew && ./gradlew clean --info build"
+
+              /** normal build **/
+              // sh "chmod +x gradlew && ./gradlew build"
+
+              /** fast build **/
+              sh 'chmod +x gradlew && ./gradlew bootJar'
+            }
+          }
+        }
+
         stage('React App 빌드') {
-            steps {
-                dir('client') {
-                    sh 'npm i && npm run build'
-                }
+          steps {
+            dir('client') {
+              sh 'npm i && npm run build'
             }
+          }
         }
-
-        stage('React App 도커 이미지 생성') {
-            steps {
-              sh '''
-                docker stop client_dev || true &&
-                docker rm client_dev || true &&
-                docker rmi client/dev || true &&
-                docker build -t client/dev -f /var/lib/jenkins/workspace/.Dockerfiles/dev/fe/Dockerfile . &&
-                docker run --name client_dev -d -p 5174:5173 client/dev
-                '''
-            }
-        }
+      }
     }
+
+    stage('Container 재시작') {
+      when {
+        branch 'main'
+      }
+      steps {
+        sh "docker compose -f ${env.RELEASE_METADATA}/docker-compose-release.yml restart springboot react scheduler"
+      }
+    }
+  }
+
+  post {
+    success {
+      script {
+        def authorName = sh(script: 'git show -s --pretty=%an', returnStdout: true).trim()
+        def commiterName = sh(script: 'git show -s --pretty=%cn', returnStdout: true).trim()
+
+        mattermostSend(
+          color: 'good',
+          message: "${env.BRANCH_NAME}: ${commiterName}님이 커밋하고 ${authorName}님이 요청한 ${env.BUILD_NUMBER}번째 Merge 나왔습니다~ (<${env.BUILD_URL}|상세정보>)",
+          endpoint: 'https://meeting.ssafy.com/hooks/rwenugt7g3g6mb176qcwdefioo',
+          icon: 'https://www.notion.so/image/https%3A%2F%2Fcdn.icon-icons.com%2Ficons2%2F2699%2FPNG%2F512%2Fjenkins_logo_icon_170552.png?table=block&id=575d933c-a155-4d41-987e-887b341928ba&spaceId=0f7cf07a-b632-46e9-b39b-7c12c129b0d0&userId=fcb99ecb-2346-4edb-9302-eea7d618e9d4&cache=v2',
+          channel: 'b110-jenkins-notification'
+        )
+      }
+    }
+
+    failure {
+      script {
+        def authorName = sh(script: 'git show -s --pretty=%an', returnStdout: true).trim()
+        def commiterName = sh(script: 'git show -s --pretty=%cn', returnStdout: true).trim()
+
+        mattermostSend(
+          color: 'danger',
+          message: "${env.BRANCH_NAME}: ${commiterName}님이 커밋하고 ${authorName}님이 요청한 ${env.BUILD_NUMBER}번째 Merge 아직 안 나왔습니다. (<${env.BUILD_URL}|상세정보>)",
+          endpoint: 'https://meeting.ssafy.com/hooks/rwenugt7g3g6mb176qcwdefioo',
+          icon: 'https://www.notion.so/image/https%3A%2F%2Fcdn.icon-icons.com%2Ficons2%2F2699%2FPNG%2F512%2Fjenkins_logo_icon_170552.png?table=block&id=575d933c-a155-4d41-987e-887b341928ba&spaceId=0f7cf07a-b632-46e9-b39b-7c12c129b0d0&userId=fcb99ecb-2346-4edb-9302-eea7d618e9d4&cache=v2',
+          channel: 'b110-jenkins-notification'
+        )
+      }
+    }
+  }
+ 
 }
