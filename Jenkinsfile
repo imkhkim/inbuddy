@@ -2,25 +2,101 @@ pipeline {
   agent any
 
   environment {
-    DEV_METADATA = '/var/lib/jenkins/workspace/inbuddy/dev'
+    RELEASE_METADATA = '/var/lib/jenkins/workspace/inbuddy/release'
+
+    SRC_RESOURCES = './server/src/main/resources'
   }
 
   tools {
-    nodejs 'default'
+      gradle 'default'
+      nodejs 'default'
   }
 
+
   stages {
-    stage('React App 빌드') {
+    stage('스크립트 로드') {
       steps {
-        dir('client') {
-          sh 'npm i && npm run build'
+        script {
+          def branchName = env.BRANCH_NAME.replaceAll('/', '-')
+          def scriptPath = ''
+          
+          switch(branchName) {
+            case 'dev-be':
+              scriptPath = 'server/Jenkinsfile'
+              break
+
+            case 'dev-fe':
+              scriptPath = 'client/Jenkinsfile'
+              break;
+
+            case 'dev-scheduler':
+              scriptPath = 'scheduler/Jenkinsfile'
+              break;
+          }
+
+          if (scriptPath != '' && fileExists(scriptPath)) {
+            echo "Load build script for branch ${branchName}."
+            def script = load scriptPath
+            script.build()
+          } else {
+            echo "No build script found for branch ${branchName}, using default build process."
+          }
+        }
+      }
+    }
+
+    stage('파일 복사') {
+      when {
+        branch 'main'
+      }
+      steps {
+        sh "rm -f ${env.SRC_RESOURCES}/application.properties && mkdir ${env.SRC_RESOURCES} || true"
+        sh "cp ${env.RELEASE_METADATA}/be/application.properties ${env.SRC_RESOURCES}/application.properties"
+        
+        sh "rm -f ./scheduler/.env; cp ${env.RELEASE_METADATA}/scheduler/.env ./scheduler/.env"
+        sh "rm -f ./scheduler/start.sh; cp ${env.RELEASE_METADATA}/scheduler/start.sh ./scheduler/start.sh"
+
+        sh "rm -f ./scheduler/wait-for-it.sh; cp ${env.RELEASE_METADATA}/wait-for-it.sh ./scheduler/wait-for-it.sh"
+        sh "rm -f ./server/wait-for-it.sh; cp ${env.RELEASE_METADATA}/wait-for-it.sh ./server/wait-for-it.sh"
+      }
+    }
+
+    stage('빌드') {
+      when {
+        branch 'main'
+      }
+      parallel {
+        stage("Spring Boot App 빌드") {
+          steps {
+            dir('server') {
+              /** clean and slow build with info **/
+              // sh "chmod +x gradlew && ./gradlew clean --info build"
+
+              /** normal build **/
+              // sh "chmod +x gradlew && ./gradlew build"
+
+              /** fast build **/
+              sh 'chmod +x gradlew && ./gradlew bootJar'
+            }
+          }
+        }
+
+        stage('React App 빌드') {
+          steps {
+            dir('client') {
+              sh 'npm i && npm run build'
+            }
+          }
         }
       }
     }
 
     stage('Container 재시작') {
+      when {
+        branch 'main'
+      }
       steps {
-        sh "docker compose -f ${env.DEV_METADATA}/docker-compose-dev.yml restart dev-fe"
+        sh "docker compose -f ${env.RELEASE_METADATA}/docker-compose-release.yml restart be fe scheduler"
       }
     }
   }
@@ -56,4 +132,5 @@ pipeline {
       }
     }
   }
+ 
 }
