@@ -4,7 +4,7 @@ pipeline {
   environment {
     RELEASE_METADATA = '/var/lib/jenkins/workspace/inbuddy/release'
 
-    SRC_RESOURCES = './server/src/main/resources/'
+    SRC_RESOURCES = './server/src/main/resources'
   }
 
   tools {
