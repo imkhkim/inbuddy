@@ -14,7 +14,7 @@ def build() {
     // sh 'chmod +x gradlew && ./gradlew build'
 
     /** fast build **/
-    sh 'chmod +x gradlew && ./gradlew bootJar'
+    sh 'cd server && chmod +x gradlew && ./gradlew bootJar'
     
     // Container 재시작
     sh "docker compose -f ${DEV_METADATA}/docker-compose-dev.yml restart dev-be"
