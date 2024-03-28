@@ -35,9 +35,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
                 Authentication authentication = tokenProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
-            // TODO : 예외 처리
-            else {
+            } else {
                 throw new InvalidTokenException();
             }
         }
