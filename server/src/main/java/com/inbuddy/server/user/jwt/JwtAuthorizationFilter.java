@@ -1,5 +1,6 @@
 package com.inbuddy.server.user.jwt;
 
+import com.inbuddy.server.user.exception.InvalidTokenException;
 import com.inbuddy.server.user.service.BlackListTokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -23,17 +24,23 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
-            @NonNull HttpServletResponse response,
-            @NonNull FilterChain filterChain) throws ServletException, IOException {
+        @NonNull HttpServletResponse response,
+        @NonNull FilterChain filterChain) throws ServletException, IOException {
 
         String token = tokenProvider.resolveToken(request);
-        if (StringUtils.hasText(token)
-                && !blackListTokenService.findAccessTokenInBlackList(token)
+
+        if (StringUtils.hasText(token)) {
+            if (!blackListTokenService.findAccessTokenInBlackList(token)
                 && tokenProvider.validateToken(token)) {
-            Authentication authentication = tokenProvider.getAuthentication(token);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+                Authentication authentication = tokenProvider.getAuthentication(token);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+            // TODO : 예외 처리
+            else {
+                throw new InvalidTokenException();
+            }
         }
-// TODO : 예외 처리
 
         filterChain.doFilter(request, response);
     }
