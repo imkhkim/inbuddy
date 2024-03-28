@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users/{user_id}/journeys/{journey_id}/flight")
+@RequestMapping("/journeys/{journey_id}/flight")
 public class FlightInfoController {
     private final FlightService flightService;
 

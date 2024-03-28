@@ -18,7 +18,7 @@ import java.util.List;
 @Tag(name ="Itemlist API", description = "아이템 리스트에 대한 API")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/users/{user_id}/journeys/{journey_id}/itemlist")
+@RequestMapping("/api/journeys/{journey_id}/itemlist")
 public class ItemlistController {
     private final ItemService itemService;
 

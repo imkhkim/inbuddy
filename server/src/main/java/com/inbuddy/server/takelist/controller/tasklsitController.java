@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/users/{user_id}/journeys/{journey_id}/tasklist")
+@RequestMapping("/api/journeys/{journey_id}/tasklist")
 public class tasklsitController {
 
     private final TasklistService tasklistService;

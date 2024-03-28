@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/user/{user_id}/journeys")
+@RequestMapping("/api/journeys")
 public class JourneyController {
 
     private final JourneyRepository journeyRepository;
@@ -28,10 +28,10 @@ public class JourneyController {
     private final UserService userService;
 
     @GetMapping()
-    public ResponseEntity<Object> getJourneys(@PathVariable("user_id") int userId) {
+    public ResponseEntity<Object> getJourneys() {
 //        이 부분은 소셜 로그인 했을 때를 위해 넣음 -> 넣으면 401 권한 에러남
-//        User userProfile  = userService.findCurrentUserInfo();
-//        int userId2 = userProfile.getUserId();
+        User userProfile  = userService.findCurrentUserInfo();
+        int userId = userProfile.getUserId();
 
         try {
             List<Journey> journeyList = journeyRepository.findByUserUserId(userId);
@@ -47,10 +47,12 @@ public class JourneyController {
             return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+//@PathVariable("user_id") int userId,
     @DeleteMapping("/{journey_id}/delete")
-    public ResponseEntity<Object> deleteJourney(@PathVariable("user_id") int userId, @PathVariable("journey_id") int journeyId) {
+    public ResponseEntity<Object> deleteJourney(@PathVariable("journey_id") int journeyId) {
         try {
+            User userProfile  = userService.findCurrentUserInfo();
+            int userId = userProfile.getUserId();
             // 해당 사용자의 여정 중에서 journeyId에 해당하는 여정을 찾습니다.
             Optional<Journey> optionalJourney = journeyRepository.findById(journeyId);
 
@@ -82,8 +84,10 @@ public class JourneyController {
     }
 
     @PostMapping()
-    public ResponseEntity<Object> createJourney(@PathVariable("user_id") int userId, @RequestBody JourneyCreationRequest journeyRequest) {
+    public ResponseEntity<Object> createJourney(@RequestBody JourneyCreationRequest journeyRequest) {
         try {
+            User userProfile  = userService.findCurrentUserInfo();
+            int userId = userProfile.getUserId();
             // JourneyService를 사용하여 여정 생성
             journeyService.createJourney(userId, journeyRequest.getJourneyName());
             // 생성된 여정을 반환 (여정 생성 성공 시 반환하는 것이 좋습니다)
