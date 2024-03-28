@@ -33,6 +33,13 @@ pipeline {
               scriptPath = 'scheduler/Jenkinsfile'
               break;
           }
+
+          if (scriptPath != '' && fileExists(scriptPath)) {
+            echo "Load build script for branch ${branchName}."
+            load scriptPath
+          } else {
+            echo "No build script found for branch ${branchName}, using default build process."
+          }
         }
       }
     }
