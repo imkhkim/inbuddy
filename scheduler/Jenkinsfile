@@ -3,8 +3,8 @@ def build() {
     DEV_METADATA = '/var/lib/jenkins/workspace/inbuddy/dev'
 
     // .env, start.sh 복사
-    sh "rm -f ./.env && cp ${DEV_METADATA}/scheduler/.env ./.env"
-    sh "rm -f ./start.sh && cp ${DEV_METADATA}/scheduler/start.sh ./start.sh"
+    sh "rm -f ./scheduler/.env && cp ${DEV_METADATA}/scheduler/.env ./scheduler/.env"
+    sh "rm -f ./scheduler/start.sh && cp ${DEV_METADATA}/scheduler/start.sh ./scheduler/start.sh"
 
     // Container 재시작
     sh "docker compose -f ${DEV_METADATA}/docker-compose-dev.yml restart dev-scheduler"
