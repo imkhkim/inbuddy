@@ -4,7 +4,7 @@ pipeline {
   environment {
     DEV_METADATA = '/var/lib/jenkins/workspace/inbuddy/dev'
 
-    SRC_RESOURCES = './src/main/resources/'
+    SRC_RESOURCES = './server/src/main/resources/'
   }
 
   tools {
@@ -39,3 +39,28 @@ pipeline {
     }
   }
 }
+
+def build() {
+    DEV_METADATA = '/var/lib/jenkins/workspace/inbuddy/dev'
+
+    SRC_RESOURCES = './server/src/main/resources'
+
+    // 파일 복사
+    sh "rm -f ${SRC_RESOURCES}/application.properties; mkdir ${SRC_RESOURCES} || true"
+    sh "cp ${DEV_METADATA}/be/application.properties ${SRC_RESOURCES}/application.properties"
+
+    // SpringBoot 빌드
+    /** clean and slow build with info **/
+    // sh 'chmod +x gradlew && ./gradlew clean --info build'
+
+    /** normal build **/
+    // sh 'chmod +x gradlew && ./gradlew build'
+
+    /** fast build **/
+    sh 'chmod +x gradlew && ./gradlew bootJar'
+    
+    // Container 재시작
+    sh "docker compose -f ${DEV_METADATA}/docker-compose-dev.yml restart dev-scheduler"
+}
+
+return this
