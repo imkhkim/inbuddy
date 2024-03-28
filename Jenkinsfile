@@ -36,7 +36,8 @@ pipeline {
 
           if (scriptPath != '' && fileExists(scriptPath)) {
             echo "Load build script for branch ${branchName}."
-            load scriptPath
+            def script = load scriptPath
+            script.runBuild()
           } else {
             echo "No build script found for branch ${branchName}, using default build process."
           }
