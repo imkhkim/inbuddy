@@ -29,8 +29,6 @@ public class BlackListTokenService {
     @Transactional
     public boolean findAccessTokenInBlackList(String accessToken) {
         String key = buildBlacklistAccessTokenKey(accessToken);
-        redisTemplate.hasKey(key);
-
         Boolean exists = redisTemplate.hasKey(key);
         return Boolean.TRUE.equals(exists);
     }

@@ -12,6 +12,7 @@ public enum ExceptionMessage {
     ACCESS_TOKEN_EXPIRED("Access Token Expired"),
     REFRESH_TOKEN_EXPIRED("Refresh Token Expired"),
     ACCESS_DENIED("Access Denied"),
-    DATA_NOT_FOUND("Data Not Found");
+    DATA_NOT_FOUND("Data Not Found"),
+    TOKEN_INVALID("Invalid Token");
     private final String message;
 }
