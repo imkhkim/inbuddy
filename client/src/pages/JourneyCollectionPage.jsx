@@ -1,7 +1,6 @@
-import { JourneyAddDialog } from "@/components/modules/JourneyAddDialog";
-import JourneyBox from "@/components/modules/JourneyBox";
-import { useSelector } from "react-redux";
-import { P } from "@/components/atoms/P";
+import { JourneyAddDialog } from '@/components/modules/JourneyAddDialog';
+import JourneyBox from '@/components/modules/JourneyBox';
+import { P } from '@/components/atoms/P';
 import { testActions } from '@/stores/test';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
@@ -10,7 +9,6 @@ import { useQuery, useQueries } from '@tanstack/react-query';
 import { fetchUserProfile } from '@/apis/api/auth';
 
 function JourneyCollectionPage() {
-
     // const data = [
     //     {
     //         "journeyId": 3,
@@ -32,10 +30,7 @@ function JourneyCollectionPage() {
     //     }
     // ]
 
-
-
-    const journeyList = useSelector(state => state.journey)
-
+    const journeyList = useSelector((state) => state.journey);
 
     const dispatch = useDispatch();
     const user = useSelector((state) => state.auth.user);
@@ -47,62 +42,33 @@ function JourneyCollectionPage() {
         enabled: true, // useQuery가 즉시 실행되도록 설정
     });
 
-    try {
-        useEffect(() => {
-            if (!isLoading && data) {
-                dispatch(authActions.getUserProfile(data.data));
-            }
-        }, [dispatch, isLoading, data]);
-        console.log(user);
-    } catch (error) {
-        if (error.response && error.response.status === 401) {
-            // access token 만료
-            console.log(error.response);
-            try {
-                const refreshTokenResponse = await reissueToken();
-                if (refreshTokenResponse.status === 200) {
-                    // 새로운 accessToken으로 프로필 정보 재요청
-                    // http이면 cookie 못 받아옴
-                    const userInfoResponse = await fetchUserProfile(
-                        getCookie('access_token')
-                    );
-                    setUser(userInfoResponse.data);
-                    setToken({
-                        accessToken: getCookie('access_token'),
-                        refreshToken: getCookie('refresh_token'),
-                    });
-                }
-            } catch (refreshError) {
-                console.log('refersh error');
-                // else {
-                // refresh token도 만료 또는 유효하지 않음
-                throw new Error('Refresh Token expired');
-                // }
-                // window.location.href = "/login";
-            }
+    useEffect(() => {
+        if (!isLoading && data) {
+            dispatch(authActions.getUserProfile(data.data));
         }
-
+    }, [dispatch, isLoading, data]);
 
     return (
         <>
             <h3>여정 컬렉션 페이지</h3>
             <ul>
-                {journeyList && journeyList.map(journey => (
-                    <li key={journey.journeyId}>
-                        <JourneyBox journey={journey} />
-                    </li>
-                ))}
-
+                {journeyList &&
+                    journeyList.map((journey) => (
+                        <li key={journey.journeyId}>
+                            <JourneyBox journey={journey} />
+                        </li>
+                    ))}
 
                 <div className="border border-solid rounded-md flex flex-col  mx-8 my-16 py-10 h-80 p-3 mb-1.5">
-                    <P variant='mainHeader' className='my-5'>계획된 여정이 없습니다.</P>
-                    <P variant='content'>완벽한 여행 계획을 위해 여정을 추가해보세요!</P>
+                    <P variant="mainHeader" className="my-5">
+                        계획된 여정이 없습니다.
+                    </P>
+                    <P variant="content">완벽한 여행 계획을 위해 여정을 추가해보세요!</P>
                     <JourneyAddDialog />
-                </div >
+                </div>
             </ul>
-
         </>
     );
-}}
+}
 
 export default JourneyCollectionPage;
