@@ -1,7 +1,7 @@
 import json
 from datetime import datetime, timedelta
 
-from config import resource_lock
+from config import resource_lock, BATCH_FLIGHT_TOPIC, BATCH_WEATHER_TOPIC
 from app.logger.logger import log
 from app.producer.producer import batch_flight_producer, batch_weather_producer
 from app.redis.redis import redis
@@ -25,7 +25,7 @@ def flight_save():
     for document in old_flight_data:
         old_flight_csv_data += ','.join(list(document.values())) + '\n'
 
-    batch_flight_producer.produce(topic="batch_flight",
+    batch_flight_producer.produce(topic=BATCH_FLIGHT_TOPIC,
                                   value=old_flight_csv_data,
                                   key=old_flight_data_key)
 
@@ -55,8 +55,10 @@ def weather_save():
         log.info(f"Old Weather Data: {old_weather_data_key} Deleted From Redis")
 
     if old_weather_data:
-        batch_weather_producer.produce(topic="batch_weather", value='\n'.join(
-                old_weather_data).encode(), key=old_weather_data_key)
+        batch_weather_producer.produce(topic=BATCH_WEATHER_TOPIC,
+                                       value='\n'.join(
+                                               old_weather_data).encode(),
+                                       key=old_weather_data_key)
 
 
 def save():
