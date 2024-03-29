@@ -21,7 +21,7 @@ const reissueToken = async () => {
 
 const logout = async () => {
     return await server
-        .get('/api/logout', {
+        .post('/api/logout', {
             headers: {
                 Authorization: `Bearer ${getCookie('access_token')}`,
             },
