@@ -2,6 +2,7 @@ import { P } from "@/components/atoms/P";
 import FlightBox from "./FlightBox";
 import PropTypes from 'prop-types';
 import FlightDialog from "./FlightDialog";
+import Stamp from '@/assets/stamp.png'
 
 
 JourneyBox.propTypes = {
@@ -17,7 +18,7 @@ function JourneyBox({ journey }) {
 
     // 과거 여정 박스에만 적용되는 스타일 (ex: 완료 스탬프 추가)
     const pastJourneystyle = {
-        backgroundImage: 'url("../src/assets/stamp.png")',
+        backgroundImage: `url(${Stamp})`,
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
     }
