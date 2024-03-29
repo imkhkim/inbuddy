@@ -53,11 +53,13 @@ public class UserService {
     }
 
     public User findUserInfoByProviderId(String providerId){
+        System.out.println(111111111);
         return userRepository.findByProviderId(providerId)
                 .orElseThrow(UserNotFoundException::new);
     }
 
     public User findCurrentUserInfo(){
+        System.out.println(111111);
         return findUserInfoByProviderId(AuthenticationUtils.getCurrentProviderId());
     }
 }

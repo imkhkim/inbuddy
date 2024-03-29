@@ -3,7 +3,7 @@ package com.inbuddy.server.journey.service;
 import com.inbuddy.server.itemlist.service.ItemService;
 import com.inbuddy.server.journey.entity.Journey;
 import com.inbuddy.server.journey.repository.JourneyRepository;
-import com.inbuddy.server.takelist.service.TasklistService;
+import com.inbuddy.server.tasklist.service.TasklistService;
 import com.inbuddy.server.user.entity.User;
 import com.inbuddy.server.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
