@@ -1,8 +1,6 @@
 import { P } from "@/components/atoms/P";
 import airplane from "@/assets/airplane.svg"
 import PropTypes from 'prop-types'
-import { Button } from "../atoms/Button";
-import FlightDialog from "./FlightDialog";
 
 
 FlightBox.propTypes = {

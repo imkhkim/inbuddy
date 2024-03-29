@@ -1,6 +1,6 @@
 
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/atoms/Button"
 import {
     Dialog,
     DialogClose,
@@ -10,8 +10,8 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
+} from "@/components/atoms/dialog"
+import { Input } from "@/components/atoms/input"
 import { P } from "../atoms/P"
 import { useDispatch } from "react-redux"
 import { useState } from "react"

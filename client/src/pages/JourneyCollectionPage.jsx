@@ -1,9 +1,6 @@
-import React from "react";
 import { JourneyAddDialog } from "@/components/modules/JourneyAddDialog";
 import JourneyBox from "@/components/modules/JourneyBox";
-import { addJourney } from "@/app/journeySlice";
-import { useSelector, useDispatch } from "react-redux";
-import { Button } from "@/components/ui/button";
+import { useSelector } from "react-redux";
 import { P } from "@/components/atoms/P";
 
 
@@ -31,7 +28,6 @@ function JourneyCollectionPage() {
     // ]
 
 
-    const dispatch = useDispatch()
 
     const journeyList = useSelector(state => state.journey)
 
