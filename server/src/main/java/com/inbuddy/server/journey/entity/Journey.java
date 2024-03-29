@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.inbuddy.server.flight.entity.FlightInfo;
 import com.inbuddy.server.itemlist.entity.Item;
-import com.inbuddy.server.takelist.entity.Task;
+import com.inbuddy.server.tasklist.entity.Task;
 import com.inbuddy.server.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -53,15 +53,15 @@ public class Journey {
 
 
     @JsonBackReference
-    @OneToMany(mappedBy = "journey")
+    @OneToMany(mappedBy = "journey", cascade = CascadeType.REMOVE)
     private List<Task> taskLists;
 
     @JsonBackReference
-    @OneToMany(mappedBy = "journey")
+    @OneToMany(mappedBy = "journey", cascade = CascadeType.REMOVE)
     private List<Item> item;
 
     @JsonBackReference
-    @OneToMany(mappedBy = "journey")
+    @OneToMany(mappedBy = "journey",cascade = CascadeType.REMOVE)
     private List<FlightInfo> flightInfo;
 
     @Builder

@@ -6,10 +6,11 @@ import com.inbuddy.server.journey.dto.JourneyModifyDto;
 import com.inbuddy.server.journey.entity.Journey;
 import com.inbuddy.server.journey.repository.JourneyRepository;
 import com.inbuddy.server.journey.service.JourneyService;
-import com.inbuddy.server.user.dto.UserProfile;
 import com.inbuddy.server.user.entity.User;
 import com.inbuddy.server.user.service.UserService;
-import com.inbuddy.server.user.utils.AuthenticationUtils;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,18 +22,17 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/journeys")
+@Tag(name = "Journey API", description = "여정에 관련된 API")
 public class JourneyController {
 
     private final JourneyRepository journeyRepository;
     private final JourneyService journeyService;
     private final UserService userService;
-
+    @Operation(summary = "여정 목록 조회", description = "현재 사용자의 여정 목록을 조회합니다.")
     @GetMapping()
     public ResponseEntity<Object> getJourneys() {
-//        이 부분은 소셜 로그인 했을 때를 위해 넣음 -> 넣으면 401 권한 에러남
         User userProfile  = userService.findCurrentUserInfo();
         int userId = userProfile.getUserId();
-
         try {
             List<Journey> journeyList = journeyRepository.findByUserUserId(userId);
             if (journeyList.isEmpty()) {
@@ -47,7 +47,8 @@ public class JourneyController {
             return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-//@PathVariable("user_id") int userId,
+    @Operation(summary = "여정 삭제", description = "여정을 삭제합니다.")
+    @Parameter(name = "journey_id", description = "삭제할 여정의 ID")
     @DeleteMapping("/{journey_id}/delete")
     public ResponseEntity<Object> deleteJourney(@PathVariable("journey_id") int journeyId) {
         try {
@@ -83,11 +84,13 @@ public class JourneyController {
         }
     }
 
+    @Operation(summary = "여정 생성", description = "새로운 여정을 생성합니다.")
     @PostMapping()
     public ResponseEntity<Object> createJourney(@RequestBody JourneyCreationRequest journeyRequest) {
         try {
             User userProfile  = userService.findCurrentUserInfo();
             int userId = userProfile.getUserId();
+
             // JourneyService를 사용하여 여정 생성
             journeyService.createJourney(userId, journeyRequest.getJourneyName());
             // 생성된 여정을 반환 (여정 생성 성공 시 반환하는 것이 좋습니다)
@@ -100,6 +103,8 @@ public class JourneyController {
         }
     }
 
+    @Operation(summary = "여정 수정", description = "기존 여정을 수정합니다.")
+    @Parameter(name = "journey_id", description = "수정할 여정의 ID")
     @PutMapping("/{journey_id}/modify")
     public ResponseEntity<Object> modifyJourney(@PathVariable("journey_id") int journeyId, @RequestBody JourneyModifyDto journeyModifyDto) {
         try {
