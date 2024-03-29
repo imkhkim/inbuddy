@@ -29,15 +29,20 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         String token = tokenProvider.resolveToken(request);
 
-        if (StringUtils.hasText(token)) {
-            if (!blackListTokenService.findAccessTokenInBlackList(token)
-                    && tokenProvider.validateToken(token)) {
+        try {
+            if (StringUtils.hasText(token)) {
+                if (!blackListTokenService.findAccessTokenInBlackList(token)
+                        && tokenProvider.validateToken(token)) {
 
-                Authentication authentication = tokenProvider.getAuthentication(token);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            } else {
-                throw new InvalidTokenException();
+                    Authentication authentication = tokenProvider.getAuthentication(token);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                } else {
+                    throw new InvalidTokenException("Token is invalid");
+                }
             }
+        } catch (InvalidTokenException exception) {
+            response.sendError(401, exception.getLocalizedMessage());
+            return;
         }
 
         filterChain.doFilter(request, response);
