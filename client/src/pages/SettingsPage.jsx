@@ -1,14 +1,17 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/atoms/Accordion';
+import { Button } from '@/components/atoms/Button';
 
 import PAndSwitch from '@/components/modules/PAndSwitch';
 import { useEffect, useState } from 'react';
+import { Navigate } from 'react-router-dom';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { authActions } from '@/stores/authStore';
+import { getCookie } from '@/apis/cookies';
+import { logout } from '@/apis/api/auth';
 
 function SettingsPage() {
-    useEffect(() => {
-        console.log('준비물 알람 상태', supplyAlarmCheck);
-        console.log('출발 알람 상태', startAlarmCheck);
-        [supplyAlarmCheck, startAlarmCheck];
-    });
+    const dispatch = useDispatch();
 
     const [supplyAlarmCheck, setSupplyAlarmCheck] = useState(false);
     const [startAlarmCheck, setStartAlarmCheck] = useState(false);
@@ -19,12 +22,37 @@ function SettingsPage() {
     const handleStartAlarmCheck = (data) => {
         setStartAlarmCheck(data);
     };
+
+    useEffect(() => {
+        console.log('준비물 알람 상태', supplyAlarmCheck);
+        console.log('출발 알람 상태', startAlarmCheck);
+        [supplyAlarmCheck, startAlarmCheck];
+    });
+
+    const loginHandler = () => {
+        location.href = '/login';
+    };
+
+    const logoutHandler = () => {
+        logout();
+        location.href = '/login';
+    };
+
     return (
         <div className="mt-4 w-72">
             <Accordion type="single" collapsible className="w-full ">
                 <AccordionItem value="item-1">
                     <AccordionTrigger>회원 정보 설정</AccordionTrigger>
-                    <AccordionContent>아직 개발 중입니다...</AccordionContent>
+                    <AccordionContent>
+                        <Button
+                            variant="ghost"
+                            onClick={
+                                getCookie('access_token') && getCookie('refresh_token') ? logoutHandler : loginHandler
+                            }
+                        >
+                            {getCookie('access_token') && getCookie('refresh_token') ? '로그아웃' : '로그인'}
+                        </Button>
+                    </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="item-2">
                     <AccordionTrigger>알림 설정</AccordionTrigger>
