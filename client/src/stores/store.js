@@ -4,6 +4,8 @@ import authReducer from '@/stores/authStore';
 import testReducer from '@/stores/test';
 import journeyReducer from '@/stores/journeySlice';
 
-const store = configureStore({ reducer: { counter: counterReducer, auth: authReducer, test: testReducer, journey: journeyReducer, } });
+const store = configureStore({
+    reducer: { counter: counterReducer, auth: authReducer, test: testReducer, journey: journeyReducer },
+});
 
 export default store;
