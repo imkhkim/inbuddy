@@ -4,12 +4,6 @@ import PAndSwitch from '@/components/modules/PAndSwitch';
 import { useEffect, useState } from 'react';
 
 function SettingsPage() {
-    useEffect(() => {
-        console.log('준비물 알람 상태', supplyAlarmCheck);
-        console.log('출발 알람 상태', startAlarmCheck);
-        [supplyAlarmCheck, startAlarmCheck];
-    });
-
     const [supplyAlarmCheck, setSupplyAlarmCheck] = useState(false);
     const [startAlarmCheck, setStartAlarmCheck] = useState(false);
 
@@ -19,12 +13,24 @@ function SettingsPage() {
     const handleStartAlarmCheck = (data) => {
         setStartAlarmCheck(data);
     };
+
+    useEffect(() => {
+        console.log('준비물 알람 상태', supplyAlarmCheck);
+        console.log('출발 알람 상태', startAlarmCheck);
+        [supplyAlarmCheck, startAlarmCheck];
+    });
+
     return (
         <div className="mt-4 w-72">
             <Accordion type="single" collapsible className="w-full ">
                 <AccordionItem value="item-1">
                     <AccordionTrigger>회원 정보 설정</AccordionTrigger>
-                    <AccordionContent>아직 개발 중입니다...</AccordionContent>
+                    <AccordionContent>
+                        로그인 로그아웃 상태 확인 부분
+                        {/* <Button variant="brand" onClick={() => (user ? logout() : navigate('/login'))}>
+                            {user ? 'Log out' : 'Log in'}
+                        </Button> */}
+                    </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="item-2">
                     <AccordionTrigger>알림 설정</AccordionTrigger>

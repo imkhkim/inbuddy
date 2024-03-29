@@ -1,3 +1,6 @@
+import { useSelector, useDispatch } from 'react-redux';
+import { testActions } from '@/stores/test';
+
 function JourneyCollectionPage() {
     return (
         <>
