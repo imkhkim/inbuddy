@@ -60,7 +60,7 @@ function PassportInfoPage() {
                     </P>
                 </SectionLayout>
                 <SectionLayout sectionHeaderText="접수 및 발급처">
-                    <Tabs defaultValue="T1">
+                    <Tabs defaultValue="account">
                         <TabsList>
                             <TabsTrigger value="T1" className="font-pretendardBold">
                                 T1

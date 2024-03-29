@@ -9,54 +9,7 @@ import ToggleSupply from '@/components/modules/ToggleSupply';
 import ToggleCheck from '@/components/modules/ToggleCheck';
 import { NewspaperIcon } from 'lucide-react';
 
-import { useState } from 'react';
-import { useQuery, useQueries } from '@tanstack/react-query';
-import { getXXX, get2XXX } from '@/apis/api/funcApi';
-
-import { useSelector, useDispatch } from 'react-redux';
-import { testActions } from '@/stores/test';
-
 function Test() {
-    const dispatch = useDispatch();
-    // let testword = useSelector((state) => state.word);
-    // console.log('1', testword);
-    // const helloHandler = () => {
-    //     dispatch(testActions.hello);
-    // };
-    // const hiHandler = () => {
-    //     dispatch(testActions.hi);
-    // };
-
-    // 1개만 사용할 경우
-    // const { data } = useQuery({
-    //     queryKey: ['test'],
-    //     queryFn: get2XXX,
-    // });
-    // const [testword, setTestword] = useState('a');
-
-    const results = useQueries({
-        queries: [
-            { queryKey: ['hello', 1], queryFn: getXXX },
-            { queryKey: ['hi', 2], queryFn: get2XXX },
-        ],
-    });
-
-    // results 배열에서 각 쿼리의 결과를 추출
-    const [resultXXX, resultYYY] = results;
-
-    // console.log(useSelector((state) => (state.word = testword)));
-    // const aaa = useSelector((state) => (state.word = testword));
-    // console.log('aaa', aaa);
-    // setTestword(resultXXX.data);
-    // console.log('aaa2', aaa);
-    console.log(useSelector((state) => state.test.word));
-    dispatch(testActions.changeReducer(resultXXX.data));
-    console.log(useSelector((state) => state.test.word));
-
-    //console.log(useSelector((state) => (state.word = 'hello 이자식아')));
-    // dispatch(testActions.hello);
-    //testword = 'bbb';
-
     return (
         <>
             <div>
@@ -102,14 +55,7 @@ function Test() {
                     iconRight={<NewspaperIcon />}
                     footerQuote="인용입니까?"
                 />
-                <p>
-                    ====================================================================================================
-                </p>
             </div>
-            {resultXXX.data}
-            <br />
-            {resultYYY.data}
-            <br />
         </>
     );
 }
