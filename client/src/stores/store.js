@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import counterReducer from '@/stores/counter';
-import authReducer from '@/stores/auth';
+import authReducer from '@/stores/authStore';
 import testReducer from '@/stores/test';
 
 const store = configureStore({ reducer: { counter: counterReducer, auth: authReducer, test: testReducer } });

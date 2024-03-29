@@ -1,12 +1,9 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/atoms/Accordion';
-import { useSelector, useDispatch } from 'react-redux';
-import { testActions } from '@/stores/test';
 
 import PAndSwitch from '@/components/modules/PAndSwitch';
 import { useEffect, useState } from 'react';
 
 function SettingsPage() {
-    console.log(useSelector((state) => state.test.word));
     const [supplyAlarmCheck, setSupplyAlarmCheck] = useState(false);
     const [startAlarmCheck, setStartAlarmCheck] = useState(false);
 
