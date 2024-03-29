@@ -36,7 +36,7 @@ function JourneyCollectionPage() {
         <>
             <h3>여정 컬렉션 페이지</h3>
             <ul>
-                {journeyList.map(journey => (
+                {journeyList?.map(journey => (
                     <li key={journey.journeyId}>
                         <JourneyBox journey={journey} />
                     </li>
