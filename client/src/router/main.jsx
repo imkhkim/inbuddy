@@ -19,8 +19,13 @@ import ExchangeInfoPage from '@/pages/ExchangeInfoPage';
 import PassportInfoPage from '@/pages/PassportInfoPage';
 import RoamingInfoPage from '@/pages/RoamingInfoPage';
 import TerminalTransportInfoPage from '@/pages/TerminalTransportInfoPage';
+import { Provider } from 'react-redux';
+import { store } from '@/app/store';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const isLoggedIn = false; // 로그인 여부에 따라 조건 설정
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
     {
@@ -86,6 +91,11 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
-        <RouterProvider router={router} />
+        <QueryClientProvider client={queryClient}>
+            <Provider store={store}>
+                <RouterProvider router={router} />
+            </Provider>
+            <ReactQueryDevtools initialIsOpen={false} buttonPosition='top-left' />
+        </QueryClientProvider>
     </React.StrictMode>
 );
