@@ -17,6 +17,5 @@ public class AuthenticationUtils {
                                 .orElseThrow(NotAuthenticatedException::new)
                                 .getUserInfo().getProviderId())
                 .orElseThrow(NotAuthenticatedException::new);
-
     }
 }
