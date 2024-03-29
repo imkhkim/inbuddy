@@ -15,7 +15,7 @@ import org.springframework.util.StringUtils;
 @Service
 @RequiredArgsConstructor
 public class RefreshTokenService {
-    
+
     public static final String USER_PREFIX = "user";
     private final RedisTemplate<String, String> redisTemplate;
 
