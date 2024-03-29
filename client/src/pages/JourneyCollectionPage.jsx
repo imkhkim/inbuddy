@@ -2,7 +2,7 @@ import { JourneyAddDialog } from "@/components/modules/JourneyAddDialog";
 import JourneyBox from "@/components/modules/JourneyBox";
 import { useSelector } from "react-redux";
 import { P } from "@/components/atoms/P";
-
+import { testActions } from '@/stores/test';
 
 function JourneyCollectionPage() {
 
