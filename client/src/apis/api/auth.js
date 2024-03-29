@@ -3,8 +3,6 @@ import { getCookie } from '@/apis/cookies';
 
 const server = serverAxios();
 
-// const url = '/B551177/StatusOfPassengerWorldWeatherInfo';
-
 const fetchUserProfile = async () => {
     return await server.get('/api/user/profile', {
         headers: {
