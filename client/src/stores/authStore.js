@@ -1,8 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { getCookie } from '@/apis/cookies';
-import { fetchUserProfile, reissueToken, logout } from '@/apis/api/auth';
-
 const initialAuthState = { user: null, accessToken: '', refreshToken: '' };
 const authSlice = createSlice({
     name: 'authentication',
