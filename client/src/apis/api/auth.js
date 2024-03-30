@@ -12,20 +12,28 @@ const fetchUserProfile = async () => {
 };
 
 const reissueToken = async () => {
-    return await server.get('/api/user/token/refresh', {
-        headers: {
-            Authorization: `Bearer ${getCookie('refresh_token')}`,
-        },
-    });
+    return await server.post(
+        '/api/user/token/refresh',
+        {},
+        {
+            headers: {
+                Authorization: `Bearer ${getCookie('refresh_token')}`,
+            },
+        }
+    );
 };
 
 const logout = async () => {
     return await server
-        .post('/api/logout', {
-            headers: {
-                Authorization: `Bearer ${getCookie('access_token')}`,
-            },
-        })
+        .post(
+            'http://localhost:8080/api/logout',
+            {},
+            {
+                headers: {
+                    Authorization: `Bearer ${getCookie('access_token')}`,
+                },
+            }
+        )
         .then((response) => response);
 };
 

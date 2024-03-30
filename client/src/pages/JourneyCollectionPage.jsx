@@ -31,8 +31,8 @@ function JourneyCollectionPage() {
     useEffect(() => {
         if (!isLoading && data) {
             dispatch(authActions.getUserProfile(data.data));
-            // dispatch(authActions.setAccessToken(getCookie('access_token')));
-            // dispatch(authActions.setRefreshToken(getCookie('refresh_token')));
+            dispatch(authActions.setAccessToken(getCookie('access_token')));
+            dispatch(authActions.setRefreshToken(getCookie('refresh_token')));
         }
     }, [dispatch, isLoading, data]);
 

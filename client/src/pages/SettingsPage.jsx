@@ -3,15 +3,15 @@ import { Button } from '@/components/atoms/Button';
 
 import PAndSwitch from '@/components/modules/PAndSwitch';
 import { useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { authActions } from '@/stores/authStore';
-import { getCookie } from '@/apis/cookies';
 import { logout } from '@/apis/api/auth';
 
 function SettingsPage() {
     const dispatch = useDispatch();
+
+    //console.log(useSelector((state) => state.auth.user));
 
     const [supplyAlarmCheck, setSupplyAlarmCheck] = useState(false);
     const [startAlarmCheck, setStartAlarmCheck] = useState(false);
@@ -29,12 +29,9 @@ function SettingsPage() {
         [supplyAlarmCheck, startAlarmCheck];
     });
 
-    const loginHandler = () => {
-        location.href = '/login';
-    };
-
     const logoutHandler = () => {
         logout();
+        dispatch(authActions.logout());
         location.href = '/login';
     };
 
@@ -44,13 +41,8 @@ function SettingsPage() {
                 <AccordionItem value="item-1">
                     <AccordionTrigger>회원 정보 설정</AccordionTrigger>
                     <AccordionContent>
-                        <Button
-                            variant="ghost"
-                            onClick={
-                                getCookie('access_token') && getCookie('refresh_token') ? logoutHandler : loginHandler
-                            }
-                        >
-                            {getCookie('access_token') && getCookie('refresh_token') ? '로그아웃' : '로그인'}
+                        <Button variant="ghost" onClick={logoutHandler}>
+                            로그아웃
                         </Button>
                     </AccordionContent>
                 </AccordionItem>

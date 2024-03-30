@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { getCookie } from '@/apis/cookies';
 import { fetchUserProfile, reissueToken, logout } from '@/apis/api/auth';
 
-const initialAuthState = { user: {}, accessToken: '', refreshToken: '' };
+const initialAuthState = { user: null, accessToken: '', refreshToken: '' };
 const authSlice = createSlice({
     name: 'authentication',
     initialState: initialAuthState,
@@ -16,7 +16,7 @@ const authSlice = createSlice({
             console.log('logout');
             state.accessToken = '';
             state.refreshToken = '';
-            state.user = {};
+            state.user = null;
         },
 
         setAccessToken(state, action) {
