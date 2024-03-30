@@ -1,12 +1,5 @@
 import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import store from '@/stores/store.js';
-import { Provider } from 'react-redux';
-import { useState } from 'react';
-
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import '../../app/globals.css';
+import { useSelector } from 'react-redux';
 
 import Test from '../Test.jsx';
 
@@ -24,16 +17,13 @@ import PassportInfoPage from '@/pages/PassportInfoPage';
 import RoamingInfoPage from '@/pages/RoamingInfoPage';
 import TerminalTransportInfoPage from '@/pages/TerminalTransportInfoPage';
 
-const queryClient = new QueryClient();
-
-const Main = () => {
-    const [loggedIn, setLoggedIn] = useState(true);
-    const [email, setEmail] = useState('');
+const App = () => {
+    const user = useSelector((state) => state.auth.user);
 
     const router = createBrowserRouter([
         {
             path: '/',
-            element: loggedIn ? <Navigate to="/main" /> : <Navigate to="/login" />,
+            element: user ? <Navigate to="/main" /> : <Navigate to="/login" />,
         },
         {
             path: '/test',
@@ -41,7 +31,7 @@ const Main = () => {
         },
         {
             path: '/login',
-            element: <Login setLoggedIn={setLoggedIn} setEmail={setEmail} />,
+            element: <Login />,
         },
         {
             path: '/',
@@ -50,7 +40,7 @@ const Main = () => {
             children: [
                 {
                     path: '/main',
-                    element: <JourneyCollectionPage email={email} loggedIn={loggedIn} setLoggedIn={setLoggedIn} />,
+                    element: <JourneyCollectionPage />,
                 },
                 {
                     path: '/checklist',
@@ -92,17 +82,7 @@ const Main = () => {
         },
     ]);
 
-    return (
-        <React.StrictMode>
-            <Provider store={store}>
-                <QueryClientProvider client={queryClient}>
-                    <RouterProvider router={router} />
-                </QueryClientProvider>
-            </Provider>
-        </React.StrictMode>
-    );
+    return <RouterProvider router={router} />;
 };
 
-export default Main;
-
-ReactDOM.createRoot(document.getElementById('root')).render(<Main />);
+export default App;
