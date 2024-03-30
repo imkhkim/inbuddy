@@ -3,9 +3,9 @@ import { persistReducer } from 'redux-persist';
 
 import storage from 'redux-persist/lib/storage'; // localStorage를 사용할 경우
 
-import counterReducer from '@/stores/counter';
+import counterReducer from '@/stores/counterStoreTemplate';
 import authReducer from '@/stores/authStore';
-import testReducer from '@/stores/test';
+import testReducer from '@/stores/testStore';
 import journeyReducer from '@/stores/journeySlice';
 
 const rootReducer = combineReducers({
