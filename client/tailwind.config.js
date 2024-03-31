@@ -2,7 +2,21 @@
 module.exports = {
     mode: 'jit', // calc를 사용할 수 있게 만들어준다.
     darkMode: ['class'],
-    content: ['./pages/**/*.{js,jsx}', './components/**/*.{js,jsx}', './app/**/*.{js,jsx}', './src/**/*.{js,jsx}'],
+    content: [
+        './pages/**/*.{js,jsx}',
+        './components/**/*.{js,jsx}',
+        './app/**/*.{js,jsx}',
+        './src/**/*.{js,jsx}',
+        './public/index.html',
+    ],
+    safelist: [
+        'bg-success-400',
+        'bg-warning-400',
+        'bg-error-400',
+        'fill-success-400',
+        'fill-warning-400',
+        'fill-error-400',
+    ],
     prefix: '',
     theme: {
         container: {
