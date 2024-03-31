@@ -5,8 +5,11 @@ from app.logger.logger import log
 from app.producer.producer import live_weather_producer, live_flight_producer, \
     batch_flight_producer, batch_weather_producer
 from app.redis.redis import redis
-from app.scheduler.batch_save import save
+from app.scheduler.batch_produce import save
 from app.scheduler.flight_data_fetcher import fetch as flight_fetch
+from app.scheduler.flight_data_fetcher import \
+    fetch_scheduled as flight_fetch_scheduled
+
 from app.scheduler.scheduler import scheduler
 from app.scheduler.weather_data_fetcher import fetch as weather_fetch
 from config import *
@@ -21,7 +24,7 @@ if __name__ == "__main__":
     live_weather_producer.set_producer(servers=servers,
                                        client_id="live_weather")
     batch_flight_producer.set_producer(servers=servers,
-                                       client_id="batch_weather")
+                                       client_id="batch_flight")
     batch_weather_producer.set_producer(servers=servers,
                                         client_id="batch_weather")
 
@@ -29,13 +32,17 @@ if __name__ == "__main__":
     scheduler.create("flights_departure", flight_fetch, trigger="cron",
                      minute='*')
 
+    scheduler.create("flights_departure_scheduled", flight_fetch_scheduled,
+                     trigger="cron", hour="0-5", minute=0, second=15)
+
     scheduler.create("weather", weather_fetch, trigger="cron", minute='*',
-                     second=20)
+                     second=30)
 
     scheduler.create("batch_save", save, trigger="cron", hour=0, minute=0,
-                     second=40)
+                     second=45)
 
     scheduler.start("flights_departure")
+    scheduler.start("flights_departure_scheduled")
     scheduler.start("weather")
     scheduler.start("batch_save")
 
