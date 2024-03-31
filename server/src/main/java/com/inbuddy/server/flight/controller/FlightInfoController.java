@@ -4,11 +4,15 @@ import com.inbuddy.server.flight.dto.FlightDto;
 import com.inbuddy.server.flight.entity.FlightInfo;
 import com.inbuddy.server.flight.service.FlightService;
 import com.inbuddy.server.global.message.Message;
+import com.inbuddy.server.journey.entity.Journey;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @CrossOrigin("*")
 @RestController
@@ -64,4 +68,20 @@ public class FlightInfoController {
             return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @DeleteMapping("/{flight_info_id}/delete")
+    public ResponseEntity<Object> deleteJourney(@PathVariable("flight_info_id") int flightId) {
+        try {
+            flightService.deleteFlightInfo(flightId);
+            Message message = new Message("200", "비행 정보 삭제가 성공적으로 완료되었습니다.");
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            Message message = new Message("404", "해당 비행 정보를 찾을 수 없습니다.");
+            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            Message message = new Message("500", "비행 정보 삭제 중 오류가 발생하였습니다.");
+            return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
