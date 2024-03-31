@@ -4,7 +4,6 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { persistStore } from 'redux-persist';
 import { Provider } from 'react-redux';
 
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import '/app/globals.css';
 
@@ -16,15 +15,13 @@ const Main = () => {
     const persistor = persistStore(store);
 
     return (
-        <React.StrictMode>
-            <Provider store={store}>
-                <PersistGate loading={null} persistor={persistor}>
-                    <QueryClientProvider client={queryClient}>
-                        <App />
-                    </QueryClientProvider>
-                </PersistGate>
-            </Provider>
-        </React.StrictMode>
+        <Provider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
+                <QueryClientProvider client={queryClient}>
+                    <App />
+                </QueryClientProvider>
+            </PersistGate>
+        </Provider>
     );
 };
 
