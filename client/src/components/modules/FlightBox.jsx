@@ -1,7 +1,6 @@
-import { P } from "@/components/atoms/P";
-import airplane from "@/assets/airplane.svg"
-import PropTypes from 'prop-types'
-
+import { P } from '@/components/atoms/P';
+import airplane from '@/assets/airplane.svg';
+import PropTypes from 'prop-types';
 
 FlightBox.propTypes = {
     flightInfo: PropTypes.object.isRequired,
@@ -34,7 +33,7 @@ function FlightBox({ flightInfo }) {
         <>
             <P className='text-center'>{flightInfo.departureDate}</P>
 
-            <div className="flex flex-row mx-5">
+            <div className="flex flex-row justify-center mx-5">
                 <div className="text-center">
                     <P className='text-sm text-gray-400'>서울/인천</P>
                     <P className='text-5xl font-pretendardBold'>ICN</P>
@@ -53,9 +52,7 @@ function FlightBox({ flightInfo }) {
                 </div>
             </div>
         </>
-    )
+    );
 }
 
 export default FlightBox;
-
-
