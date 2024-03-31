@@ -26,8 +26,8 @@ public class FlightInfoController {
         try {
             FlightInfo flightInfo = flightService.readFlightInfo(journeyId);
             if (flightInfo == null) {
-                Message message = new Message("404", "비행 정보가 비어 있습니다.");
-                return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+                Message message = new Message("200", "비행 정보가 비어 있습니다.");
+                return new ResponseEntity<>(message, HttpStatus.OK);
             } else {
                 Message message = new Message("200", "비행 정보 가져오기 성공", flightInfo);
                 return new ResponseEntity<>(message, HttpStatus.OK);
