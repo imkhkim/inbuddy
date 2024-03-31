@@ -7,12 +7,16 @@ import counterReducer from '@/stores/counterStoreTemplate';
 import authReducer from '@/stores/authStore';
 import testReducer from '@/stores/testStore';
 import journeyReducer from '@/stores/journeySlice';
+import itemReducer from '@/stores/itemStore';
+import journeyAllReducer from '@/stores/journeyAllStore';
 
 const rootReducer = combineReducers({
     counter: counterReducer,
-    auth: authReducer,
     test: testReducer,
+    auth: authReducer,
+    item: itemReducer,
     journey: journeyReducer,
+    journeyAll: journeyAllReducer,
 });
 
 const persistConfig = {
