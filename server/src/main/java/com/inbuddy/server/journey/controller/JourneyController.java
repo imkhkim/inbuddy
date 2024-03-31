@@ -37,8 +37,8 @@ public class JourneyController {
         try {
             List<Journey> journeyList = journeyRepository.findByUserUserId(userId);
             if (journeyList.isEmpty()) {
-                Message message = new Message("404", "여정 목록을 찾을 수 없습니다.");
-                return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+                Message message = new Message("200", "여정 목록이 비어있습니다.");
+                return new ResponseEntity<>(message, HttpStatus.OK);
             } else {
                 Message message = new Message("200", "여정 목록을 가져오기 성공", journeyList);
                 return new ResponseEntity<>(message, HttpStatus.OK);
