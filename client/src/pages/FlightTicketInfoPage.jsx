@@ -3,6 +3,7 @@ import { Div } from '@/components/atoms/Div';
 import FlightBox from '@/components/modules/FlightBox';
 import { InformationCircleIcon } from '@heroicons/react/24/solid';
 import cloudImg from '@/assets/cloud-img.svg';
+
 import { useState } from 'react';
 import { P } from '@/components/atoms/P';
 import { Separator } from '@/components/atoms/Separator';
@@ -45,7 +46,6 @@ function FlightTicketInfoPage() {
     const [seatNum, setSeatNum] = useState(null);
     const [boardingGate, setBoardingGate] = useState('-');
     const [isOpen, setIsOpen] = useState(false);
-
     const [status, setStatus] = useState(statusCode.정상);
     const StatusComponent = status.component;
     const isConcourse = 101 <= Number(boardingGate) && Number(boardingGate) <= 132;
@@ -142,7 +142,6 @@ function FlightTicketInfoPage() {
                                                     <Pencil
                                                         size="15"
                                                         className="mr-2 cursor-pointer stroke-neutral-400"
-                                                        onClick={() => setIsOpen(true)}
                                                     />
                                                 </SeatInfoBox>
                                             )}
