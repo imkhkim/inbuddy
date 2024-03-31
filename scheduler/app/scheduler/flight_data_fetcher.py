@@ -6,8 +6,8 @@ from bs4 import BeautifulSoup
 from app.logger.logger import log
 from app.producer.producer import live_flight_producer
 from app.redis.redis import redis
-from config import FLIGHT_API_DOMAIN, FLIGHT_DATA_COLUMNS, FLIGHTS_FETCH_SIZE, \
-    resource_lock
+from config import FLIGHT_API_DOMAIN, FLIGHT_DATA_COLUMNS, LIVE_FLIGHT_TOPIC, \
+    FLIGHTS_FETCH_SIZE, resource_lock
 
 PREFIX = "ddrivetip('"
 SUFFIX = "에 의한"
@@ -83,7 +83,8 @@ def fetch(date=datetime.today()):
         redis.select(redis.FLIGHTS_API)
         redis.set(date_format + 'D', response_departure)
 
-    live_flight_producer.produce(topic='live_flight', value=response_departure,
+    live_flight_producer.produce(topic=LIVE_FLIGHT_TOPIC,
+                                 value=response_departure,
                                  key=date_format + 'D')
 
 

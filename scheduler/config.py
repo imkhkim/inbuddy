@@ -41,6 +41,12 @@ REDIS_PORT = os.getenv("REDIS_PORT")
 KAFKA_HOST = os.getenv("KAFKA_HOST")
 KAFKA_BROKER_PORTS = os.getenv("KAFKA_BROKER_PORTS")
 
+# Topic
+LIVE_FLIGHT_TOPIC = os.getenv("LIVE_FLIGHT_TOPIC")
+LIVE_WEATHER_TOPIC = os.getenv("LIVE_WEATHER_TOPIC")
+BATCH_FLIGHT_TOPIC = os.getenv("BATCH_FLIGHT_TOPIC")
+BATCH_WEATHER_TOPIC = os.getenv("BATCH_WEATHER_TOPIC")
+
 # Logger
 LOG_FORMAT = "%(log_color)s%(asctime)s - %(levelname)-5s - %(message)s"
 LOG_DATE_FORMAT = "%Y-%m-%d %H:%M:%S"

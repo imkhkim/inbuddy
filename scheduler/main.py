@@ -20,13 +20,14 @@ if __name__ == "__main__":
     servers = ','.join(
             [f"{KAFKA_HOST}:{PORT}" for PORT in KAFKA_BROKER_PORTS.split(',')])
 
-    live_flight_producer.set_producer(servers=servers, client_id="live_flight")
+    live_flight_producer.set_producer(servers=servers,
+                                      client_id="live_data")
     live_weather_producer.set_producer(servers=servers,
-                                       client_id="live_weather")
+                                       client_id="live_data")
     batch_flight_producer.set_producer(servers=servers,
-                                       client_id="batch_flight")
+                                       client_id="batch_data")
     batch_weather_producer.set_producer(servers=servers,
-                                        client_id="batch_weather")
+                                        client_id="batch_data")
 
     log.info("Starting scheduler")
     scheduler.create("flights_departure", flight_fetch, trigger="cron",
