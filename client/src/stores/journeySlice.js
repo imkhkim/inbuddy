@@ -2,76 +2,73 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios';
 import { useInfiniteQuery, useQuery, useQueryClient } from '@tanstack/react-query';
 
-[
-    // "status": “200” or “400”
+const today = new Date();
+
+
+const initialState = [
     {
-        "status": "200",
-        "message": "여정 목록을 가져오기 성공",
-        "data": [
-            {
-                "journeyId": 3,
-                "journeyName": "여름 휴가",
-                "flightCode": "ABC123",
-                "journeyDone": true,
-                "journeyCreationDate": "2024-03-      20T12:34:18.000+00:00",
-                "journeyModificationDate": "2024-03-20T12:34:18.000+00:00"
-            },
-            {
-                "journeyId": 5,
-                "journeyName": "여름 휴가2",
-                "flightCode": "ABC123",
-                "journeyDone": true,
-                "journeyCreationDate": "2024-03-20T13:00:35.000+00:00",
-                "journeyModificationDate": "2024-03-20T13:00:35.000+00:00"
-            }
-        ]
-    }
-]
-
-
-// 초기에 미리 받아올 정보 요청 한 10개 정도?
-
-// 
-
-// 무한 스크롤 구현을 위해 특정 조건 시 
-// const InfiniteQueries = () => {
-//     const { data, hasNextPage, isFetching, isFetchingNextPage, fetchNextPage } =
-//         useInfiniteQuery({
-//             queryKey: ["colors"],
-//             queryFn: fetchColors,
-//             initialPageParam: 1,
-//             getNextPageParam: (lastPage, allPages) => {
-//                 return allPages.length < 4 && allPages.length + 1;
-//             },
-//             // ...
-//         });
-
-
-
-
-export const journeySlice = createSlice({
-    name: 'journey',
-    initialState: [{
         "journeyId": 3,
         "journeyName": "여름 휴가",
-        "flightCode": "ABC123",
+        "flightInfo": {
+            "departureDate": "2024-03-08",
+            "flightCode": "TW213",
+            "departureAirportIATA": "ICN",
+            "arrivalAirportIATA": "NRT",
+            "flightTime": "2h 30m",
+            "departureTime": {
+                "timeZone": "UTC+09:00",
+                "time": "10:20"
+            },
+            "arrivalTime": {
+                "timeZone": "UTC+09:00",
+                "time": "12:50"
+            },
+            "departureAirportName": "인천",
+            "arrivalAirportName": "도쿄/나리타"
+        },
         "journeyDone": true,
-        "journeyCreationDate": "2024-03-      20T12:34:18.000+00:00",
+        "journeyCreationDate": "2024-03-20T12:34:18.000+00:00",
         "journeyModificationDate": "2024-03-20T12:34:18.000+00:00"
     },
     {
         "journeyId": 5,
         "journeyName": "가족이랑 일본",
-        "flightCode": null,
+        "flightInfo": null,
         "journeyDone": false,
         "journeyCreationDate": "2024-03-20T13:00:35.000+00:00",
         "journeyModificationDate": "2024-03-20T13:00:35.000+00:00",
-        "journeyDate": "23.06.14",
-    }],
+    }
+]
+
+let journeyId = 5
+
+
+
+export const journeySlice = createSlice({
+    name: 'journey',
+    initialState: initialState,
     reducers: {
         addJourney(state, action) {
-            state.push(action.payload)
+            journeyId++;
+            const journey = {
+                "journeyId": journeyId,
+                "journeyName": action.payload.journeyName,
+                "flightInfo": null,
+                "journeyDone": false,
+                "journeyCreationDate": null,
+                "journeyModificationDate": null,
+            }
+
+            state.push(journey)
         },
+
+        addFlight(state, action) {
+
+            const flightInfo = action.payload.flightInfo
+
+            const journey = state.find((element) => element.journeyId == action.payload.journeyId)
+            journey.flightInfo = flightInfo
+        }
 
         // deleteJourney(state, action) {
         //     state.filter()
@@ -96,6 +93,6 @@ export const journeySlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { addJourney } = journeySlice.actions
+export const { addJourney, addFlight } = journeySlice.actions
 
 export default journeySlice.reducer
