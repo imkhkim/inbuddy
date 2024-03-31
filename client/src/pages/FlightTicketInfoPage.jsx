@@ -16,6 +16,25 @@ import celsius from '@bybas/weather-icons/design/fill/animation-ready/celsius.sv
 
 import AirportTimeInfo from '@/components/modules/AirportTimeInfo';
 
+// TODO: dummy data
+const flightInfo = {
+    departureDate: '2024-03-08',
+    flightCode: 'TW213',
+    departureAirportIATA: 'ICN',
+    arrivalAirportIATA: 'NRT',
+    flightTime: '2h 30m',
+    departureTime: {
+        timeZone: 'UTC+09:00',
+        time: '10:20',
+    },
+    arrivalTime: {
+        timeZone: 'UTC+09:00',
+        time: '12:50',
+    },
+    departureAirportName: '인천',
+    arrivalAirportName: '도쿄/나리타',
+};
+
 const StatusCode = Object.freeze({
     정상: { text: '정상', ready: '탑승 준비', color: 'success-400' },
     지연: { text: '지연', ready: '탑승 지연', color: 'warning-400' },
@@ -24,6 +43,8 @@ const StatusCode = Object.freeze({
 
 function FlightTicketInfoPage() {
     const [status, setStatus] = useState(StatusCode.정상);
+    const [boardingGate, setBoardingGate] = useState('-');
+
     return (
         <>
             <div
@@ -46,8 +67,8 @@ function FlightTicketInfoPage() {
                             </Div>
                         </CardHeader>
                         <CardContent className="items-center px-4 py-4 my-2 bg-white">
-                            {/* TODO : flightCode, journeyDate */}
-                            <FlightBox flightCode="" journeyDate="" />
+                            {/* TODO : flighInfo */}
+                            <FlightBox flightInfo={flightInfo} />
                             <div className="flex flex-col">
                                 <div className="flex justify-around ">
                                     <div className="flex flex-col w-1/2 mx-3 my-2">
@@ -56,19 +77,21 @@ function FlightTicketInfoPage() {
                                             탑승구
                                         </P>
                                         <div className="flex flex-col py-1">
-                                            {/* TODO : 탑승구  */}
+                                            {/* TODO : 탑승구 boardingGate  */}
                                             <P variant="content" size="xl" className="text-center " font="regular">
-                                                111
+                                                {boardingGate}
                                             </P>
-                                            <P
-                                                variant="content"
-                                                size="sm"
-                                                className="text-center underline"
-                                                font="regular"
-                                                color="neutral"
-                                            >
-                                                <Link>위치 확인</Link>
-                                            </P>
+                                            {boardingGate !== '-' && (
+                                                <P
+                                                    variant="content"
+                                                    size="sm"
+                                                    className="text-center underline"
+                                                    font="regular"
+                                                    color="neutral"
+                                                >
+                                                    <Link>위치 확인</Link>
+                                                </P>
+                                            )}
                                         </div>
                                     </div>
                                     <div className="flex flex-col w-1/2 mx-3 my-2">
@@ -151,12 +174,12 @@ function FlightTicketInfoPage() {
                     <div className="my-2 ">
                         {/* TODO : 현지 공항 이름 */}
                         <P font="bold" size="xl" className="mb-2 ">
-                            도쿄/나리타
+                            {flightInfo.arrivalAirportName}
                         </P>
                         <div className="flex items-start justify-between gap-2 -mx-1">
                             <div className="mx-1 my-1 ">
                                 {/* TODO: 현지  공항 코드로 현지 시각 정보 계산 */}
-                                <AirportTimeInfo code={'NRT'}></AirportTimeInfo>
+                                <AirportTimeInfo code={flightInfo.arrivalAirportIATA}></AirportTimeInfo>
                             </div>
                             <div className="flex items-center ">
                                 <div>
