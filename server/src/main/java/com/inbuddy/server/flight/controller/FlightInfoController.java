@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin("*")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/journeys/{journey_id}/flight")
+@RequestMapping("/api/journeys/{journey_id}/flight")
 public class FlightInfoController {
     private final FlightService flightService;
 
@@ -38,6 +38,7 @@ public class FlightInfoController {
     @PostMapping("/create")
     public ResponseEntity<Object> createFlightInfo(@PathVariable("journey_id") int journeyId, @RequestBody FlightDto flightDto) {
         try {
+            System.out.println(journeyId);
             // 여기서 json안에 journeyId를 담을 건지 url에 있는 journeyid를 가져올건지 결정
             flightService.createFlightInfo(journeyId, flightDto.getFlightCode(), flightDto.getAirline(), flightDto.getDepartureDate());
             Message message = new Message("200", flightDto.getFlightCode() + ": 비행기정보 생성이 성공적으로 완료되었습니다.");
