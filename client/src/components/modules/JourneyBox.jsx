@@ -29,10 +29,10 @@ function JourneyBox({ journey }) {
             <div className={commonClassName} style={journey.journeyDone ? pastJourneystyle : null}>
                 <P variant='mainHeader' className='my-5'>{journey.journeyName}</P>
 
-                {journey.flightCode ?
-                    <FlightBox flightCode={journey.flightCode} journeyDate={journey.journeyDate} />
+                {journey.flightInfo ?
+                    <FlightBox flightInfo={journey.flightInfo} />
                     :
-                    <FlightDialog />}
+                    <FlightDialog journeyId={journey.journeyId} />}
 
             </div >
         </>

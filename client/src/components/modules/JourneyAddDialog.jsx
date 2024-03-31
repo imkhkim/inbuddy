@@ -27,12 +27,7 @@ export function JourneyAddDialog() {
     const addJourney = () => ({
         type: 'journey/addJourney',
         payload: {
-            "journeyId": null, // 백엔드에서 추가할 때 입력되겠지?
             "journeyName": input,
-            "flightCode": null,
-            "journeyDone": false,
-            "journeyCreationDate": null,
-            "journeyModificationDate": null
         }
     })
 

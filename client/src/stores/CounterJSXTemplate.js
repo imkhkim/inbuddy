@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 
-import { counterActions } from '@/stores/counter';
+import { counterActions } from '@/stores/counterStoreTemplate';
 
 const PageCounter = () => {
     const dispatch = useDispatch();

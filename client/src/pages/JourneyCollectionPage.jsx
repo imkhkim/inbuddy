@@ -1,7 +1,7 @@
 import { JourneyAddDialog } from '@/components/modules/JourneyAddDialog';
 import JourneyBox from '@/components/modules/JourneyBox';
 import { P } from '@/components/atoms/P';
-
+import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { authActions } from '@/stores/authStore';
 import { useQuery, useQueries } from '@tanstack/react-query';
@@ -10,30 +10,17 @@ import { fetchUserProfile, reissueToken } from '@/apis/api/auth';
 import { useEffect } from 'react';
 
 function JourneyCollectionPage() {
-    // const data = [
-    //     {
-    //         "journeyId": 3,
-    //         "journeyName": "제주도 계획",
-    //         "flightCode": "ABC123",
-    //         "journeyDone": true,
-    //         "journeyCreationDate": "2024-03-20T12:34:18.000+00:00",
-    //         "journeyModificationDate": "2024-03-20T12:34:18.000+00:00",
-    //         "journeyDate": "23.02.11",
-    //     },
-    //     {
-    //         "journeyId": 5,
-    //         "journeyName": "가족이랑 일본",
-    //         "flightCode": "DEF123",
-    //         "journeyDone": false,
-    //         "journeyCreationDate": "2024-03-20T13:00:35.000+00:00",
-    //         "journeyModificationDate": "2024-03-20T13:00:35.000+00:00",
-    //         "journeyDate": "23.06.14",
-    //     }
-    // ]
 
     const journeyList = useSelector((state) => state.journey);
 
     const dispatch = useDispatch();
+
+
+
+    // 로그인 성공 시 유저 정보를 바탕으로 여정 처음에 가져오는 요청
+
+
+
 
     const { data, isLoading, error } = useQuery({
         queryKey: ['auth'],
@@ -44,8 +31,8 @@ function JourneyCollectionPage() {
     useEffect(() => {
         if (!isLoading && data) {
             dispatch(authActions.getUserProfile(data.data));
-            // dispatch(authActions.setAccessToken(getCookie('access_token')));
-            // dispatch(authActions.setRefreshToken(getCookie('refresh_token')));
+            dispatch(authActions.setAccessToken(getCookie('access_token')));
+            dispatch(authActions.setRefreshToken(getCookie('refresh_token')));
         }
     }, [dispatch, isLoading, data]);
 

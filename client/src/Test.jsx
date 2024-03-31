@@ -11,10 +11,10 @@ import { NewspaperIcon } from 'lucide-react';
 
 import { useState } from 'react';
 import { useQuery, useQueries } from '@tanstack/react-query';
-import { getXXX, get2XXX } from '@/apis/api/funcApi';
+import { getXXX, get2XXX } from '@/apis/api/apiTemplate';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { testActions } from '@/stores/test';
+import { testActions } from '@/stores/testStore';
 
 function Test() {
     const dispatch = useDispatch();
