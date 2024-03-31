@@ -2,45 +2,45 @@ import { serverAxios } from '@/apis/common';
 
 const server = serverAxios();
 
-const getItemList = async () => {
+const getItemList = async (journeyId) => {
     return await server
-        .get('/api/journeys/{journey_id}/itemlist')
+        .get(`/api/journeys/${journeyId}/itemlist`)
         .then((response) => response.data)
         .catch((error) => {
             throw new Error(`API request failed: ${error}`);
         });
 };
 
-const checkItemList = async () => {
+const checkItemList = async (journeyId, itemId) => {
     return await server
-        .put('/api/journeys/{journey_id}/itemlist/{item_id}/check', {})
+        .put(`/api/journeys/${journeyId}/itemlist/${itemId}/check`, {})
         .then((response) => response.data)
         .catch((error) => {
             throw new Error(`API request failed: ${error}`);
         });
 };
 
-const deleteItemList = async () => {
+const deleteItemList = async (journeyId, itemId) => {
     return await server
-        .delete('/api/journeys/{journey_id}/itemlist/{item_id}/delete')
+        .delete(`/api/journeys/${journeyId}/itemlist/${itemId}/delete`)
         .then((response) => response.data)
         .catch((error) => {
             throw new Error(`API request failed: ${error}`);
         });
 };
 
-const modifyItemList = async () => {
+const modifyItemList = async (journeyId, itemId) => {
     return await server
-        .put('/api/journeys/{journey_id}/itemlist/{item_id}/modify', {})
+        .put(`/api/journeys/${journeyId}/itemlist/${itemId}/modify`, {})
         .then((response) => response.data)
         .catch((error) => {
             throw new Error(`API request failed: ${error}`);
         });
 };
 
-const createItemList = async () => {
+const createItemList = async (journeyId, item) => {
     return await server
-        .post('/api/journeys/{journey_id}/itemlist/create', {})
+        .post(`/api/journeys/${journeyId}/itemlist/create`, item)
         .then((response) => response.data)
         .catch((error) => {
             throw new Error(`API request failed: ${error}`);

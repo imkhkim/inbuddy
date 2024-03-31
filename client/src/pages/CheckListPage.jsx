@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/atoms/Button.jsx';
 import { P } from '@/components/atoms/P.jsx';
@@ -10,18 +10,72 @@ import PAndButton from '@/components/modules/PAndButton';
 import ToggleSupply from '@/components/modules/ToggleSupply';
 import ToggleCheck from '@/components/modules/ToggleCheck';
 
+import { useCallback } from 'react';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+
+import { useQuery, useQueries } from '@tanstack/react-query';
+import { useSelector, useDispatch } from 'react-redux';
+import { itemActions } from '@/stores/itemStore';
+
 import pointerIcon from '@/assets/icons/pointer.svg';
 import alertTriangleIcon from '@/assets/icons/alert-triangle.svg';
 import checkCircleIcon from '@/assets/icons/check-circle.svg';
-
 import { NewspaperIcon, BaggageClaimIcon, DollarSignIcon, WifiIcon, CircleIcon, CircleCheckIcon } from 'lucide-react';
 
+import { getItemList, createItemList, deleteItemList } from '@/apis/api/itemList';
+
+const reorder = (list, startIndex, endIndex) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+    return result;
+};
+
+// 변경해야 할 사안!!
+// 1을 나중에 해당 여정의 전역값?으로 바꿔주어야 함
+
 function CheckListPage() {
+    const dispatch = useDispatch();
+    const itemList = useSelector((state) => state.item);
+
     const [progress, setProgress] = React.useState(13);
     const [divs, setDivs] = useState([]); // div들을 관리할 배열 상태 변수
     const [showInput, setShowInput] = useState(false); // input 상태 변수 생성
+    //const [items, setItems] = useState(getItems(10));
 
     const inputRef = useRef(null);
+    // const itemListApis = useQueries({
+    //     queries: [
+    //         { queryKey: ['item', 1], queryFn: async () => getItemList(1), enabled: true },
+    //         { queryKey: ['item', 2], queryFn: async () => createItemList(1, inputRef.current.value.trim()) },
+    //     ],
+    // });
+    // itemListApis 배열에서 각 쿼리의 결과를 추출
+    //const [resultXXX, resultYYY] = itemListApis;
+
+    const { data, isLoading } = useQuery({
+        queryKey: ['item'],
+        queryFn: async () => getItemList(1),
+        enabled: true, // useQuery가 즉시 실행되도록 설정
+    });
+
+    useEffect(() => {
+        if (!isLoading && data) {
+            //console.log(data.data);
+            dispatch(itemActions.setItem(data.data)); // 전역 상태에 저장
+            const initialDivs = data.data.map((item, index) => (
+                <ToggleSupply
+                    key={index}
+                    selected={item.itemDone}
+                    supply={item.itemName}
+                    handleRemoveDiv={handleRemoveDiv}
+                />
+            ));
+            setDivs(initialDivs);
+        }
+    }, [isLoading, data]);
+    console.log(divs);
+    //console.log(useSelector((state) => state.item[0]));
 
     React.useEffect(() => {
         const timer = setTimeout(() => setProgress(66), 500);
@@ -47,19 +101,36 @@ function CheckListPage() {
         if (inputValue !== '') {
             // 입력 값이 비어있지 않을 경우에만 실행
             const newDivs = [...divs]; // 기존 div 배열 복사
-            newDivs.push(<ToggleSupply selected={false} supply={inputValue} />); // 새로운 div 추가
+            createItemList(1, { journeyId: 1, itemName: inputValue });
+            newDivs.push(<ToggleSupply selected={false} supply={inputValue} handleRemoveDiv={handleRemoveDiv} />); // 새로운 div 추가
             setDivs(newDivs); // div 배열 업데이트
             inputRef.current.value = ''; // 입력 값 초기화
         }
     };
 
     const handleRemoveDiv = () => {
-        if (divs.length > 0) {
-            const newDivs = [...divs]; // 기존 div들을 복사
-            newDivs.pop(); // 마지막 div 삭제
-            setDivs(newDivs); // div 배열 업데이트
-        }
+        console.log('부모 삭제 중');
+        console.log(itemList);
+        // console.log(divs);
+        // if (divs.length > 0) {
+        //     console.log('if문 진입');
+        //     // const newDivs = [...divs]; // 기존 div들을 복사
+        //     // deleteItemList(1, newDivs.length);
+        //     // newDivs.pop(); // 마지막 div 삭제
+        //     // setDivs(newDivs); // div 배열 업데이트
+        // }
     };
+
+    const onDragEnd = useCallback(
+        (result) => {
+            if (!result.destination) {
+                return;
+            }
+            const reorderedItems = reorder(divs, result.source.index, result.destination.index);
+            setDivs(reorderedItems);
+        },
+        [divs]
+    );
 
     return (
         <>
@@ -109,18 +180,29 @@ function CheckListPage() {
                         >
                             <P variant="sectionHeader">+</P>
                         </Button>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <Button
-                            className="mb-4 border-2 border-border"
-                            variant="ghost"
-                            size="default"
-                            onClick={handleRemoveDiv}
-                        >
-                            <P variant="sectionHeader">-</P>
-                        </Button>
-                        {divs.map((value, index) => (
-                            <div key={index}>{value}</div>
-                        ))}
+
+                        <DragDropContext onDragEnd={onDragEnd}>
+                            <Droppable droppableId="droppable">
+                                {(provided) => (
+                                    <div ref={provided.innerRef}>
+                                        {divs.map((value, index) => (
+                                            // <div key={index}>{value}</div>
+                                            <Draggable key={index} draggableId={index.toString()} index={index}>
+                                                {(provided) => (
+                                                    <div {...provided.draggableProps}>
+                                                        <div ref={provided.innerRef} {...provided.dragHandleProps}>
+                                                            {value}
+                                                        </div>
+                                                        {provided.placeholder}
+                                                    </div>
+                                                )}
+                                            </Draggable>
+                                        ))}
+                                        {provided.placeholder}
+                                    </div>
+                                )}
+                            </Droppable>
+                        </DragDropContext>
                         {true ? (
                             <PAndButton
                                 tabsContentValue="supplies"
