@@ -167,25 +167,27 @@ function CheckListPage() {
     const handleDivClick = (event) => {
         //console.log('클릭', event.target.innerText.slice(0, 2));
         //console.log(taskListData.data.map((task) => task.taskName.slice(0, 2)));
-        taskListData.data.map((task) => {
-            const taskNameDB = task.taskName.slice(0, 2);
-            const taskNameEvent = event.target.innerText.slice(0, 2);
-            if (taskNameDB === taskNameEvent) {
-                if (taskNameEvent === '여권') {
-                    checkTaskList(1, task.taskId);
-                    setCheckPassport(!checkPassport);
-                } else if (taskNameEvent === '탑승') {
-                    checkTaskList(1, task.taskId);
-                    setCheckCheckIn(!checkCheckIn);
-                } else if (taskNameEvent === '환전') {
-                    checkTaskList(1, task.taskId);
-                    setCheckExchange(!checkExchange);
-                } else if (taskNameEvent === '로밍') {
-                    checkTaskList(1, task.taskId);
-                    setCheckRoaming(!checkRoaming);
+        if (taskListData) {
+            taskListData.data.map((task) => {
+                const taskNameDB = task.taskName.slice(0, 2);
+                const taskNameEvent = event.target.innerText.slice(0, 2);
+                if (taskNameDB === taskNameEvent) {
+                    if (taskNameEvent === '여권') {
+                        checkTaskList(1, task.taskId);
+                        setCheckPassport(!checkPassport);
+                    } else if (taskNameEvent === '탑승') {
+                        checkTaskList(1, task.taskId);
+                        setCheckCheckIn(!checkCheckIn);
+                    } else if (taskNameEvent === '환전') {
+                        checkTaskList(1, task.taskId);
+                        setCheckExchange(!checkExchange);
+                    } else if (taskNameEvent === '로밍') {
+                        checkTaskList(1, task.taskId);
+                        setCheckRoaming(!checkRoaming);
+                    }
                 }
-            }
-        });
+            });
+        }
     };
 
     const handleAddDiv = useCallback(() => {
