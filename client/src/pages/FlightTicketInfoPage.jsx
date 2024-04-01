@@ -3,7 +3,6 @@ import { Div } from '@/components/atoms/Div';
 import FlightBox from '@/components/modules/FlightBox';
 import { InformationCircleIcon } from '@heroicons/react/24/solid';
 import cloudImg from '@/assets/cloud-img.svg';
-
 import { useState } from 'react';
 import { P } from '@/components/atoms/P';
 import { Separator } from '@/components/atoms/Separator';
