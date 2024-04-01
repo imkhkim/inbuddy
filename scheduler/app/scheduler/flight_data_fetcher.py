@@ -12,6 +12,7 @@ from config import FLIGHT_API_DOMAIN, FLIGHT_DATA_COLUMNS, LIVE_FLIGHT_TOPIC, \
 PREFIX = "ddrivetip('"
 SUFFIX = "에 의한"
 
+NO_DATA_MESSAGE = "검색된 결과가 없습니다"
 _DATE_FORMAT = "%Y%m%d"
 
 
@@ -45,6 +46,12 @@ def _request(date_format, dep_arr='D'):
     response = requests.get(url)
 
     soup = BeautifulSoup(response.text, 'html.parser')
+
+    no_data_message = soup.select(
+            "FORM > table > tr > TD > table > tr > tr > td")
+
+    if no_data_message and no_data_message[0].text == NO_DATA_MESSAGE:
+        return None
 
     indent_one = soup.select("FORM > table > tr > TD > table > tr > td")
     indent_two = soup.select("FORM > table > tr > TD > table > td")
@@ -104,14 +111,12 @@ def fetch_scheduled(start_date, fetch_size=FLIGHTS_FETCH_SIZE):
 
         response_departure = _request(date_format)
 
+        if response_departure is None:
+            break
+
         with resource_lock:
             redis.select(redis.SCHEDULED_FLIGHTS_API)
             redis.set(date_format + 'D', response_departure)
-
-        if response_departure is None:
-            log.debug(
-                    f"No Scheduled Flight(Departure) Data After {date_format}")
-            break
 
         date = date + timedelta(days=1)
 
@@ -121,3 +126,12 @@ def fetch_scheduled(start_date, fetch_size=FLIGHTS_FETCH_SIZE):
     else:
         log.info(
                 f"No Scheduled Flight(Departure) Data After {start_date.strftime(_DATE_FORMAT)}")
+
+
+def test():
+    redis.set_connection("localhost", 6379)
+    fetch_scheduled(datetime.now() + timedelta(
+            days=0 * FLIGHTS_FETCH_SIZE + 1))
+
+
+test()
