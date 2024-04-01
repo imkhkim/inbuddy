@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { BrowserMultiFormatReader } from '@zxing/library';
 import PropTypes from 'prop-types';
 
-const BarcodeCameraBox = ({ seatNum, setSeatNum }) => {
+const BarcodeCameraBox = ({ setInputValue }) => {
     const videoRef = useRef(null); // video 요소를 위한 ref 생성
 
     useEffect(() => {
@@ -27,7 +27,7 @@ const BarcodeCameraBox = ({ seatNum, setSeatNum }) => {
                             const fullSeatInfo = `${Number(seatNumber)}${seatClass}`; // "30G"
 
                             console.log(fullSeatInfo);
-                            setSeatNum(fullSeatInfo);
+                            setInputValue(fullSeatInfo);
                         } else {
                             // 좌석 정보가 예상한 형식과 다를 경우의 처리
                             console.error('Invalid seat information format');
@@ -46,7 +46,7 @@ const BarcodeCameraBox = ({ seatNum, setSeatNum }) => {
         return () => {
             codeReader.reset();
         };
-    }, [seatNum, setSeatNum]); // 빈 의존성 배열을 제공하여 컴포넌트 마운트 시에만 실행되도록 함
+    }, [setInputValue]); // 빈 의존성 배열을 제공하여 컴포넌트 마운트 시에만 실행되도록 함
 
     return (
         <div>
@@ -56,8 +56,7 @@ const BarcodeCameraBox = ({ seatNum, setSeatNum }) => {
 };
 
 BarcodeCameraBox.propTypes = {
-    seatNum: PropTypes.string,
-    setSeatNum: PropTypes.func.isRequired,
+    setInputValue: PropTypes.func.isRequired,
 };
 
 export default BarcodeCameraBox;
