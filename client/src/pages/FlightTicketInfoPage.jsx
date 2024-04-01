@@ -15,6 +15,7 @@ import partlyCloudyDay from '@bybas/weather-icons/design/fill/animation-ready/pa
 import celsius from '@bybas/weather-icons/design/fill/animation-ready/celsius.svg';
 
 import AirportTimeInfo from '@/components/modules/AirportTimeInfo';
+import SeatInfoBox from '@/components/modules/SeatInfoBox';
 
 // TODO: dummy data
 const flightInfo = {
@@ -43,6 +44,7 @@ const StatusCode = Object.freeze({
 
 function FlightTicketInfoPage() {
     const [status, setStatus] = useState(StatusCode.정상);
+    const [seatNum, setSeatNum] = useState(null);
     const [boardingGate, setBoardingGate] = useState('-');
 
     return (
@@ -96,24 +98,34 @@ function FlightTicketInfoPage() {
                                     </div>
                                     <div className="flex flex-col w-1/2 mx-3 my-2">
                                         <Separator className="my-2" />
-
                                         <P variant="content" font="regular" size="sm" color="neutral">
                                             좌석 번호
                                         </P>
+
                                         <div className="flex flex-col py-1">
                                             {/* TODO : 좌석 번호  */}
-                                            <P variant="content" size="xl" className="text-center " font="regular">
-                                                21A
-                                            </P>
-                                            <P
-                                                variant="content"
-                                                size="sm"
-                                                className="text-center underline"
-                                                font="regular"
-                                                color="neutral"
-                                            >
-                                                <Link>위치 확인</Link>
-                                            </P>
+                                            {seatNum && (
+                                                <>
+                                                    <P
+                                                        variant="content"
+                                                        size="xl"
+                                                        className="text-center "
+                                                        font="regular"
+                                                    >
+                                                        {seatNum}
+                                                    </P>
+                                                    <P
+                                                        variant="content"
+                                                        size="sm"
+                                                        className="text-center underline"
+                                                        font="regular"
+                                                        color="neutral"
+                                                    >
+                                                        <Link>위치 확인</Link>
+                                                    </P>
+                                                </>
+                                            )}
+                                            <SeatInfoBox seatNum={seatNum} setSeatNum={setSeatNum} />
                                         </div>
                                     </div>
                                 </div>
