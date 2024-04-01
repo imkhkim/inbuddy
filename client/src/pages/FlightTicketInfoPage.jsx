@@ -4,17 +4,28 @@ import FlightBox from '@/components/modules/FlightBox';
 import { InformationCircleIcon } from '@heroicons/react/24/solid';
 import cloudImg from '@/assets/cloud-img.svg';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { P } from '@/components/atoms/P';
 import { Separator } from '@/components/atoms/Separator';
-import { Circle } from 'lucide-react';
+import { Circle, MessageCircleWarning, Terminal } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-import clearDay from '@bybas/weather-icons/design/fill/animation-ready/clear-day.svg';
-import partlyCloudyDay from '@bybas/weather-icons/design/fill/animation-ready/partly-cloudy-day.svg';
-import celsius from '@bybas/weather-icons/design/fill/animation-ready/celsius.svg';
-
-import AirportTimeInfo from '@/components/modules/AirportTimeInfo';
+import WeatherInfo from '@/components/modules/WeatherInfo';
+import FlightDelayInfo from '@/components/modules/FlightDelayInfo';
+import FlightCancellationInfo from '@/components/modules/FlightCancellationInfo';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '@/components/atoms/dialog';
+import { Button } from '@/components/atoms/Button';
+import { Label } from '@/components/atoms/label';
+import { Input } from '@/components/atoms/input';
+import { Alert, AlertDescription, AlertTitle } from '@/components/atoms/Alert';
 
 // TODO: dummy data
 const flightInfo = {
@@ -35,18 +46,48 @@ const flightInfo = {
     arrivalAirportName: '도쿄/나리타',
 };
 
-const StatusCode = Object.freeze({
-    정상: { text: '정상', ready: '탑승 준비', color: 'success-400' },
-    지연: { text: '지연', ready: '탑승 지연', color: 'warning-400' },
-    결항: { text: '결항', ready: '탑승 취소', color: 'error-400' },
+const statusCode = Object.freeze({
+    정상: { text: '정상', ready: '탑승 준비', color: 'success-400', component: WeatherInfo },
+    지연: { text: '지연', ready: '탑승 지연', color: 'warning-400', component: FlightDelayInfo },
+    결항: { text: '결항', ready: '탑승 취소', color: 'error-400', component: FlightCancellationInfo },
 });
 
 function FlightTicketInfoPage() {
-    const [status, setStatus] = useState(StatusCode.정상);
+    const [status, setStatus] = useState(statusCode.결항);
+    const StatusComponent = status.component;
     const [boardingGate, setBoardingGate] = useState('-');
+    const isConcourse = 101 <= Number(boardingGate) && Number(boardingGate) <= 132;
 
     return (
         <>
+            {isConcourse && (
+                <Dialog defaultOpen={isConcourse}>
+                    <DialogTrigger className="w-[100%]">
+                        <Alert className="flex items-center border border-warning-400">
+                            <MessageCircleWarning className="stroke-warning-400" />
+                            <P size="md" className="text-center">
+                                해당 항공편은 탑승동에서 출발하는 항공편입니다.
+                            </P>
+                        </Alert>
+                    </DialogTrigger>
+                    <DialogContent className="w-[80%] rounded-lg border-warning-400">
+                        <DialogHeader className="text-left">
+                            <DialogTitle>
+                                <div className="flex items-center gap-1">
+                                    <MessageCircleWarning className="stroke-warning-400" />
+                                    <P size="lg" font="bold">
+                                        탑승동에서 출발하는 항공편
+                                    </P>
+                                </div>
+                            </DialogTitle>
+                        </DialogHeader>
+                        <div>
+                            <P>해당 항공편을 탑승하기 위해서는 출국심사 이후 셔틀트레인을 타야 합니다.</P>
+                            <P>이동에 추가로 시간이 소요될 수 있으니 참고 바랍니다.</P>
+                        </div>
+                    </DialogContent>
+                </Dialog>
+            )}
             <div
                 className="flex flex-col items-center justify-end w-full"
                 style={{
@@ -147,56 +188,7 @@ function FlightTicketInfoPage() {
                     </Card>
                 </div>
             </div>
-            <Card className="border-none shadow-none ">
-                <CardContent className="flex flex-col items-center justify-center p-0 mx-4 my-2 bg-white ">
-                    <div className="my-2 ">
-                        <P font="bold" size="xl" className="mb-2">
-                            서울/인천
-                        </P>
-                        <div className="flex items-start justify-between gap-2 -mx-1 ">
-                            <div className="mx-1 my-1 ">
-                                <AirportTimeInfo code={'ICN'}></AirportTimeInfo>
-                            </div>
-                            <div className="flex items-center ">
-                                <div>
-                                    {/* TODO : 날씨 이미지 */}
-                                    {/* 참고 https://basmilius.github.io/weather-icons/index-fill.html */}
-                                    <img src={clearDay} alt="clearDay" width="90px" />
-                                </div>
-                                <div className="flex items-center">
-                                    {/* TODO: 기온 */}
-                                    <P size="5xl">3</P>
-                                    <img src={celsius} alt="celsius" width="60px" className="self-end -m-3 " />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="my-2 ">
-                        {/* TODO : 현지 공항 이름 */}
-                        <P font="bold" size="xl" className="mb-2 ">
-                            {flightInfo.arrivalAirportName}
-                        </P>
-                        <div className="flex items-start justify-between gap-2 -mx-1">
-                            <div className="mx-1 my-1 ">
-                                {/* TODO: 현지  공항 코드로 현지 시각 정보 계산 */}
-                                <AirportTimeInfo code={flightInfo.arrivalAirportIATA}></AirportTimeInfo>
-                            </div>
-                            <div className="flex items-center ">
-                                <div>
-                                    {/* TODO : 날씨 이미지 */}
-                                    {/* 참고 https://basmilius.github.io/weather-icons/index-fill.html */}
-                                    <img src={partlyCloudyDay} alt="partlyCloudyDay" width="90px" />
-                                </div>
-                                <div className="flex items-center">
-                                    {/* TODO: 기온 */}
-                                    <P size="5xl">5</P>
-                                    <img src={celsius} alt="celsius" width="60px" className="self-end -m-3" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
+            {StatusComponent && <StatusComponent />}
         </>
     );
 }
