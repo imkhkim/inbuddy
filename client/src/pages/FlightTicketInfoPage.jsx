@@ -159,7 +159,6 @@ function FlightTicketInfoPage() {
                                                     >
                                                         {seatNum}
                                                     </P>
-
                                                     <P
                                                         variant="content"
                                                         size="sm"
