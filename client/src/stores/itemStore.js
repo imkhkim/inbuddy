@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { deleteItemList } from '@/apis/api/itemList';
 
 const initialItemState = [];
 const itemSlice = createSlice({
@@ -7,6 +8,9 @@ const itemSlice = createSlice({
     reducers: {
         setItem(state, action) {
             return action.payload;
+        },
+        deleteItem(state, action) {
+            deleteItemList(1, action.payload);
         },
     },
 });
