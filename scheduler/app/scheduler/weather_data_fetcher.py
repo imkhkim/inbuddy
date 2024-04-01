@@ -9,7 +9,7 @@ from config import WEATHER_API_DOMAIN, WEATHER_DATA_COLUMNS, WEATHER_API_KEY, \
     LIVE_WEATHER_TOPIC, resource_lock
 
 _last_received = None
-_FORMAT = "%Y%m%d%H%M"
+_DATE_FORMAT_MINUTE = "%Y%m%d%H%M"
 
 
 def _parse_json(text):
@@ -50,7 +50,8 @@ def _request(now):
             (now - _last_received).total_seconds() / 60) - 1
     log.debug(f"Weather Data Delta Time: {minutes} minutes")
 
-    params = {"tm": now.strftime(_FORMAT), "dtm": minutes, "stn": 113,
+    params = {"tm": now.strftime(_DATE_FORMAT_MINUTE), "dtm": minutes,
+              "stn": 113,
               "help": 0,
               "authKey": WEATHER_API_KEY}
 
@@ -65,10 +66,8 @@ def _request(now):
     return csv_data, json_data
 
 
-def fetch():
+def fetch(now):
     global _last_received
-
-    now = datetime.now().replace(second=0, microsecond=0)
 
     csv_data, json_data = _request(now)
 
@@ -89,7 +88,7 @@ def fetch():
             redis.set(document["TM"], dump)
 
             key = str(document["TM"])
-            _last_received = datetime.strptime(key, _FORMAT)
+            _last_received = datetime.strptime(key, _DATE_FORMAT_MINUTE)
             live_weather_producer.produce(topic=LIVE_WEATHER_TOPIC,
                                           value=dump,
                                           key=key)

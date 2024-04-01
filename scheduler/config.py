@@ -20,6 +20,8 @@ FLIGHT_API_DOMAIN = "https://www.airportal.go.kr/life/airinfo/RbHanList.jsp"
 FLIGHT_DATA_COLUMNS = ["날짜", "항공사", "편명", "도착지", "계획", "예상", "출발", "구분", "현황",
                        "사유"]
 
+FLIGHTS_FETCH_SIZE = int(os.getenv("FLIGHTS_FETCH_SIZE"))
+
 # Weather API
 WEATHER_API_KEY = os.getenv("WEATHER_API_KEY")
 WEATHER_API_DOMAIN = "https://apihub.kma.go.kr/api/typ01/url/amos.php"
