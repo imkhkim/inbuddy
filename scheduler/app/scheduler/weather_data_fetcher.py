@@ -47,7 +47,7 @@ def _parse_csv(text):
 
 def _request(now):
     minutes = 3 if _last_received is None else round(
-                (now - _last_received).total_seconds() / 60) - 1
+            (now - _last_received).total_seconds() / 60) - 1
     log.debug(f"Weather Data Delta Time: {minutes} minutes")
 
     params = {"tm": now.strftime(_DATE_FORMAT_MINUTE), "dtm": minutes,
@@ -66,7 +66,7 @@ def _request(now):
     return csv_data, json_data
 
 
-def fetch(now=datetime.now().replace(second=0, microsecond=0)):
+def fetch(now):
     global _last_received
 
     csv_data, json_data = _request(now)

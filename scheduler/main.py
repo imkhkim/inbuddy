@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 import uvicorn
 
 from app.app import app
@@ -30,16 +32,25 @@ if __name__ == "__main__":
                                         client_id="batch_data")
 
     log.info("Starting scheduler")
-    scheduler.create("flights_departure", flight_fetch, trigger="cron",
+    scheduler.create("flights_departure",
+                     lambda: flight_fetch(datetime.today()),
+                     trigger="cron",
                      minute='*')
 
-    scheduler.create("flights_departure_scheduled", flight_fetch_scheduled,
+    scheduler.create("flights_departure_scheduled",
+                     lambda: flight_fetch_scheduled(datetime.now() + timedelta(
+                             days=datetime.now().hour * FLIGHTS_FETCH_SIZE + 1)),
                      trigger="cron", hour="0-5", minute=0, second=15)
 
-    scheduler.create("weather", weather_fetch, trigger="cron", minute='*',
+    scheduler.create("weather", lambda: weather_fetch(
+        datetime.now().replace(second=0, microsecond=0)), trigger="cron",
+                     minute='*',
                      second=30)
 
-    scheduler.create("batch_save", save, trigger="cron", hour=0, minute=0,
+    scheduler.create("batch_save",
+                     lambda: save(datetime.today() - timedelta(days=2)),
+                     trigger="cron", hour=0,
+                     minute=0,
                      second=45)
 
     scheduler.start("flights_departure")

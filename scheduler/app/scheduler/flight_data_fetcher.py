@@ -67,7 +67,7 @@ def _request(date_format, dep_arr='D'):
     return cat.to_json(orient="records", force_ascii=False)
 
 
-def fetch(date=datetime.today()):
+def fetch(date):
     date_format = date.strftime(_DATE_FORMAT)
 
     response_departure = _request(date_format)
@@ -88,9 +88,7 @@ def fetch(date=datetime.today()):
                                  key=date_format + 'D')
 
 
-def fetch_scheduled(start_date=datetime.now() + timedelta(
-        days=datetime.now().hour * FLIGHTS_FETCH_SIZE + 1),
-        fetch_size=FLIGHTS_FETCH_SIZE):
+def fetch_scheduled(start_date, fetch_size=FLIGHTS_FETCH_SIZE):
     with resource_lock:
         redis.select(redis.SCHEDULED_FLIGHTS_API)
         redis.delete(datetime.today().strftime(_DATE_FORMAT) + 'D')

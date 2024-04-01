@@ -59,11 +59,12 @@ def weather_save(old_weather_date):
         log.info(f"Old Weather Data: {old_weather_data_key} Deleted From Redis")
 
     if old_weather_data:
-        batch_weather_producer.produce(topic=BATCH_WEATHER_TOPIC, value='\n'.join(
-                old_weather_data).encode(), key=old_weather_data_key)
+        batch_weather_producer.produce(topic=BATCH_WEATHER_TOPIC,
+                                       value='\n'.join(
+                                               old_weather_data).encode(),
+                                       key=old_weather_data_key)
 
 
-def save(old_flight_date=datetime.today() - timedelta(days=2),
-        old_weather_date=datetime.today() - timedelta(days=2)):
-    flight_save(old_flight_date)
-    weather_save(old_weather_date)
+def save(old_date):
+    flight_save(old_date)
+    weather_save(old_date)
