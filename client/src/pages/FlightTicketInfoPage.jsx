@@ -3,11 +3,10 @@ import { Div } from '@/components/atoms/Div';
 import FlightBox from '@/components/modules/FlightBox';
 import { InformationCircleIcon } from '@heroicons/react/24/solid';
 import cloudImg from '@/assets/cloud-img.svg';
-
 import { useState } from 'react';
 import { P } from '@/components/atoms/P';
 import { Separator } from '@/components/atoms/Separator';
-import { Circle, MessageCircleWarning, Terminal } from 'lucide-react';
+import { Circle, MessageCircleWarning } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import SeatInfoBox from '@/components/modules/SeatInfoBox';
 import WeatherInfo from '@/components/modules/WeatherInfo';
@@ -15,6 +14,7 @@ import FlightDelayInfo from '@/components/modules/FlightDelayInfo';
 import FlightCancellationInfo from '@/components/modules/FlightCancellationInfo';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/atoms/dialog';
 import { Alert } from '@/components/atoms/Alert';
+import SeatInfoBox from '@/components/modules/SeatInfoBox';
 
 // TODO: dummy data
 const flightInfo = {
@@ -42,10 +42,10 @@ const statusCode = Object.freeze({
 });
 
 function FlightTicketInfoPage() {
-    const [status, setStatus] = useState(statusCode.정상);
-    const StatusComponent = status.component;
     const [seatNum, setSeatNum] = useState(null);
     const [boardingGate, setBoardingGate] = useState('-');
+    const [status, setStatus] = useState(statusCode.정상);
+    const StatusComponent = status.component;
     const isConcourse = 101 <= Number(boardingGate) && Number(boardingGate) <= 132;
 
     return (
