@@ -8,6 +8,7 @@ import authReducer from '@/stores/authStore';
 import testReducer from '@/stores/testStore';
 import journeyReducer from '@/stores/journeySlice';
 import itemReducer from '@/stores/itemStore';
+import taskReducer from '@/stores/taskStore';
 import journeyAllReducer from '@/stores/journeyAllStore';
 
 const rootReducer = combineReducers({
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
     test: testReducer,
     auth: authReducer,
     item: itemReducer,
+    task: taskReducer,
     journey: journeyReducer,
     journeyAll: journeyAllReducer,
 });

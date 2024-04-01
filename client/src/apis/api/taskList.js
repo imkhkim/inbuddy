@@ -2,18 +2,18 @@ import { serverAxios } from '@/apis/common';
 
 const server = serverAxios();
 
-const getTaskList = async () => {
+const getTaskList = async (journeyId) => {
     return await server
-        .get('/api/journeys/{journey_id}/tasklist', {})
+        .get(`/api/journeys/${journeyId}/tasklist`)
         .then((response) => response.data)
         .catch((error) => {
             throw new Error(`API request failed: ${error}`);
         });
 };
 
-const checkTaskList = async () => {
+const checkTaskList = async (journeyId, taskId) => {
     return await server
-        .put('/api/journeys/{journey_id}/tasklist/{task_id}/check', {})
+        .put(`/api/journeys/${journeyId}/tasklist/${taskId}/check`, {})
         .then((response) => response.data)
         .catch((error) => {
             throw new Error(`API request failed: ${error}`);
