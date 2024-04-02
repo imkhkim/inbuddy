@@ -1,4 +1,6 @@
 from logger.logger import log
+import json
+from datetime import datetime
 import pandas as pd
 
 from config import INPUT_COLUMNS
@@ -8,6 +10,17 @@ from scheduler.weather_data_fetcher import get_last_received_time
 global model, encoder
 encoded_columns = None
 
+_DATE_FORMAT = "%Y%m%d"
+_DATE_FORMAT_MINUTE = "%Y%m%d%H%M"
+COLUMNS = ['airline',
+           'flight_code',
+           'destination',
+           'cause',
+           'delay_minute',
+           'temperature',
+           'wind_speed_10m_avg_kt',
+           'term']
+
 
 def set_model(_model, _encoder):
     global model, encoder
@@ -16,58 +29,89 @@ def set_model(_model, _encoder):
     log.info("ML Model set")
 
 
-"""
-'airline',
-'flight_code',
-'destination',
-'cause',
+def _normalize_date(now):
+    year = now.year
+    month = now.month
+    day = now.day
+    is_leap_year = now.is_leap_year
 
-'temperature',
-'wind_speed_10m_avg_kt',
-'cumulative_precipitation_mm',
-'mor_10m_avg_km',
-'term',
-"""
+    month_days = [0, 31, 29 if is_leap_year else 28, 31, 30, 31, 30, 31, 31,
+                  30,
+                  31, 30, 31]
+
+    cumulative_days = sum(month_days[:month]) + day
+
+    max_days = 366 if is_leap_year else 365
+
+    normalized = (cumulative_days - 1) / (
+            max_days - 1)  # 1월 1일은 0으로, 12월 31일은 1로 정규화
+    return normalized * 10
 
 
 def predict(flight_code):
     global encoded_columns
 
-    # flight_data를 실제로 redis에서 가져오기
-    # 그러기 위해서 flight fetcher가 저장할 때 key:document 형식으로 저장해야함
+    if flight_code is None or len(flight_code) == 0:
+        return None
 
-    flight_data = {"departure_date": "20240403", "airline": "칼리타항공",
-                   "flight_code": "K4818", "destination": "ANC(앵커리지)",
-                   "departure_time_plan": "00:05",
-                   "departure_time_expected": ":", "departure_time_real": ":",
-                   "division": "화물", "flight_status": "", "cause": ""}
+    redis.select(redis.FLIGHTS_API)
+    flights_data = json.loads(redis.get(
+            datetime.strftime(datetime.today(), _DATE_FORMAT) + 'D'))
+    flight_data = flights_data[flight_code]
 
-    weather_data = {"S": 113, "TM": 202404030112, "L_VIS": 10000,
-                    "R_VIS": -99999, "L_RVR": 2000, "R_RVR": -99999,
-                    "CH_MIN": 15600, "TA": 136, "TD": 74, "HM": 66, "PS": 10091,
-                    "PA": 10082, "RN": 0, "예비1": -99999, "예비2": -99999,
-                    "WD02": 50, "WD02_MAX": 80, "WD02_MIN": 30, "WS02": 11,
-                    "WS02_MAX": 15, "WS02_MIN": 8, "WD10": 50, "WD10_MAX": 70,
-                    "WD10_MIN": 20, "WS10": 11, "WS10_MAX": 17, "WS10_MIN": 5}
+    if flight_data is None:
+        return None
 
-    df = pd.DataFrame(columns=INPUT_COLUMNS)
+    redis.select(redis.WEATHERS_API)
+    last_received_time = get_last_received_time()
 
-    df['airline'] = flight_data['flight_code'][:2]
-    df['flight_code'] = flight_data['flight_code']
-    df['destination'] = flight_data['destination'][:3]
-    df['cause'] = '기타' if flight_data['cause'] == '' else flight_data['cause']
+    if last_received_time is None:
+        return None
 
-    df['temperature'] = weather_data['TA'] / 10
-    df['wind_speed_10m_avg_kt'] = weather_data['WS10'] * 0.194384
-    df['cumulative_precipitation_mm'] = weather_data['RN'] * 10
+    weather_data = json.loads(
+            redis.get(
+                    datetime.strftime(last_received_time, _DATE_FORMAT_MINUTE)))
 
-    #  df에 값 채우기
+    if weather_data is None:
+        return None
+
+    df = pd.DataFrame(columns=COLUMNS)
+
+    data = {
+        'airline': flight_data['flight_code'][:2],
+        'flight_code': flight_data['flight_code'],
+        'destination': flight_data['destination'][:3],
+        'cause': '기타' if flight_data['cause'] == '' else flight_data['cause'],
+        'delay_minute': None,
+        'temperature': weather_data['TA'] / 10,
+        'wind_speed_10m_avg_kt': weather_data['WS10'] * 0.194384,
+        'term': _normalize_date(
+                pd.to_datetime(flight_data['departure_date'] + flight_data[
+                    'departure_time_plan'],
+                               format="%Y%m%d%H:%M"))
+    }
+
+    df.loc[0] = data
+
+    categorical_features = [
+        'airline',
+        'flight_code',
+        'destination',
+        'cause']
+    numeric_features = [col for col in df.columns if
+                        col not in categorical_features]
 
     encoded_data = encoder.transform(df)
     encoded_df = pd.DataFrame(encoded_data.toarray())
 
-    # encoded_columns = encoder.named_transformers_['encoder'].columns.tolist()
+    new_column_names = encoder.named_transformers_[
+        'encoder'].get_feature_names_out(
+            input_features=categorical_features)
+    all_column_names = list(new_column_names) + list(numeric_features)
+    encoded_df.columns = all_column_names
+
+    encoded_df.drop('delay_minute', axis=1, inplace=True)
 
     y_pred = model.predict(encoded_df)
 
-    return y_pred
+    return int(y_pred)
