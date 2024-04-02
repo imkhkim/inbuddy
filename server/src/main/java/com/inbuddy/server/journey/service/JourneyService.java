@@ -39,7 +39,9 @@ public class JourneyService {
 
         tasklistService.createTasklist(journey.getJourneyId(), "여권챙김?");
         tasklistService.createTasklist(journey.getJourneyId(), "탑승수속");
-        tasklistService.createTasklist(journey.getJourneyId(), "비행기타기");
+        tasklistService.createTasklist(journey.getJourneyId(), "환전완료");
+        tasklistService.createTasklist(journey.getJourneyId(), "로밍신청");
+
     }
 
     @Transactional
