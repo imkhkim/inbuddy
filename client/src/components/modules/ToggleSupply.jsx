@@ -21,6 +21,7 @@ function ToggleSupply({ selected, supply, onRemove }) {
             if (item.itemName === supplyRef.current.innerText) {
                 // console.log(item);
                 checkItemList(1, item.itemId);
+                // window.location.reload();
             }
         });
     };
@@ -29,7 +30,7 @@ function ToggleSupply({ selected, supply, onRemove }) {
         console.log('Enter Toggle Supply handleRemoveDiv');
         itemList.map((item) => {
             if (item.itemName === supplyRef.current.innerText) {
-                onRemove(item.itemId);
+                onRemove(item.itemId, item.itemName);
             }
         });
     };

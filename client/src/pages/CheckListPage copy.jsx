@@ -86,7 +86,7 @@ function CheckListPage() {
             ));
             setDivs(initialDivs);
         }
-    }, [itemListData]);
+    }, [itemListData, dispatch]);
     //console.log(divs);
     //console.log(useSelector((state) => state.item[0]));
 
@@ -120,15 +120,15 @@ function CheckListPage() {
             //console.log(itemList.map((item) => item.itemDone));
             const oneStep = 100 / divs.length;
             //console.log(oneStep);
-            console.log(divs);
-            if (itemListData) {
-                itemListData.data.map((item) => {
-                    if (item.itemDone === false) {
-                        //console.log(item, item.itemDone);
-                        setCheckAllItem(false);
-                    }
-                });
-            }
+            // console.log(divs);
+            // if (itemListData) {
+            //     itemListData.data.map((item) => {
+            //         if (item.itemDone === false) {
+            //             console.log(item, item.itemDone);
+            //             setCheckAllItem(false);
+            //         }
+            //     });
+            // }
             console.log(checkAllItem);
             let progressCount = 0;
             itemListData.data.map((item) => {
@@ -202,29 +202,30 @@ function CheckListPage() {
         }
     }, [divs]);
 
-    const handleRemoveDiv = useCallback(async (itemId, itemName) => {
+    const handleRemoveDiv = async (itemId) => {
         //deleteItemList(1, itemId);
-        console.log('Enter handleRemoveDiv');
-        setDivs((prevDivs) => prevDivs.filter((div) => div.supply !== itemName));
         dispatch(itemActions.deleteItem(itemId));
         await refetchItemListData();
-    }, []);
-
-    const countUnCheckItems = () => {
-        let answer = 0;
-        for (let i = 0; i < divs.length; i++) {
-            if (divs[i].props.selected === false) {
-                answer++;
-            }
+        if (itemList.data === undefined) {
+            setDivs([]);
+        } else {
+            setDivs(
+                itemListData.data.map((item, index) => (
+                    <ToggleSupply
+                        key={index}
+                        selected={item.itemDone}
+                        supply={item.itemName}
+                        onRemove={handleRemoveDiv}
+                    />
+                ))
+            );
         }
-        console.log(answer);
-        return answer;
     };
 
     useEffect(() => {
         refetchItemListData();
         console.log(itemListData);
-    }, [itemListData, refetchItemListData, handleAddDiv, handleRemoveDiv]);
+    }, [itemListData, refetchItemListData, handleAddDiv]);
 
     const onDragEnd = useCallback(
         (result) => {
@@ -358,7 +359,7 @@ function CheckListPage() {
                                     <IconAndP
                                         className="flex flex-row justify-center mb-4 hover:bg-error-300/50 hover:rounded"
                                         svg={alertTriangleIcon}
-                                        text={`챙기지 않은 준비물이 ${countUnCheckItems()}개 있어요!`}
+                                        text={`챙기지 않은 준비물이 ${progressItem}개 있어요!`}
                                         color="error"
                                     />
                                 </TabsTrigger>
