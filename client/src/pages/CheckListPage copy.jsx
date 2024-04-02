@@ -26,8 +26,6 @@ import { getTaskList, checkTaskList } from '@/apis/api/taskList';
 
 import { itemActions } from '@/stores/itemStore';
 import { taskActions } from '@/stores/taskStore';
-import { set } from 'date-fns';
-import { data } from 'autoprefixer';
 
 const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
@@ -46,7 +44,6 @@ function CheckListPage() {
 
     const [divs, setDivs] = useState([]); // div들을 관리할 배열 상태 변수
     const [showInput, setShowInput] = useState(false); // input 상태 변수 생성
-    const [activeTab, setActiveTab] = useState('checks');
 
     const inputRef = useRef(null);
 
@@ -85,17 +82,11 @@ function CheckListPage() {
             //console.log(itemListData.data);
             dispatch(itemActions.setItem(itemListData.data)); // 전역 상태에 저장
             const initialDivs = itemListData.data.map((item, index) => (
-                <ToggleSupply
-                    key={index}
-                    selected={item.itemDone}
-                    supply={item.itemName}
-                    onRemove={handleRemoveDiv}
-                    onToggle={handleToggleDiv}
-                />
+                <ToggleSupply key={index} selected={item.itemDone} supply={item.itemName} onRemove={handleRemoveDiv} />
             ));
             setDivs(initialDivs);
         }
-    }, [itemListData, activeTab, setDivs, progressItem]);
+    }, [itemListData, dispatch]);
     //console.log(divs);
     //console.log(useSelector((state) => state.item[0]));
 
@@ -121,23 +112,24 @@ function CheckListPage() {
         });
     }, [taskList]);
 
-    // 준비물 리스트 progress bar
+    // 여기 해야 됌
     useEffect(() => {
         if (itemListData) {
-            //console.log(divs);
             //console.log(divs.length);
             //console.log(itemList);
             //console.log(itemList.map((item) => item.itemDone));
             const oneStep = 100 / divs.length;
             //console.log(oneStep);
-
-            itemListData.data.map((item) => {
-                if (item.itemDone === false) {
-                    //console.log(item, item.itemDone);
-                    setCheckAllItem(false);
-                }
-            });
-
+            // console.log(divs);
+            // if (itemListData) {
+            //     itemListData.data.map((item) => {
+            //         if (item.itemDone === false) {
+            //             console.log(item, item.itemDone);
+            //             setCheckAllItem(false);
+            //         }
+            //     });
+            // }
+            console.log(checkAllItem);
             let progressCount = 0;
             itemListData.data.map((item) => {
                 if (item.itemDone === true) {
@@ -148,7 +140,7 @@ function CheckListPage() {
             const timer = setTimeout(() => setProgressItem(oneStep * progressCount), 500);
             return () => clearTimeout(timer);
         }
-    }, [divs.length, itemListData, checkAllItem]);
+    }, [divs.length, itemListData]);
 
     useEffect(() => {
         const timer = setTimeout(
@@ -204,55 +196,36 @@ function CheckListPage() {
             // 입력 값이 비어있지 않을 경우에만 실행
             const newDivs = [...divs]; // 기존 div 배열 복사
             createItemList(1, { journeyId: 1, itemName: inputValue });
-            newDivs.push(
-                <ToggleSupply
-                    selected={false}
-                    supply={inputValue}
-                    onRemove={handleRemoveDiv}
-                    onToggle={handleToggleDiv}
-                />
-            ); // 새로운 div 추가
+            newDivs.push(<ToggleSupply selected={false} supply={inputValue} onRemove={handleRemoveDiv} />); // 새로운 div 추가
             setDivs(newDivs); // div 배열 업데이트
             inputRef.current.value = ''; // 입력 값 초기화
         }
     }, [divs]);
 
-    const handleRemoveDiv = useCallback(async (itemId, itemName) => {
+    const handleRemoveDiv = async (itemId) => {
         //deleteItemList(1, itemId);
-        console.log('Enter handleRemoveDiv');
-        if (refetchItemListData.length == 0) {
-            setDivs([<></>]);
-        }
-        setDivs((prevDivs) => prevDivs.filter((div) => div.supply !== itemName));
         dispatch(itemActions.deleteItem(itemId));
         await refetchItemListData();
-    }, []);
-
-    const handleToggleDiv = useCallback(async () => {
-        console.log('Enter handleToggleDiv');
-        await refetchItemListData();
-        setDivs((prevDivs) => prevDivs);
-        await refetchItemListData();
-    }, []);
-
-    const countUnCheckItems = () => {
-        let answer = 0;
-        for (let i = 0; i < divs.length; i++) {
-            if (divs[i].props.selected === false) {
-                answer++;
-            }
+        if (itemList.data === undefined) {
+            setDivs([]);
+        } else {
+            setDivs(
+                itemListData.data.map((item, index) => (
+                    <ToggleSupply
+                        key={index}
+                        selected={item.itemDone}
+                        supply={item.itemName}
+                        onRemove={handleRemoveDiv}
+                    />
+                ))
+            );
         }
-        if (answer == 0) {
-            setCheckAllItem(true);
-        }
-        //console.log(answer);
-        return answer;
     };
 
     useEffect(() => {
         refetchItemListData();
         console.log(itemListData);
-    }, [itemListData, refetchItemListData, handleAddDiv, handleRemoveDiv, handleToggleDiv]);
+    }, [itemListData, refetchItemListData, handleAddDiv]);
 
     const onDragEnd = useCallback(
         (result) => {
@@ -267,13 +240,13 @@ function CheckListPage() {
 
     return (
         <>
-            <Tabs defaultValue="checks" className="text-center" value={activeTab} onValueChange={setActiveTab}>
+            <Tabs defaultValue="checks" className="text-center">
                 <TabsList>
                     <TabsTrigger value="supplies">준비물 리스트</TabsTrigger>
                     <TabsTrigger value="checks">점검 리스트</TabsTrigger>
                 </TabsList>
 
-                <TabsContent value="supplies" forceMount={true} hidden={'supplies' !== activeTab}>
+                <TabsContent value="supplies">
                     <P className="mb-2" variant="mainHeader">
                         여정 준비물 리스트
                     </P>
@@ -358,7 +331,7 @@ function CheckListPage() {
                     </div>
                 </TabsContent>
 
-                <TabsContent value="checks" forceMount={true} hidden={'checks' !== activeTab}>
+                <TabsContent value="checks">
                     <P className="mb-2" variant="mainHeader">
                         탑승 전 점검 리스트
                     </P>
@@ -386,7 +359,7 @@ function CheckListPage() {
                                     <IconAndP
                                         className="flex flex-row justify-center mb-4 hover:bg-error-300/50 hover:rounded"
                                         svg={alertTriangleIcon}
-                                        text={`챙기지 않은 준비물이 ${countUnCheckItems()}개 있어요!`}
+                                        text={`챙기지 않은 준비물이 ${progressItem}개 있어요!`}
                                         color="error"
                                     />
                                 </TabsTrigger>

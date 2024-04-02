@@ -8,7 +8,7 @@ import { useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { checkItemList } from '@/apis/api/itemList';
 
-function ToggleSupply({ selected, supply, onRemove }) {
+function ToggleSupply({ selected, supply, onToggle, onRemove }) {
     const itemList = useSelector((state) => state.item);
 
     const [isSelected, setIsSelected] = useState(selected);
@@ -21,6 +21,7 @@ function ToggleSupply({ selected, supply, onRemove }) {
             if (item.itemName === supplyRef.current.innerText) {
                 // console.log(item);
                 checkItemList(1, item.itemId);
+                onToggle();
             }
         });
     };
@@ -29,7 +30,7 @@ function ToggleSupply({ selected, supply, onRemove }) {
         console.log('Enter Toggle Supply handleRemoveDiv');
         itemList.map((item) => {
             if (item.itemName === supplyRef.current.innerText) {
-                onRemove(item.itemId);
+                onRemove(item.itemId, item.itemName);
             }
         });
     };
@@ -84,7 +85,8 @@ function ToggleSupply({ selected, supply, onRemove }) {
 ToggleSupply.propTypes = {
     selected: PropTypes.bool,
     supply: PropTypes.string,
-    onRemove: PropTypes.any, // 추가
+    onRemove: PropTypes.any,
+    onToggle: PropTypes.any,
 };
 
 export default ToggleSupply;
