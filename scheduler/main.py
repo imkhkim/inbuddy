@@ -3,17 +3,17 @@ from datetime import datetime, timedelta
 import uvicorn
 
 from app.app import app
-from app.logger.logger import log
-from app.producer.producer import live_weather_producer, live_flight_producer, \
+from logger.logger import log
+from producer.producer import live_weather_producer, live_flight_producer, \
     batch_flight_producer, batch_weather_producer
-from app.redis.redis import redis
-from app.scheduler.batch_produce import save
-from app.scheduler.flight_data_fetcher import fetch as flight_fetch
-from app.scheduler.flight_data_fetcher import \
+from redis_manager.redis import redis
+from scheduler.batch_produce import save
+from scheduler.flight_data_fetcher import fetch as flight_fetch
+from scheduler.flight_data_fetcher import \
     fetch_scheduled as flight_fetch_scheduled
 
-from app.scheduler.scheduler import scheduler
-from app.scheduler.weather_data_fetcher import fetch as weather_fetch
+from scheduler.scheduler import scheduler
+from scheduler.weather_data_fetcher import fetch as weather_fetch
 from config import *
 
 if __name__ == "__main__":
@@ -43,7 +43,7 @@ if __name__ == "__main__":
                      trigger="cron", hour="0-5", minute=0, second=15)
 
     scheduler.create("weather", lambda: weather_fetch(
-        datetime.now().replace(second=0, microsecond=0)), trigger="cron",
+            datetime.now().replace(second=0, microsecond=0)), trigger="cron",
                      minute='*',
                      second=30)
 

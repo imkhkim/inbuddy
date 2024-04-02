@@ -1,7 +1,7 @@
 import datetime
 import json
 
-from app.redis.redis import redis
+from redis_manager.redis import redis
 from fastapi import FastAPI, status
 from fastapi.responses import JSONResponse
 

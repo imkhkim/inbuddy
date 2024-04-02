@@ -1,4 +1,4 @@
-from app.logger.logger import log
+from logger.logger import log
 
 
 def ack(err, msg):
