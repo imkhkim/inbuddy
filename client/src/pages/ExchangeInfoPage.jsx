@@ -1,21 +1,7 @@
 import { P } from '@/components/atoms/P';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/atoms/Tabs';
-import {
-    Menubar,
-    MenubarCheckboxItem,
-    MenubarContent,
-    MenubarItem,
-    MenubarMenu,
-    MenubarRadioGroup,
-    MenubarRadioItem,
-    MenubarSeparator,
-    MenubarShortcut,
-    MenubarSub,
-    MenubarSubContent,
-    MenubarSubTrigger,
-    MenubarTrigger,
-} from '@/components/atoms/Menubar';
-
+import { ScrollArea } from '@/components/atoms/ScrollArea';
+import { Separator } from '@/components/atoms/Separator';
 import SectionLayout from '@/components/modules/SectionLayout';
 
 function ExchangeInfoPage() {
@@ -35,133 +21,153 @@ function ExchangeInfoPage() {
                     </TabsTrigger>
                 </TabsList>
                 <TabsContent value="T1">
-                    <Menubar className="w-40 mx-auto">
-                        <MenubarMenu>
-                            <MenubarTrigger>면세지역</MenubarTrigger>
-                            <MenubarContent>
-                                <MenubarSeparator />
-                                <MenubarItem className="flex flex-col">
+                    <Tabs defaultValue="normal" className="text-center">
+                        <TabsList>
+                            <TabsTrigger value="taxfree" className="font-pretendardBold">
+                                면세지역
+                            </TabsTrigger>
+                            <TabsTrigger value="normal" className="font-pretendardBold">
+                                일반지역
+                            </TabsTrigger>
+                        </TabsList>
+                        {/* T1 면세지역 */}
+                        <TabsContent value="taxfree">
+                            <ScrollArea className="w-48 mx-auto border rounded-md h-72">
+                                <Separator />
+                                <div>
                                     <P variant="content">우리은행 환전소</P>
                                     <P size="xs">탑승동 3층 121번 게이트 부근</P>
-                                </MenubarItem>
-                                <MenubarSeparator />
-                                <MenubarItem className="flex flex-col">
+                                </div>
+                                <Separator />
+                                <div>
                                     <P variant="content">우리은행 환전소</P>
                                     <P size="xs">3층 면세지역 25번 게이트 부근</P>
-                                </MenubarItem>
-                                <MenubarSeparator />
-                                <MenubarItem className="flex flex-col">
+                                </div>
+                                <Separator />
+                                <div>
                                     <P variant="content">하나은행 환전소</P>
                                     <P size="xs">제1여객터미널 1층 수하물수취지역 E 입국장 안</P>
-                                </MenubarItem>
-                                <MenubarSeparator />
-                                <MenubarItem className="flex flex-col">
+                                </div>
+                                <Separator />
+                                <div>
                                     <P variant="content">하나은행 환전소</P>
                                     <P size="xs">제1여객터미널 3층 면세지역 29번 게이트 부근</P>
-                                </MenubarItem>
-                                <MenubarSeparator />
-                                <MenubarItem className="flex flex-col">
+                                </div>
+                                <Separator />
+                                <div>
                                     <P variant="content">하나은행 환전소</P>
                                     <P size="xs">탑승동 3층 121번 게이트 부근</P>
-                                </MenubarItem>
-                                <MenubarSeparator />
-                            </MenubarContent>
-                        </MenubarMenu>
-                        <MenubarMenu>
-                            <MenubarTrigger>일반지역</MenubarTrigger>
-                            <MenubarContent>
-                                <MenubarSeparator />
-                                <MenubarItem className="flex flex-col">
-                                    <P variant="content">국민은행 환전소</P>
-                                    <P size="xs">탑승동 3층 121번 게이트 부근</P>
-                                </MenubarItem>
-                                <MenubarSeparator />
-                                <MenubarItem className="flex flex-col">
+                                </div>
+                                <Separator />
+                            </ScrollArea>
+                        </TabsContent>
+                        {/* T1 일반지역 */}
+                        <TabsContent value="normal">
+                            <ScrollArea className="w-48 mx-auto border rounded-md h-72">
+                                <Separator />
+                                <div>
                                     <P variant="content">국민은행 환전소</P>
                                     <P size="xs">제1여객터미널 1층 일반지역 9번 출입구 부근</P>
-                                </MenubarItem>
-                                <MenubarSeparator />
-                                <MenubarItem className="flex flex-col">
+                                </div>
+                                <Separator />
+                                <div>
                                     <P variant="content">국민은행 환전소</P>
                                     <P size="xs">제1여객터미널 3층 일반지역 5번출국장 부근</P>
-                                </MenubarItem>
-                                <MenubarSeparator />
-                                <MenubarItem className="flex flex-col">
+                                </div>
+                                <Separator />
+                                <div>
                                     <P variant="content">국민은행 환전소</P>
-                                    <P size="xs">제1여객터미널 3층 일반지역 3번 출국장 부근</P>
-                                </MenubarItem>
-                                <MenubarSeparator />
-                                <MenubarItem className="flex flex-col">
-                                    <P variant="content">우리은행 환전소</P>
-                                    <P size="xs">제1여객터미널 지하1층 동편</P>
-                                </MenubarItem>
-                                <MenubarSeparator />
-                                <MenubarItem className="flex flex-col">
-                                    <P variant="content">우리은행 환전소</P>
-                                    <P size="xs">제1여객터미널 1층 일반지역 4번 출입구 부근</P>
-                                </MenubarItem>
-                                <MenubarSeparator />
-                                <MenubarItem className="flex flex-col">
-                                    <P variant="content">우리은행 환전소</P>
-                                    <P size="xs">제1여객터미널 3층 일반지역 11번 출입구 부근</P>
-                                </MenubarItem>
-                                <MenubarItem className="flex flex-col">
-                                    <P variant="content">우리은행 환전소</P>
-                                    <P size="xs">제1여객터미널 3층 일반지역 J, K 체크인카운터 부근</P>
-                                </MenubarItem>
-                                <MenubarSeparator />
-                                <MenubarItem className="flex flex-col">
+                                    <P size="xs">제1여객터미널 1층 수하물수취지역 E 입국장 안</P>
+                                </div>
+                                <Separator />
+                                <div>
+                                    <P variant="content">국민은행 환전소</P>
+                                    <P size="xs">제1여객터미널 3층 면세지역 29번 게이트 부근</P>
+                                </div>
+                                <Separator />
+                                <div>
                                     <P variant="content">하나은행 환전소</P>
-                                    <P size="xs">제1여객터미널 지하 1층 교통센터</P>
-                                </MenubarItem>
-                                <MenubarSeparator />
-                                <MenubarItem className="flex flex-col">
-                                    <P variant="content">하나은행 환전소</P>
-                                    <P size="xs">제1여객터미널 1층 일반지역 11번 출입구 부근</P>
-                                </MenubarItem>
-                                <MenubarSeparator />
-                                <MenubarItem className="flex flex-col">
-                                    <P variant="content">하나은행 환전소</P>
-                                    <P size="xs">제1여객터미널 3층 일반지역 D,E 체크인카운터 부근</P>
-                                </MenubarItem>
-                                <MenubarSeparator />
-                                <MenubarItem className="flex flex-col">
-                                    <P variant="content">하나은행 환전소</P>
-                                    <P size="xs">제1여객터미널 3층 일반지역 4번 출입구 부근</P>
-                                </MenubarItem>
-                                <MenubarSeparator />
-                                <MenubarSub>
-                                    <MenubarSubTrigger>
-                                        <P variant="content">우리은행 환전소</P>
-                                    </MenubarSubTrigger>
-                                    <MenubarSubContent>
-                                        <MenubarItem>Search the web</MenubarItem>
-                                        <MenubarSeparator />
-                                        <MenubarItem>Find...</MenubarItem>
-                                        <MenubarItem>Find Next</MenubarItem>
-                                        <MenubarItem>Find Previous</MenubarItem>
-                                    </MenubarSubContent>
-                                </MenubarSub>
-                                <MenubarSeparator />
-                                <MenubarSeparator />
-                                <MenubarSub>
-                                    <MenubarSubTrigger>
-                                        <P variant="content">하나은행 환전소</P>
-                                    </MenubarSubTrigger>
-                                    <MenubarSubContent>
-                                        <MenubarItem>Search the web</MenubarItem>
-                                        <MenubarSeparator />
-                                        <MenubarItem>Find...</MenubarItem>
-                                        <MenubarItem>Find Next</MenubarItem>
-                                        <MenubarItem>Find Previous</MenubarItem>
-                                    </MenubarSubContent>
-                                </MenubarSub>
-                                <MenubarSeparator />
-                            </MenubarContent>
-                        </MenubarMenu>
-                    </Menubar>
+                                    <P size="xs">탑승동 3층 121번 게이트 부근</P>
+                                </div>
+                                <Separator />
+                            </ScrollArea>
+                        </TabsContent>
+                    </Tabs>
                 </TabsContent>
-                <TabsContent value="T2">dd</TabsContent>
+                <TabsContent value="T2">
+                    <Tabs defaultValue="normal" className="text-center">
+                        <TabsList>
+                            <TabsTrigger value="taxfree" className="font-pretendardBold">
+                                면세지역
+                            </TabsTrigger>
+                            <TabsTrigger value="normal" className="font-pretendardBold">
+                                일반지역
+                            </TabsTrigger>
+                        </TabsList>
+                        {/* T2 면세지역 */}
+                        <TabsContent value="taxfree">
+                            <ScrollArea className="w-48 mx-auto border rounded-md h-72">
+                                <Separator />
+                                <div>
+                                    <P variant="content">우리은행 환전소</P>
+                                    <P size="xs">탑승동 3층 121번 게이트 부근</P>
+                                </div>
+                                <Separator />
+                                <div>
+                                    <P variant="content">우리은행 환전소</P>
+                                    <P size="xs">3층 면세지역 25번 게이트 부근</P>
+                                </div>
+                                <Separator />
+                                <div>
+                                    <P variant="content">하나은행 환전소</P>
+                                    <P size="xs">제1여객터미널 1층 수하물수취지역 E 입국장 안</P>
+                                </div>
+                                <Separator />
+                                <div>
+                                    <P variant="content">하나은행 환전소</P>
+                                    <P size="xs">제1여객터미널 3층 면세지역 29번 게이트 부근</P>
+                                </div>
+                                <Separator />
+                                <div>
+                                    <P variant="content">하나은행 환전소</P>
+                                    <P size="xs">탑승동 3층 121번 게이트 부근</P>
+                                </div>
+                                <Separator />
+                            </ScrollArea>
+                        </TabsContent>
+                        {/* T2 일반지역 */}
+                        <TabsContent value="normal">
+                            <ScrollArea className="w-48 mx-auto border rounded-md h-72">
+                                <Separator />
+                                <div>
+                                    <P variant="content">우리은행 환전소</P>
+                                    <P size="xs">탑승동 3층 121번 게이트 부근</P>
+                                </div>
+                                <Separator />
+                                <div>
+                                    <P variant="content">우리은행 환전소</P>
+                                    <P size="xs">3층 면세지역 25번 게이트 부근</P>
+                                </div>
+                                <Separator />
+                                <div>
+                                    <P variant="content">하나은행 환전소</P>
+                                    <P size="xs">제1여객터미널 1층 수하물수취지역 E 입국장 안</P>
+                                </div>
+                                <Separator />
+                                <div>
+                                    <P variant="content">하나은행 환전소</P>
+                                    <P size="xs">제1여객터미널 3층 면세지역 29번 게이트 부근</P>
+                                </div>
+                                <Separator />
+                                <div>
+                                    <P variant="content">하나은행 환전소</P>
+                                    <P size="xs">탑승동 3층 121번 게이트 부근</P>
+                                </div>
+                                <Separator />
+                            </ScrollArea>
+                        </TabsContent>
+                    </Tabs>
+                </TabsContent>
             </Tabs>
 
             <SectionLayout sectionHeaderText="환전 준비물">
