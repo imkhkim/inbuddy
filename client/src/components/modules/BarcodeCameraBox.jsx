@@ -7,12 +7,26 @@ const BarcodeCameraBox = ({ setInputValue }) => {
 
     useEffect(() => {
         const codeReader = new BrowserMultiFormatReader();
-        let selectedDeviceId;
 
         codeReader
             .listVideoInputDevices()
             .then((videoInputDevices) => {
-                selectedDeviceId = videoInputDevices[0].deviceId; // 첫 번째 카메라 장치 사용
+                let selectedDeviceId;
+
+                // 후면 카메라 선택
+                const backCameraDevice = videoInputDevices.find((device) =>
+                    device.label.toLowerCase().includes('back')
+                );
+
+                console.log(backCameraDevice);
+                if (backCameraDevice) {
+                    selectedDeviceId = backCameraDevice.deviceId;
+                } else {
+                    // 후면 카메라를 찾지 못한 경우, 첫 번째 장치를 기본값으로 사용
+                    selectedDeviceId = videoInputDevices[0].deviceId;
+                }
+
+                console.log(selectedDeviceId);
                 return codeReader.decodeFromVideoDevice(selectedDeviceId, videoRef.current, (result, err) => {
                     if (result) {
                         const boardingPassData = result.text.split(/\s+/);
