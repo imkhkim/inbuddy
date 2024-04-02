@@ -1,6 +1,8 @@
 import { P } from '@/components/atoms/P';
 import T1counter from '@/assets/maps/map_baggage_checkin_counter_T1.png'
 import T2counter from '@/assets/maps/map_baggage_checkin_counter_T2.png'
+import T1counterlabel from '@/assets/maps/map_baggage_checkin_counter_T1_label.png'
+import T2counterlabel from '@/assets/maps/map_baggage_checkin_counter_T2_label.png'
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { Link } from 'react-router-dom';
 import IconAndP from '@/components/modules/IconAndP';
@@ -117,16 +119,37 @@ function CheckInCounterInfoPage() {
     { "name": "아틀라스항공", "airlineCode": "5Y", "terminal": 1, "selfCheckIn": false }]
 
 
+    const counterMapStyle =
+        flightInfo.terminalNo == '1' ?
+            {
+                initialScale: 1.7,
+                initialPositionX: -130,
+                initialPositionY: -76,
+                mapSrc: T1counter,
+                mapLabelSrc: T1counterlabel
+
+            } : {
+                initialScale: 1.7,
+                initialPositionX: -122,
+                initialPositionY: -95,
+                mapSrc: T2counter,
+                mapLabelSrc: T2counterlabel
+            }
+
+
+
     return (
         <div className="flex flex-col items-center justify-end w-full">
-
             <P variant="mainHeader" className='my-10'>체크인 카운터 안내</P>
-
             <TransformWrapper
-                centerOnInit={true}>
+                initialScale={counterMapStyle.initialScale}
+                initialPositionX={counterMapStyle.initialPositionX}
+                initialPositionY={counterMapStyle.initialPositionY}
+            >
                 <TransformComponent>
-                    {flightInfo.terminalNo == 1 ? <img src={T1counter}></img> : <img src={T2counter}></img>}
+                    <img src={counterMapStyle.mapSrc}></img>
                 </TransformComponent>
+                <img src={counterMapStyle.mapLabelSrc}></img>
             </TransformWrapper>
 
             <P className='text-xs text-gray-400'>손가락을 움직여 화면을 움직이거나 크기를 조절할 수 있습니다.</P>

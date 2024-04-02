@@ -7,8 +7,8 @@ import { cn } from "@/lib/utils";
 import { Label } from "@/components/atoms/label";
 import { Input } from "@/components/atoms/input";
 import { Calendar } from "@/components/atoms/calendar";
-import { useDispatch } from "react-redux"
-// import { ChevronsUpDown } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { ScrollArea } from "@/components/atoms/scroll-area";
 import {
     Dialog,
     DialogContent,
@@ -198,8 +198,6 @@ function FlightDialog({ journeyId }) {
                     </DialogDescription>
                 </DialogHeader>
 
-
-
                 {/* 항공기 출발 날짜 캘린더 */}
                 < Popover open={openCalander} onOpenChange={setOpenCalander} >
                     <Label htmlFor="calender" className="text-left">
@@ -230,7 +228,7 @@ function FlightDialog({ journeyId }) {
 
 
                 {/* 항공사 선택 리스트 */}
-                <Popover open={openAirlineList} onOpenChange={setOpenAirlineList}>
+                <Popover open={openAirlineList} onOpenChange={setOpenAirlineList} modal={true}>
                     <Label htmlFor="calender" className="text-left">
                         항공사
                     </Label>
@@ -242,7 +240,7 @@ function FlightDialog({ journeyId }) {
                             className="w-[200px] justify-between"
                         >
                             {myAirline
-                                ? airlines.find((airline) => airline.name === myAirline)?.name
+                                ? airlines.find((airline) => airline.name === myAirline.toUpperCase())?.name
                                 : "항공사를 선택해주세요."}
                             {/* <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" /> */}
                         </Button>
@@ -251,28 +249,30 @@ function FlightDialog({ journeyId }) {
                         <Command>
                             <CommandInput placeholder="한글명으로 검색" />
                             <CommandList>
-                                <CommandEmpty>일치하는 항공사가 없습니다.</CommandEmpty>
-                                <CommandGroup>
-                                    {airlines.map((airline) => (
-                                        <CommandItem
-                                            key={airline.name}
-                                            value={airline.name}
-                                            onSelect={(currentValue) => {
-                                                setMyAirline(currentValue === airline ? "" : currentValue)
-                                                setMyAirlineCode(airline.airlineCode)
-                                                setOpenAirlineList(false)
-                                            }}
-                                        >
-                                            <Check
-                                                className={cn(
-                                                    "mr-2 h-4 w-4",
-                                                    myAirline.name === airline.name ? "opacity-100" : "opacity-0"
-                                                )}
-                                            />
-                                            {airline.name}
-                                        </CommandItem>
-                                    ))}
-                                </CommandGroup>
+                                <ScrollArea className='h-48' >
+                                    <CommandEmpty>일치하는 항공사가 없습니다.</CommandEmpty>
+                                    <CommandGroup>
+                                        {airlines.map((airline) => (
+                                            <CommandItem
+                                                key={airline.name}
+                                                value={airline.name}
+                                                onSelect={(currentValue) => {
+                                                    setMyAirline(currentValue === airline ? "" : currentValue)
+                                                    setMyAirlineCode(airline.airlineCode)
+                                                    setOpenAirlineList(false)
+                                                }}
+                                            >
+                                                <Check
+                                                    className={cn(
+                                                        "mr-2 h-4 w-4",
+                                                        myAirline.name === airline.name ? "opacity-100" : "opacity-0"
+                                                    )}
+                                                />
+                                                {airline.name}
+                                            </CommandItem>
+                                        ))}
+                                    </CommandGroup>
+                                </ScrollArea>
                             </CommandList>
                         </Command>
                     </PopoverContent>
