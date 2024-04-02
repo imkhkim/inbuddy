@@ -3,29 +3,18 @@ import { Div } from '@/components/atoms/Div';
 import FlightBox from '@/components/modules/FlightBox';
 import { InformationCircleIcon } from '@heroicons/react/24/solid';
 import cloudImg from '@/assets/cloud-img.svg';
-
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { P } from '@/components/atoms/P';
 import { Separator } from '@/components/atoms/Separator';
-import { Circle, MessageCircleWarning, Terminal } from 'lucide-react';
+import { Circle, MessageCircleWarning, Pencil } from 'lucide-react';
 import { Link } from 'react-router-dom';
-
+import SeatInfoBox from '@/components/modules/SeatInfoBox';
 import WeatherInfo from '@/components/modules/WeatherInfo';
 import FlightDelayInfo from '@/components/modules/FlightDelayInfo';
 import FlightCancellationInfo from '@/components/modules/FlightCancellationInfo';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from '@/components/atoms/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/atoms/dialog';
+import { Alert } from '@/components/atoms/Alert';
 import { Button } from '@/components/atoms/Button';
-import { Label } from '@/components/atoms/label';
-import { Input } from '@/components/atoms/input';
-import { Alert, AlertDescription, AlertTitle } from '@/components/atoms/Alert';
 
 // TODO: dummy data
 const flightInfo = {
@@ -53,9 +42,11 @@ const statusCode = Object.freeze({
 });
 
 function FlightTicketInfoPage() {
-    const [status, setStatus] = useState(statusCode.결항);
-    const StatusComponent = status.component;
+    const [seatNum, setSeatNum] = useState(null);
     const [boardingGate, setBoardingGate] = useState('-');
+    const [isOpen, setIsOpen] = useState(false);
+    const [status, setStatus] = useState(statusCode.정상);
+    const StatusComponent = status.component;
     const isConcourse = 101 <= Number(boardingGate) && Number(boardingGate) <= 132;
 
     return (
@@ -117,7 +108,7 @@ function FlightTicketInfoPage() {
                                         <P variant="content" font="regular" size="sm" color="neutral">
                                             탑승구
                                         </P>
-                                        <div className="flex flex-col py-1">
+                                        <div className="flex flex-col items-center py-1">
                                             {/* TODO : 탑승구 boardingGate  */}
                                             <P variant="content" size="xl" className="text-center " font="regular">
                                                 {boardingGate}
@@ -137,24 +128,56 @@ function FlightTicketInfoPage() {
                                     </div>
                                     <div className="flex flex-col w-1/2 mx-3 my-2">
                                         <Separator className="my-2" />
+                                        <div className="flex items-center justify-between gap-2">
+                                            <P variant="content" font="regular" size="sm" color="neutral">
+                                                좌석 번호
+                                            </P>
+                                            {seatNum && (
+                                                <SeatInfoBox
+                                                    setSeatNum={setSeatNum}
+                                                    isOpen={isOpen}
+                                                    setIsOpen={setIsOpen}
+                                                >
+                                                    <Pencil
+                                                        size="15"
+                                                        className="mr-2 cursor-pointer stroke-neutral-400"
+                                                    />
+                                                </SeatInfoBox>
+                                            )}
+                                        </div>
 
-                                        <P variant="content" font="regular" size="sm" color="neutral">
-                                            좌석 번호
-                                        </P>
-                                        <div className="flex flex-col py-1">
+                                        <div className="flex flex-col items-center py-1 ">
                                             {/* TODO : 좌석 번호  */}
-                                            <P variant="content" size="xl" className="text-center " font="regular">
-                                                21A
-                                            </P>
-                                            <P
-                                                variant="content"
-                                                size="sm"
-                                                className="text-center underline"
-                                                font="regular"
-                                                color="neutral"
-                                            >
-                                                <Link>위치 확인</Link>
-                                            </P>
+                                            {seatNum ? (
+                                                <>
+                                                    <P
+                                                        variant="content"
+                                                        size="xl"
+                                                        className="text-center "
+                                                        font="regular"
+                                                    >
+                                                        {seatNum}
+                                                    </P>
+
+                                                    <P
+                                                        variant="content"
+                                                        size="sm"
+                                                        className="text-center underline"
+                                                        font="regular"
+                                                        color="neutral"
+                                                    >
+                                                        <Link>위치 확인</Link>
+                                                    </P>
+                                                </>
+                                            ) : (
+                                                <SeatInfoBox
+                                                    setSeatNum={setSeatNum}
+                                                    isOpen={isOpen}
+                                                    setIsOpen={setIsOpen}
+                                                >
+                                                    <Button variant="outline">등록</Button>
+                                                </SeatInfoBox>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
