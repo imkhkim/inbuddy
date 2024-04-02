@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { format } from 'date-fns';
 import { utcToZonedTime } from 'date-fns-tz';
-import { P } from '../atoms/P';
+import { P } from '@/components/atoms/P';
 
 const airports = {
     ICN: 'Asia/Seoul',
@@ -193,7 +193,7 @@ const airports = {
     CJU: 'Asia/Seoul', // 제주
 };
 
-const AirportTimeInfo = ({ code }) => {
+const AirportTimeInfoBox = ({ code }) => {
     const [date, setDate] = useState();
     const [time, setTime] = useState('');
 
@@ -236,10 +236,14 @@ const AirportTimeInfo = ({ code }) => {
 
     return (
         <>
-            <P size="sm">{date}</P>
-            <P size="2xl">{time}</P>
+            <P size="sm" color="neutral">
+                {date}
+            </P>
+            <P size="xl" font="bold">
+                {time}
+            </P>
         </>
     );
 };
 
-export default AirportTimeInfo;
+export default AirportTimeInfoBox;

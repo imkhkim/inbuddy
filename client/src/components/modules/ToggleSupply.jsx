@@ -5,11 +5,10 @@ import { Div } from '@/components/atoms/Div.jsx';
 import { P } from '@/components/atoms/P.jsx';
 import { useState, useRef } from 'react';
 
-import { useSelector, useDispatch } from 'react-redux';
-import { checkItemList, deleteItemList } from '@/apis/api/itemList';
+import { useSelector } from 'react-redux';
+import { checkItemList } from '@/apis/api/itemList';
 
-function ToggleSupply({ selected, supply, handleRemoveDiv }) {
-    const dispatch = useDispatch();
+function ToggleSupply({ selected, supply, onToggle, onRemove }) {
     const itemList = useSelector((state) => state.item);
 
     const [isSelected, setIsSelected] = useState(selected);
@@ -22,18 +21,19 @@ function ToggleSupply({ selected, supply, handleRemoveDiv }) {
             if (item.itemName === supplyRef.current.innerText) {
                 // console.log(item);
                 checkItemList(1, item.itemId);
+                onToggle();
             }
         });
     };
 
-    // handleRemoveDiv = () => {
-    //     console.log('삭제 진입');
-    //     itemList.map((item) => {
-    //         if (item.itemName === supplyRef.current.innerText) {
-    //             deleteItemList(1, item.itemId);
-    //         }
-    //     });
-    // };
+    const handleRemoveDiv = () => {
+        console.log('Enter Toggle Supply handleRemoveDiv');
+        itemList.map((item) => {
+            if (item.itemName === supplyRef.current.innerText) {
+                onRemove(item.itemId, item.itemName);
+            }
+        });
+    };
 
     return (
         <>
@@ -85,7 +85,8 @@ function ToggleSupply({ selected, supply, handleRemoveDiv }) {
 ToggleSupply.propTypes = {
     selected: PropTypes.bool,
     supply: PropTypes.string,
-    handleRemoveDiv: PropTypes.func,
+    onRemove: PropTypes.any,
+    onToggle: PropTypes.any,
 };
 
 export default ToggleSupply;

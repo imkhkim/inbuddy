@@ -7,7 +7,6 @@ FlightBox.propTypes = {
 };
 
 function FlightBox({ flightInfo }) {
-
     // 코드를 가지고 항공편 조회
 
     // {
@@ -28,15 +27,14 @@ function FlightBox({ flightInfo }) {
     //     "arrivalAirportName": "도쿄/나리타"
     // }
 
-
     return (
         <>
-            <P className='text-center'>{flightInfo.departureDate}</P>
+            <P className="text-center">{flightInfo.departureDate}</P>
 
             <div className="flex flex-row justify-center mx-5">
                 <div className="text-center">
-                    <P className='text-sm text-gray-400'>서울/인천</P>
-                    <P className='text-5xl font-pretendardBold'>ICN</P>
+                    <P className="text-sm text-gray-400">서울/인천</P>
+                    <P className="text-5xl font-pretendardBold">ICN</P>
                     <P>{flightInfo.departureTime.time}</P>
                 </div>
 
@@ -46,8 +44,8 @@ function FlightBox({ flightInfo }) {
                 </div>
 
                 <div className="text-center">
-                    <P className='text-sm text-gray-400'>{flightInfo.arrivalAirportName}</P>
-                    <P className='text-5xl font-pretendardBold'>{flightInfo.arrivalAirportIATA}</P>
+                    <P className="text-sm text-gray-400">{flightInfo.arrivalAirportName}</P>
+                    <P className="text-5xl font-pretendardBold">{flightInfo.arrivalAirportIATA}</P>
                     <P>{flightInfo.arrivalTime.time}</P>
                 </div>
             </div>

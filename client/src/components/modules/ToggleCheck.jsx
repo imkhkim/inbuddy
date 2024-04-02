@@ -1,26 +1,25 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { Div } from '@/components/atoms/Div.jsx';
 import { P } from '@/components/atoms/P.jsx';
 
-function ToggleCheck({ iconLeft, title, content, iconRight, footerQuote, check, linkPage }) {
-    const [isCheck, setIsCheck] = useState(check);
+function ToggleCheck({ iconLeft, title, content, iconRight, footerQuote, check, linkPage, onHandleDivClick }) {
+    // const [isCheck, setIsCheck] = useState(check);
 
-    const handleClick = () => {
-        setIsCheck(!isCheck);
-    };
+    // const handleClick = () => {
+    //     setIsCheck(!isCheck);
+    // };
     return (
         <>
             <Div
-                borderColor={isCheck ? 'brand' : 'default'}
+                borderColor={check ? 'brand' : 'default'}
                 className="flex flex-row justify-between py-10 cursor-pointer"
-                onClick={handleClick}
+                onClick={onHandleDivClick}
             >
-                {isCheck ? <div className="text-brand-500">{iconLeft} </div> : <div>{iconLeft} </div>}
+                {check ? <div className="text-brand-500">{iconLeft} </div> : <div>{iconLeft} </div>}
                 <div className="items-start px-4">
-                    <P font="font-pretendardRegular" size="lg" color={isCheck ? 'brand' : 'black'}>
+                    <P font="font-pretendardRegular" size="lg" color={check ? 'brand' : 'black'}>
                         {title}
                     </P>
                     <P font="font-pretendardRegular" size="xs" color="neutral">
@@ -44,6 +43,7 @@ ToggleCheck.propTypes = {
     footerQuote: PropTypes.string,
     check: PropTypes.bool,
     linkPage: PropTypes.string,
+    onHandleDivClick: PropTypes.func,
 };
 
 export default ToggleCheck;

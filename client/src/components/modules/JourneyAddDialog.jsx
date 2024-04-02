@@ -1,6 +1,4 @@
-
-
-import { Button } from "@/components/atoms/Button"
+import { Button } from '@/components/atoms/Button';
 import {
     Dialog,
     DialogClose,
@@ -41,18 +39,16 @@ export function JourneyAddDialog() {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="destructive" className='w-72 h-18 j'>
+                <Button variant="destructive" className="w-72 h-18 j">
                     <P>나의 여정 추가하기</P>
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
                     <DialogTitle>
-                        <P variant='mainHeader'>여정 이름 등록</P>
+                        <P variant="mainHeader">여정 이름 등록</P>
                     </DialogTitle>
-                    <DialogDescription>
-                        여정에 대한 이름을 등록하세요.
-                    </DialogDescription>
+                    <DialogDescription>여정에 대한 이름을 등록하세요.</DialogDescription>
                 </DialogHeader>
                 <div className="flex items-center space-x-2">
                     <div className="grid flex-1 gap-2">
@@ -81,7 +77,6 @@ export function JourneyAddDialog() {
                             등록
                         </Button>
                     </DialogClose>
-
                 </DialogFooter>
             </DialogContent>
         </Dialog >
