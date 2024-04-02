@@ -10,17 +10,11 @@ import { fetchUserProfile, reissueToken } from '@/apis/api/auth';
 import { useEffect } from 'react';
 
 function JourneyCollectionPage() {
-
     const journeyList = useSelector((state) => state.journey);
 
     const dispatch = useDispatch();
 
-
-
     // 로그인 성공 시 유저 정보를 바탕으로 여정 처음에 가져오는 요청
-
-
-
 
     const { data, isLoading, error } = useQuery({
         queryKey: ['auth'],
@@ -76,7 +70,6 @@ function JourneyCollectionPage() {
 
     return (
         <>
-            <h3>여정 컬렉션 페이지</h3>
             <ul>
                 {journeyList &&
                     journeyList.map((journey) => (
