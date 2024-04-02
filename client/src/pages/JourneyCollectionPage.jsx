@@ -86,23 +86,23 @@ function JourneyCollectionPage() {
 
     return (
         <>
-            <h3>여정 컬렉션 페이지</h3>
-            <ul>
-                {journeyList &&
-                    journeyList.map((journey) => (
-                        <li key={journey.journeyId}>
-                            <JourneyBox journey={journey} />
-                        </li>
-                    ))}
+            <div className="flex flex-col items-center justify-center">
+                {journeyList && journeyList.map((journey) => <JourneyBox journey={journey} key={journey.journeyId} />)}
 
-                <div className="border border-solid rounded-md flex flex-col  mx-8 my-16 py-10 h-80 p-3 mb-1.5">
-                    <P variant="mainHeader" className="my-5">
-                        계획된 여정이 없습니다.
-                    </P>
-                    <P variant="content">완벽한 여행 계획을 위해 여정을 추가해보세요!</P>
-                    <JourneyAddDialog />
+                <div className="rounded-md flex flex-col justify-center mx-8 my-10 py-10 h-80 p-3 shadow-[rgba(13,_38,_76,_0.19)_0px_9px_20px] text-center w-[80%]">
+                    <div className="my-1 ">
+                        <P variant="sectionHeader" className="my-1">
+                            계획된 여정이 없습니다.
+                        </P>
+                        <P font="regular" color="neutral" size="xs">
+                            완벽한 여행 계획을 위해 여정을 추가해보세요!
+                        </P>
+                    </div>
+                    <div className="my-4 ">
+                        <JourneyAddDialog />
+                    </div>
                 </div>
-            </ul>
+            </div>
         </>
     );
 }
