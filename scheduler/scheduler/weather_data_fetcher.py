@@ -1,15 +1,19 @@
 import json
 import requests
 
-from datetime import datetime, timedelta
-from app.logger.logger import log
-from app.producer.producer import live_weather_producer
-from app.redis.redis import redis
+from datetime import datetime
+from logger.logger import log
+from producer.producer import live_weather_producer
+from redis_manager.redis import redis
 from config import WEATHER_API_DOMAIN, WEATHER_DATA_COLUMNS, WEATHER_API_KEY, \
     LIVE_WEATHER_TOPIC, resource_lock
 
 _last_received = None
 _DATE_FORMAT_MINUTE = "%Y%m%d%H%M"
+
+
+def get_last_received_time():
+    return _last_received
 
 
 def _parse_json(text):

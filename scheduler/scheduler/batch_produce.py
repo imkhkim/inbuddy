@@ -1,9 +1,9 @@
 import json
 from datetime import datetime, timedelta
 
-from app.logger.logger import log
-from app.producer.producer import batch_flight_producer, batch_weather_producer
-from app.redis.redis import redis
+from logger.logger import log
+from producer.producer import batch_flight_producer, batch_weather_producer
+from redis_manager.redis import redis
 from config import resource_lock, BATCH_FLIGHT_TOPIC, BATCH_WEATHER_TOPIC
 
 _DATE_FORMAT = "%Y%m%d"

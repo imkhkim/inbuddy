@@ -3,9 +3,9 @@ import pandas as pd
 
 from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
-from app.logger.logger import log
-from app.producer.producer import live_flight_producer
-from app.redis.redis import redis
+from logger.logger import log
+from producer.producer import live_flight_producer
+from redis_manager.redis import redis
 from config import FLIGHT_API_DOMAIN, FLIGHT_DATA_COLUMNS, LIVE_FLIGHT_TOPIC, \
     FLIGHTS_FETCH_SIZE, resource_lock
 
@@ -126,12 +126,3 @@ def fetch_scheduled(start_date, fetch_size=FLIGHTS_FETCH_SIZE):
     else:
         log.info(
                 f"No Scheduled Flight(Departure) Data After {start_date.strftime(_DATE_FORMAT)}")
-
-
-def test():
-    redis.set_connection("localhost", 6379)
-    fetch_scheduled(datetime.now() + timedelta(
-            days=0 * FLIGHTS_FETCH_SIZE + 1))
-
-
-test()

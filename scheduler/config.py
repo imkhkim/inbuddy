@@ -17,9 +17,12 @@ LOGFILE_PATH = os.path.join(LOG_DIRECTORY, 'scheduler.log')
 
 # Flight API
 FLIGHT_API_DOMAIN = "https://www.airportal.go.kr/life/airinfo/RbHanList.jsp"
-FLIGHT_DATA_COLUMNS = ["날짜", "항공사", "편명", "도착지", "계획", "예상", "출발", "구분", "현황",
-                       "사유"]
-
+# FLIGHT_DATA_COLUMNS = ["날짜", "항공사", "편명", "도착지", "계획", "예상", "출발", "구분", "현황",
+#                        "사유"]
+FLIGHT_DATA_COLUMNS = ['departure_date', 'airline', 'flight_code',
+                       'destination', 'departure_time_plan',
+                       'departure_time_expected', 'departure_time_real',
+                       'division', 'flight_status', 'cause']
 FLIGHTS_FETCH_SIZE = int(os.getenv("FLIGHTS_FETCH_SIZE"))
 
 # Weather API
