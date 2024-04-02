@@ -1,3 +1,5 @@
+import json
+
 import requests
 import pandas as pd
 
@@ -37,8 +39,8 @@ def _request(date_format, dep_arr='D'):
     cat = pd.DataFrame(columns=FLIGHT_DATA_COLUMNS)
 
     params = {"gubun": "c_getList", "depArr": dep_arr,
-              "current_date": date_format,
-              "airport": "RKSI", "al_icao": "", "fp_id": ""}
+              "current_date": date_format, "airport": "RKSI", "al_icao": "",
+              "fp_id": ""}
 
     url = FLIGHT_API_DOMAIN + '?' + '&'.join(
             [f"{key}={value}" for key, value in params.items()])
@@ -71,7 +73,9 @@ def _request(date_format, dep_arr='D'):
         loc += 1
 
     cat = cat.reset_index(drop=True)
-    return cat.to_json(orient="records", force_ascii=False)
+    json_array = json.loads(cat.to_json(orient="records", force_ascii=False))
+    json_object = {item['flight_code']: item for item in json_array}
+    return json_object
 
 
 def fetch(date):
@@ -88,7 +92,7 @@ def fetch(date):
 
     with resource_lock:
         redis.select(redis.FLIGHTS_API)
-        redis.set(date_format + 'D', response_departure)
+        redis.set(date_format + 'D', json.dumps(response_departure))
 
     live_flight_producer.produce(topic=LIVE_FLIGHT_TOPIC,
                                  value=response_departure,
