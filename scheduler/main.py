@@ -1,4 +1,6 @@
 from datetime import datetime, timedelta
+from joblib import load
+from app.predict import set_model
 
 import uvicorn
 
@@ -59,5 +61,10 @@ if __name__ == "__main__":
     scheduler.start("batch_save")
 
     log.info("Scheduler started")
+
+    model = load(ML_MODEL_PATH)
+    encoder = load(ENCODER_PATH)
+
+    set_model(model, encoder)
 
     uvicorn.run(app, log_config=UVICORN_LOG_CONFIG)

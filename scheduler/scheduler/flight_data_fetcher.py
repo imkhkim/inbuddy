@@ -90,12 +90,14 @@ def fetch(date):
 
     log.info("Fetched Flight(Departure) Data")
 
+    json_object = json.dumps(response_departure)
+    
     with resource_lock:
         redis.select(redis.FLIGHTS_API)
-        redis.set(date_format + 'D', json.dumps(response_departure))
+        redis.set(date_format + 'D', json_object)
 
     live_flight_producer.produce(topic=LIVE_FLIGHT_TOPIC,
-                                 value=response_departure,
+                                 value=json_object,
                                  key=date_format + 'D')
 
 

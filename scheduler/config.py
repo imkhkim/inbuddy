@@ -95,3 +95,19 @@ UVICORN_LOG_CONFIG = {
                               "level": "DEBUG"},
     },
 }
+
+# Predict Model Path
+ML_MODEL_PATH = os.getenv('ML_MODEL_PATH')
+ENCODER_PATH = os.getenv('ENCODER_PATH')
+
+INPUT_COLUMNS = [
+    'airline',
+    'flight_code',
+    'destination',
+    'cause',
+    'temperature',
+    'wind_speed_10m_avg_kt',
+    'cumulative_precipitation_mm',
+    'mor_10m_avg_km',
+    'term',
+]
