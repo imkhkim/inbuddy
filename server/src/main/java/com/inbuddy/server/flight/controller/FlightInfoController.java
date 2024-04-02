@@ -54,8 +54,8 @@ public class FlightInfoController {
         }
     }
 
-    @PutMapping("/{flight_info_id}/modify")
-    public ResponseEntity<Object> modifyFlightInfo(@PathVariable("flight_info_id") int flightId, @RequestBody FlightDto flightDto) {
+    @PutMapping("/{journey_flight_id}/modify")
+    public ResponseEntity<Object> modifyFlightInfo(@PathVariable("journey_flight_id") int flightId, @RequestBody FlightDto flightDto) {
         try {
             flightService.modifyFlightInfo(flightId, flightDto.getFlightCode(), flightDto.getAirline(), flightDto.getDepartureDate());
             Message message = new Message("200", flightDto.getFlightCode() + ": 아이템 생성이 성공적으로 수정되었습니다.");
@@ -69,8 +69,8 @@ public class FlightInfoController {
         }
     }
 
-    @DeleteMapping("/{flight_info_id}/delete")
-    public ResponseEntity<Object> deleteJourney(@PathVariable("flight_info_id") int flightId) {
+    @DeleteMapping("/{journey_flight_id}/delete")
+    public ResponseEntity<Object> deleteJourney(@PathVariable("journey_flight_id") int flightId) {
         try {
             flightService.deleteFlightInfo(flightId);
             Message message = new Message("200", "비행 정보 삭제가 성공적으로 완료되었습니다.");
@@ -80,6 +80,42 @@ public class FlightInfoController {
             return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             Message message = new Message("500", "비행 정보 삭제 중 오류가 발생하였습니다.");
+            return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/{journey_flight_id}/seat")
+    public ResponseEntity<Object> updateSeat(@PathVariable("journey_flight_id") int journeyFlightId, @RequestBody FlightDto flightDto){
+        try{
+            flightService.updateSeat(journeyFlightId,flightDto.getSeat());
+            Message message = new Message("200", "좌석 업데이트가 성공적으로 완료되었습니다.");
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        }catch (ChangeSetPersister.NotFoundException e){
+            Message message = new Message("404", journeyFlightId + "좌석 업데이트를 위한 비행정보 찾기 실패하였습니다.");
+            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        }catch (Exception e){
+            Message message = new Message("500", journeyFlightId + ": 아이템 수정 중 오류가 발생하였습니다.");
+            return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/{journey_flight_id}/seat")
+    public ResponseEntity<Object> getSeat(@PathVariable("journey_flight_id") int journeyId) {
+        try {
+            FlightInfo flightInfo = flightService.readFlightInfo(journeyId);
+            if (flightInfo == null) {
+                Message message = new Message("200", "비행 정보가 비어 있습니다.");
+                return new ResponseEntity<>(message, HttpStatus.OK);
+            } else if (flightInfo.getSeat() == null) {
+                Message message = new Message("200", "좌석 정보가 비어 있습니다.");
+                return new ResponseEntity<>(message, HttpStatus.OK);
+            } else {
+                Message message = new Message("200", "좌석 정보 가져오기 성공", flightInfo.getSeat());
+                return new ResponseEntity<>(message, HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            Message message = new Message("500", "비행 정보 서버 오류로 인해 아이템 목록을 가져올 수 없습니다.");
             return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
