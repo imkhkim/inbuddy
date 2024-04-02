@@ -16,8 +16,8 @@ function BottomNav() {
     const isActive = (path) => (location.pathname === path ? 'bg-brand-300/10 rounded-3xl' : '');
 
     return (
-        <div className="flex flex-col items-center min-h-screen ">
-            <div className="p-4 overflow-x-hidden overflow-y-auto max-h-[calc(100vh-96px)]">
+        <div className="flex flex-col items-center justify-between min-h-screen ">
+            <div className="mx-4 overflow-x-hidden overflow-y-auto h-[calc(100vh-96px)]">
                 <Outlet />
             </div>
             <footer className="fixed bottom-0 flex items-center justify-center w-full bg-white border-black shadow-inner shadow-brand-400/10 min-h-24">
