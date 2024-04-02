@@ -26,8 +26,6 @@ import { getTaskList, checkTaskList } from '@/apis/api/taskList';
 
 import { itemActions } from '@/stores/itemStore';
 import { taskActions } from '@/stores/taskStore';
-import { set } from 'date-fns';
-import { data } from 'autoprefixer';
 
 const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
@@ -267,26 +265,30 @@ function CheckListPage() {
 
     return (
         <>
-            <Tabs defaultValue="checks" className="text-center" value={activeTab} onValueChange={setActiveTab}>
+            <Tabs defaultValue="checks" className="mt-4 text-center" value={activeTab} onValueChange={setActiveTab}>
                 <TabsList>
                     <TabsTrigger value="supplies">준비물 리스트</TabsTrigger>
                     <TabsTrigger value="checks">점검 리스트</TabsTrigger>
                 </TabsList>
 
-                <TabsContent value="supplies" forceMount={true} hidden={'supplies' !== activeTab}>
-                    <P className="mb-2" variant="mainHeader">
-                        여정 준비물 리스트
-                    </P>
-                    <P className="mb-2 text-neutral-400" variant="content">
-                        여정에 필요한 준비물을 꼼꼼하게 검토해 보세요
-                    </P>
-                    <Link to="/info/baggage">
-                        <IconAndP
-                            className="flex flex-row justify-center mb-4"
-                            svg={pointerIcon}
-                            text="기내 반입 제한물품에 대해 알아보기"
-                        />
-                    </Link>
+                <TabsContent value="supplies" forceMount={true} hidden={'supplies' !== activeTab} className="mt-4">
+                    <div className="my-2">
+                        <P className="my-1" variant="mainHeader">
+                            여정 준비물 리스트
+                        </P>
+                        <P className="my-1 text-neutral-400" variant="content">
+                            여정에 필요한 준비물을 꼼꼼하게 검토해 보세요
+                        </P>
+                    </div>
+                    <div className="my-4">
+                        <Link to="/info/baggage">
+                            <IconAndP
+                                className="flex flex-row justify-center mb-4"
+                                svg={pointerIcon}
+                                text="기내 반입 제한물품에 대해 알아보기"
+                            />
+                        </Link>
+                    </div>
 
                     <Progress className="mb-4" value={progressItem} />
                     <div>
@@ -358,7 +360,7 @@ function CheckListPage() {
                     </div>
                 </TabsContent>
 
-                <TabsContent value="checks" forceMount={true} hidden={'checks' !== activeTab}>
+                <TabsContent value="checks" forceMount={true} hidden={'checks' !== activeTab} className="mt-4">
                     <P className="mb-2" variant="mainHeader">
                         탑승 전 점검 리스트
                     </P>
@@ -371,7 +373,7 @@ function CheckListPage() {
                             <TabsList className="bg-white">
                                 <TabsTrigger value="supplies">
                                     <IconAndP
-                                        className="flex flex-row justify-center mb-4 hover:bg-success-300/50 hover:rounded"
+                                        className="flex flex-row justify-center px-2 py-1 mb-4 hover:bg-success-300/40 hover:rounded-lg"
                                         svg={checkCircleIcon}
                                         text="모든 준비물을 챙겼어요"
                                         color="success"
@@ -433,23 +435,25 @@ function CheckListPage() {
                         linkPage="/info/roaming"
                         onHandleDivClick={handleDivClick}
                     />
-                    {checkPassport && checkCheckIn && checkExchange && checkRoaming ? (
-                        <PAndButton
-                            tabsContentValue="checks"
-                            firstContent="출국을 위한 모든 점검이 끝났어요"
-                            secondContent="이제 비행기를 타러 갈 일만 남았군요!"
-                            buttonContent="출국 준비 완료"
-                            isReady={true}
-                        />
-                    ) : (
-                        <PAndButton
-                            tabsContentValue="checks"
-                            firstContent="모든 점검이 완료되지 않았어요"
-                            secondContent="빠진 것은 없는지 다시 한 번 확인해 주세요"
-                            buttonContent="출국 준비 완료"
-                            isReady={false}
-                        />
-                    )}
+                    <div className="pt-2 my-4 border">
+                        {checkPassport && checkCheckIn && checkExchange && checkRoaming ? (
+                            <PAndButton
+                                tabsContentValue="checks"
+                                firstContent="출국을 위한 모든 점검이 끝났어요"
+                                secondContent="이제 비행기를 타러 갈 일만 남았군요!"
+                                buttonContent="출국 준비 완료"
+                                isReady={true}
+                            />
+                        ) : (
+                            <PAndButton
+                                tabsContentValue="checks"
+                                firstContent="모든 점검이 완료되지 않았어요"
+                                secondContent="빠진 것은 없는지 다시 한 번 확인해 주세요"
+                                buttonContent="출국 준비 완료"
+                                isReady={false}
+                            />
+                        )}
+                    </div>
                 </TabsContent>
             </Tabs>
         </>
