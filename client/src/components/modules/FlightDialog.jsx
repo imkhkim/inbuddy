@@ -28,6 +28,7 @@ import {
     CommandItem,
     CommandList,
 } from '@/components/atoms/command';
+import { createflightInfo } from '@/apis/api/flightInfo';
 
 const airlines = [
     { name: 'ITA항공', airlineCode: 'AZ', terminal: 1, selfCheckIn: false },
@@ -146,6 +147,11 @@ function FlightDialog({ journeyId }) {
 
     const dispath = useDispatch();
 
+    const handleAddFlight = () => {
+        dispath(addFlight());
+        console.log(`${flightDate}${myAirlineCode}${flightNumber}`);
+    };
+
     const addFlight = () => ({
         type: 'journey/addFlight',
         payload: {
@@ -187,6 +193,7 @@ function FlightDialog({ journeyId }) {
                     </Button>
                 </DialogTrigger>
             </div>
+
             <DialogContent>
                 {/* 헤더 */}
                 <DialogHeader>
@@ -287,6 +294,7 @@ function FlightDialog({ journeyId }) {
                     onChange={handleFlightNumberChange}
                 ></Input>
 
+
                 <DialogFooter className="gap-2 my-2 sm:justify-end">
                     <DialogClose asChild>
                         <Button variant="outline" type="cancel">
@@ -294,14 +302,7 @@ function FlightDialog({ journeyId }) {
                         </Button>
                     </DialogClose>
                     <DialogClose asChild>
-                        <Button
-                            variant="brand"
-                            type="submit"
-                            onClick={() => {
-                                dispath(addFlight());
-                                console.log(`${myAirlineCode}${flightNumber}`);
-                            }}
-                        >
+                        <Button variant="brand" type="submit" onClick={handleAddFlight}>
                             등록
                         </Button>
                     </DialogClose>

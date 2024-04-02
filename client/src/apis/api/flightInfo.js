@@ -2,27 +2,27 @@ import { serverAxios } from '@/apis/common';
 
 const server = serverAxios();
 
-const getflightInfo = async () => {
+const getflightInfo = async (journeyId) => {
     return await server
-        .get('/journeys/{journey_id}/flight')
+        .get(`/journeys/${journeyId}/flight`)
         .then((response) => response.data)
         .catch((error) => {
             throw new Error(`API request failed: ${error}`);
         });
 };
 
-const modifyflightInfo = async () => {
+const modifyflightInfo = async (journeyId, flightInfoId) => {
     return await server
-        .put('/journeys/{journey_id}/flight/{flight_info_id}/modify', {})
+        .put(`/journeys/${journeyId}/flight/${flightInfoId}/modify`, {})
         .then((response) => response.data)
         .catch((error) => {
             throw new Error(`API request failed: ${error}`);
         });
 };
 
-const createflightInfo = async () => {
+const createflightInfo = async (journeyId) => {
     return await server
-        .post('/journeys/{journey_id}/flight/create', {})
+        .post(`/journeys/${journeyId}/flight/create`, {})
         .then((response) => response.data)
         .catch((error) => {
             throw new Error(`API request failed: ${error}`);

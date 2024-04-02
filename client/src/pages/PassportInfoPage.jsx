@@ -87,10 +87,10 @@ function PassportInfoPage() {
                                 </P>
                                 <P className="col-span-2">032-740-2777~8</P>
                             </div>
-                            {/* <div className="bg-[#284350]">
+                            <div className="bg-[#284350]">
                                 <img src={T13FPassportInfo} alt="T13FPassportInfo Map" />
-                            </div> */}
-                            <Map svgFile={T13F}></Map>
+                            </div>
+                            {/* <Map svgFile={T13F}></Map> */}
                         </TabsContent>
                         <TabsContent value="T2">
                             <P variant="content" className="mb-2">
@@ -110,10 +110,10 @@ function PassportInfoPage() {
                                 </P>
                                 <P className="col-span-2">032-740-2782~3</P>
                             </div>
-                            {/* <div className="bg-[#284350]">
+                            <div className="bg-[#284350]">
                                 <img src={T22FPassportInfo} alt="T22FPassportInfo Map" />
-                            </div> */}
-                            <Map svgFile={T22F}></Map>
+                            </div>
+                            {/* <Map svgFile={T22F}></Map> */}
                         </TabsContent>
                     </Tabs>
                 </SectionLayout>
