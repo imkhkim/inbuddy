@@ -15,25 +15,28 @@ import { Input } from "@/components/atoms/input"
 import { P } from "../atoms/P"
 import { useDispatch } from "react-redux"
 import { useState } from "react"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { createJourney } from "@/apis/api/journey"
 
 export function JourneyAddDialog() {
 
+    const queryClient = useQueryClient();
     const dispath = useDispatch();
     const [input, setInput] = useState('');
     const handleInputChange = (e) => {
         setInput(e.target.value);
     };
 
-    const addJourney = () => ({
-        type: 'journey/addJourney',
-        payload: {
-            "journeyName": input,
+    const createJourneyMutation = useMutation({
+        mutationFn: (journeyName) => createJourney(journeyName),
+        onSuccess: (data) => {
+            console.log('요청 성공:', data);
+            queryClient.invalidateQueries("journey")
+        },
+        onError: (error) => {
+            console.error('요청 실패:', error);
         }
     })
-
-
-
-
 
     return (
         <Dialog>
@@ -56,7 +59,6 @@ export function JourneyAddDialog() {
 
                         <Input
                             defaultValue="여정의 제목을 입력하세요."
-
                             onChange={handleInputChange}
                         />
                     </div>
@@ -72,8 +74,9 @@ export function JourneyAddDialog() {
                             type="submit"
                             variant="secondary"
                             onClick={() => {
-                                dispath(addJourney())
-                            }}
+                                createJourneyMutation.mutate(input)
+                            }
+                            }
                         >
                             등록
                         </Button>
@@ -81,6 +84,6 @@ export function JourneyAddDialog() {
 
                 </DialogFooter>
             </DialogContent>
-        </Dialog>
+        </Dialog >
     )
 }

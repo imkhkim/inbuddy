@@ -4,14 +4,17 @@ import { P } from '@/components/atoms/P';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { authActions } from '@/stores/authStore';
-import { useQuery, useQueries } from '@tanstack/react-query';
+import { useQuery, useQueries, useMutation } from '@tanstack/react-query';
 import { getCookie } from '@/apis/cookies';
 import { fetchUserProfile, reissueToken } from '@/apis/api/auth';
 import { useEffect } from 'react';
+import { JourneyAllActions } from '@/stores/journeyAllStore';
+import { getJourney, createJourney, deleteJourney, modifyJourney } from '@/apis/api/journey';
+
 
 function JourneyCollectionPage() {
 
-    const journeyList = useSelector((state) => state.journey);
+    const journeyList = useSelector((state) => state.journeyAll);
 
     const dispatch = useDispatch();
 
@@ -41,7 +44,7 @@ function JourneyCollectionPage() {
         if (error) {
             if (error.response && error.response.status === 401) {
                 // access token 만료
-                console.log(error.response);
+                // console.log(error.response);
                 reissueToken()
                     .then((refreshTokenResponse) => {
                         if (refreshTokenResponse.status === 200) {
@@ -71,8 +74,20 @@ function JourneyCollectionPage() {
         }
     }, [error]);
 
-    console.log(useSelector((state) => state.auth.user));
-    console.log(useSelector((state) => state.auth.accessToken));
+
+
+    const { data: journeyData } = useQuery({
+        queryKey: ['journey'],
+        queryFn: getJourney,
+        enabled: true, // useQuery가 즉시 실행되도록 설정
+    });
+    useEffect(() => {
+        if (journeyData) {
+            dispatch(JourneyAllActions.setJourney(journeyData.data)); // 전역 상태에 저장
+            console.log("asdf", journeyData)
+
+        }
+    },);
 
     return (
         <>
