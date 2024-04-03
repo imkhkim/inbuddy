@@ -16,15 +16,6 @@ const getflightInfo = async (journeyId) => {
         });
 };
 
-const modifyflightInfo = async (journeyId, flightInfoId) => {
-    return await server
-        .put(`/api/journeys/${journeyId}/flight/${flightInfoId}/modify`, {})
-        .then((response) => response.data)
-        .catch((error) => {
-            throw new Error(`API request failed: ${error}`);
-        });
-};
-
 const createflightInfo = async (params) => {
     return await server
         .post(`/api/journeys/${params.journeyId}/flight/create`, params.flightInfo, {
@@ -32,6 +23,28 @@ const createflightInfo = async (params) => {
                 Authorization: `Bearer ${getCookie('refresh_token')}`,
             },
         })
+        .then((response) => response.data)
+        .catch((error) => {
+            throw new Error(`API request failed: ${error}`);
+        });
+};
+
+const getMyFlight = async (departureDate, airLine, flightCode) => {
+    return await server
+        .get(`/api/myflight/${departureDate}/${airLine + flightCode}`, {
+            headers: {
+                Authorization: `Bearer ${getCookie('refresh_token')}`,
+            },
+        })
+        .then((response) => response.data)
+        .catch((error) => {
+            throw new Error(`API request failed: ${error}`);
+        });
+};
+
+const modifyflightInfo = async (journeyId, flightInfoId) => {
+    return await server
+        .put(`/api/journeys/${journeyId}/flight/${flightInfoId}/modify`, {})
         .then((response) => response.data)
         .catch((error) => {
             throw new Error(`API request failed: ${error}`);
@@ -78,4 +91,12 @@ const modifyflightInfoSeat = async (journeyId, flightInfo) => {
         });
 };
 
-export { getflightInfo, modifyflightInfo, createflightInfo, deleteflightInfo, getflightInfoSeat, modifyflightInfoSeat };
+export {
+    getMyFlight,
+    getflightInfo,
+    modifyflightInfo,
+    createflightInfo,
+    deleteflightInfo,
+    getflightInfoSeat,
+    modifyflightInfoSeat,
+};
