@@ -5,7 +5,7 @@ const server = serverAxios();
 const getflightDelayInfo = async (flightCode) => {
     console.log('code:', flightCode);
     return await server
-        .post(`http://localhost:8000/api/predict`, {
+        .post(`/api/predict`, {
             flight_code: flightCode,
         })
         .then((response) => response.data)
