@@ -28,8 +28,12 @@ function FlightBox({ flightInfo }) {
     //     "arrivalAirportName": "도쿄/나리타"
     // }
     const navigate = useNavigate(); // useNavigate 훅 사용
+
+    const handleClick = () => {
+        navigate(`/checklist/${localStorage.getItem('selectedJourneyId')}`); // useNavigate를 사용하여 CheckListPage로 이동
+    };
     return (
-        <>
+        <div onClick={handleClick}>
             <P className="text-center">{flightInfo.departureDate}</P>
 
             <div className="flex flex-row justify-center mx-5">
@@ -50,7 +54,7 @@ function FlightBox({ flightInfo }) {
                     <P>..</P>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
 
