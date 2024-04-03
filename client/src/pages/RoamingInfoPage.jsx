@@ -508,9 +508,8 @@ function RoamingInfoPage() {
             {header ?
                 <SectionLayout sectionHeaderText={header}>
                     <ul className="list-disc list-inside">
-                        <li className="py-1 text-base text-text-black font-pretendardBold">탑승 위치 : {location}</li>
-                        <li className="py-1 text-base text-text-black font-pretendardBold">운영시간 : {businuessHour}</li>
                         <li className="py-1 text-base text-text-black font-pretendardBold">위치 : {location}</li>
+                        <li className="py-1 text-base text-text-black font-pretendardBold">운영시간 : {businuessHour}</li>
                         <li className="py-1 text-base text-text-black font-pretendardBold">연락처 : {telephone}</li>
                     </ul>
                 </SectionLayout> : null}
