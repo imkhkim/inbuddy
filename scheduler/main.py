@@ -16,6 +16,7 @@ from scheduler.flight_data_fetcher import \
 
 from scheduler.scheduler import scheduler
 from scheduler.weather_data_fetcher import fetch as weather_fetch
+from scheduler.additional_data_fetcher import fetch as additional_data_fetch
 from config import *
 
 if __name__ == "__main__":
@@ -49,6 +50,11 @@ if __name__ == "__main__":
                      minute='*',
                      second=30)
 
+    scheduler.create("additional_data",
+                     lambda: additional_data_fetch(datetime.now()),
+                     trigger="cron",
+                     minute='*/3', second=40)
+
     scheduler.create("batch_save",
                      lambda: save(datetime.today() - timedelta(days=2)),
                      trigger="cron", hour=0,
@@ -59,6 +65,7 @@ if __name__ == "__main__":
     scheduler.start("flights_departure_scheduled")
     scheduler.start("weather")
     scheduler.start("batch_save")
+    scheduler.start("additional_data")
 
     log.info("Scheduler started")
 
