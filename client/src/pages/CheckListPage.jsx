@@ -360,82 +360,93 @@ function CheckListPage() {
                     </div>
                 </TabsContent>
 
-                <TabsContent value="checks" forceMount={true} hidden={'checks' !== activeTab} className="mt-4">
-                    <P className="mb-2" variant="mainHeader">
-                        탑승 전 점검 리스트
-                    </P>
-                    <P className="mb-2 text-neutral-400" variant="content">
-                        공항에 도착했을 때 해야 할 일들을 점검해 보세요
-                    </P>
-                    <Progress className="mb-4" value={progressTask} />
-                    {checkAllItem ? (
-                        <>
-                            <TabsList className="bg-white">
-                                <TabsTrigger value="supplies">
-                                    <IconAndP
-                                        className="flex flex-row justify-center px-2 py-1 mb-4 hover:bg-success-300/40 hover:rounded-lg"
-                                        svg={checkCircleIcon}
-                                        text="모든 준비물을 챙겼어요"
-                                        color="success"
-                                    />
-                                </TabsTrigger>
-                            </TabsList>
-                        </>
-                    ) : (
-                        <>
-                            <TabsList className="bg-white">
-                                <TabsTrigger value="supplies">
-                                    <IconAndP
-                                        className="flex flex-row justify-center mb-4 hover:bg-error-300/50 hover:rounded"
-                                        svg={alertTriangleIcon}
-                                        text={`챙기지 않은 준비물이 ${countUnCheckItems()}개 있어요!`}
-                                        color="error"
-                                    />
-                                </TabsTrigger>
-                            </TabsList>
-                        </>
-                    )}
-                    <ToggleCheck
-                        iconLeft={<NewspaperIcon />}
-                        title="여권을 챙겼는지 확인했나요?"
-                        content="여권 미지참 시 출국이 불가해요."
-                        iconRight={checkPassport ? <CircleCheckIcon className="text-brand-500" /> : <CircleIcon />}
-                        footerQuote="여권이 없다면?"
-                        check={checkPassport}
-                        linkPage="/info/passport"
-                        onHandleDivClick={handleDivClick}
-                    />
-                    <ToggleCheck
-                        iconLeft={<BaggageClaimIcon />}
-                        title="탑승수속을 완료했나요?"
-                        content="수속/수화물 위탁은 출발 50분 전에 마감해요."
-                        iconRight={checkCheckIn ? <CircleCheckIcon className="text-brand-500" /> : <CircleIcon />}
-                        footerQuote="내 체크인 카운터는?"
-                        check={checkCheckIn}
-                        linkPage="/checkincounterinfo"
-                        onHandleDivClick={handleDivClick}
-                    />
-                    <ToggleCheck
-                        iconLeft={<DollarSignIcon />}
-                        title="환전을 완료했나요?"
-                        content="카드가 있더라도 현금이 없다면 불편할 수 있어요."
-                        iconRight={checkExchange ? <CircleCheckIcon className="text-brand-500" /> : <CircleIcon />}
-                        footerQuote="환전할 곳을 찾는다면?"
-                        check={checkExchange}
-                        linkPage="/info/exchange"
-                        onHandleDivClick={handleDivClick}
-                    />
-                    <ToggleCheck
-                        iconLeft={<WifiIcon />}
-                        title="로밍 서비스를 신청했나요?"
-                        content="외국에서 인터넷을 위해 로밍 서비스는 필수에요."
-                        iconRight={checkRoaming ? <CircleCheckIcon className="text-brand-500" /> : <CircleIcon />}
-                        footerQuote="로밍을 해줄 곳을 찾는다면?"
-                        check={checkRoaming}
-                        linkPage="/info/roaming"
-                        onHandleDivClick={handleDivClick}
-                    />
-                    <div className="pt-2 my-4 border">
+                <TabsContent
+                    value="checks"
+                    forceMount={true}
+                    hidden={'checks' !== activeTab}
+                    className="flex flex-col justify-between mt-4 "
+                >
+                    <div className="">
+                        <P className="mb-2" variant="mainHeader">
+                            탑승 전 점검 리스트
+                        </P>
+                        <P className="mb-2 text-neutral-400" variant="content">
+                            공항에 도착했을 때 해야 할 일들을 점검해 보세요
+                        </P>
+                        <Progress className="mb-4" value={progressTask} />
+                    </div>
+                    <div className="my-2 ">
+                        {checkAllItem ? (
+                            <>
+                                <TabsList className="bg-white">
+                                    <TabsTrigger value="supplies">
+                                        <IconAndP
+                                            className="flex flex-row justify-center px-2 py-1 mb-4 hover:bg-success-300/40 hover:rounded-lg"
+                                            svg={checkCircleIcon}
+                                            text="모든 준비물을 챙겼어요"
+                                            color="success"
+                                        />
+                                    </TabsTrigger>
+                                </TabsList>
+                            </>
+                        ) : (
+                            <>
+                                <TabsList className="bg-white">
+                                    <TabsTrigger value="supplies">
+                                        <IconAndP
+                                            className="flex flex-row justify-center mb-4 hover:bg-error-300/50 hover:rounded"
+                                            svg={alertTriangleIcon}
+                                            text={`챙기지 않은 준비물이 ${countUnCheckItems()}개 있어요!`}
+                                            color="error"
+                                        />
+                                    </TabsTrigger>
+                                </TabsList>
+                            </>
+                        )}
+                    </div>
+                    <div className="my-2 ">
+                        <ToggleCheck
+                            iconLeft={<NewspaperIcon />}
+                            title="여권을 챙겼는지 확인했나요?"
+                            content="여권 미지참 시 출국이 불가해요."
+                            iconRight={checkPassport ? <CircleCheckIcon className="text-brand-500" /> : <CircleIcon />}
+                            footerQuote="여권이 없다면?"
+                            check={checkPassport}
+                            linkPage="/info/passport"
+                            onHandleDivClick={handleDivClick}
+                        />
+                        <ToggleCheck
+                            iconLeft={<BaggageClaimIcon />}
+                            title="탑승수속을 완료했나요?"
+                            content="수속/수화물 위탁은 출발 50분 전에 마감해요."
+                            iconRight={checkCheckIn ? <CircleCheckIcon className="text-brand-500" /> : <CircleIcon />}
+                            footerQuote="내 체크인 카운터는?"
+                            check={checkCheckIn}
+                            linkPage="/checkincounterinfo"
+                            onHandleDivClick={handleDivClick}
+                        />
+                        <ToggleCheck
+                            iconLeft={<DollarSignIcon />}
+                            title="환전을 완료했나요?"
+                            content="카드가 있더라도 현금이 없다면 불편할 수 있어요."
+                            iconRight={checkExchange ? <CircleCheckIcon className="text-brand-500" /> : <CircleIcon />}
+                            footerQuote="환전할 곳을 찾는다면?"
+                            check={checkExchange}
+                            linkPage="/info/exchange"
+                            onHandleDivClick={handleDivClick}
+                        />
+                        <ToggleCheck
+                            iconLeft={<WifiIcon />}
+                            title="로밍 서비스를 신청했나요?"
+                            content="외국에서 인터넷을 위해 로밍 서비스는 필수에요."
+                            iconRight={checkRoaming ? <CircleCheckIcon className="text-brand-500" /> : <CircleIcon />}
+                            footerQuote="로밍을 해줄 곳을 찾는다면?"
+                            check={checkRoaming}
+                            linkPage="/info/roaming"
+                            onHandleDivClick={handleDivClick}
+                        />
+                    </div>
+                    <div className="pt-2 ">
                         {checkPassport && checkCheckIn && checkExchange && checkRoaming ? (
                             <PAndButton
                                 tabsContentValue="checks"
