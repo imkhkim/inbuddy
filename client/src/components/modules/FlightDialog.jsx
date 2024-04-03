@@ -200,8 +200,8 @@ function FlightDialog({ journeyId }) {
                     <DialogTitle>
                         <P variant="mainHeader">항공편 등록</P>
                     </DialogTitle>
-                    <DialogDescription className="mx-auto">
-                        <P color="neutral">여정에 대한 항공편을 등록해주세요.</P>
+                    <DialogDescription className="mx-auto text-neutral-400">
+                        여정에 대한 항공편을 등록해주세요.
                     </DialogDescription>
                 </DialogHeader>
 
@@ -293,7 +293,6 @@ function FlightDialog({ journeyId }) {
                     placeholder="알파벳 뒤 세자리 또는 네자리 숫자를 입력하세요."
                     onChange={handleFlightNumberChange}
                 ></Input>
-
 
                 <DialogFooter className="gap-2 my-2 sm:justify-end">
                     <DialogClose asChild>
