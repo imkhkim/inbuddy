@@ -39,7 +39,9 @@
 ### 📼UCC
 ---
 
-[![이미지 텍스트](/uploads/e5eeb91b911fbb1cbfbd38c0a7ce7fbf/image.png)](https://drive.google.com/file/d/1I8hpLC0rNQqLs66ZnpKi5NPBKmFfAvZa/view?usp=sharing)
+[![이미지 텍스트](/uploads/283946223a961b6b0b5d85c3b9c9a5be/image.png)](https://drive.google.com/file/d/1I8hpLC0rNQqLs66ZnpKi5NPBKmFfAvZa/view?usp=sharing)
+
+*위의 사진을 클릭하면 영상 링크로 이동합니다.*
 
 <br>
 
