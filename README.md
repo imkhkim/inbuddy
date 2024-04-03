@@ -39,6 +39,7 @@
 ### 📼UCC
 ---
 
+[![이미지 텍스트](/uploads/e5eeb91b911fbb1cbfbd38c0a7ce7fbf/image.png)](https://drive.google.com/file/d/1I8hpLC0rNQqLs66ZnpKi5NPBKmFfAvZa/view?usp=sharing)
 
 <br>
 
@@ -96,7 +97,7 @@ InBuddy의 경우 비행기 지연 예측할 때 항공편명, 항공사 등 범
 
 ### 💡시스템 아키텍처
 ---
-![image](/uploads/668797ecb6f1e42273248ea1f0e12333/image.png)
+![image](/uploads/849dbd3acd604e07eb4603eea30be724/image.png)
 
 <br>
 
