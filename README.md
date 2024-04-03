@@ -2,8 +2,6 @@
 
 ![image](/uploads/200b10dfcefc10a61313e028c304b701/image.png)
 
-<img src="/uploads/200b10dfcefc10a61313e028c304b701/image.png" width="600" height="350"/>
-
 <br>
 
 # ✈ InBuddy
