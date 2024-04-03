@@ -1,4 +1,4 @@
-import React, { useRef, forwardRef, useEffect, useState } from 'react';
+import { useRef, forwardRef, useEffect, useState } from 'react';
 import { P } from '@/components/atoms/P';
 import SectionLayout from '@/components/modules/SectionLayout';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
@@ -11,13 +11,10 @@ import {
     MenubarItem,
     MenubarMenu,
     MenubarSeparator,
-    MenubarSub,
-    MenubarSubContent,
-    MenubarSubTrigger,
     MenubarTrigger,
 } from '@/components/atoms/Menubar';
 
-const MapT1 = React.forwardRef((props, ref) => {
+const MapT1 = forwardRef((props, ref) => {
     return (
         <div className="w-[90vw]" ref={ref}>
             <T13F />
@@ -25,7 +22,7 @@ const MapT1 = React.forwardRef((props, ref) => {
     )
 });
 MapT1.displayName = MapT1;
-const MapT2 = React.forwardRef((props, ref) => {
+const MapT2 = forwardRef((props, ref) => {
     return (
         <div className="w-[90vw]" ref={ref}>
             <T23F />
@@ -47,7 +44,6 @@ function RoamingInfoPage() {
     useEffect(() => {
         // 모든 g 태그를 숨김 처리
         const allGElements = svgContainerRef.current.querySelectorAll('g');
-        console.log('asdf')
         allGElements.forEach((el) => {
             if (el.id === 'Background') {
                 el.style.visibility = 'visible';
@@ -92,7 +88,7 @@ function RoamingInfoPage() {
         setTelephone(content.telephone);
     }
 
-    const menuContent = {
+    const menuContentT1 = {
         roaming: [
             {
                 menuTitle: 'KT 로밍센터 서편',
@@ -254,6 +250,109 @@ function RoamingInfoPage() {
         ],
 
     }
+    const menuContentT2 = {
+        roaming: [
+            {
+                menuTitle: 'KT 로밍센터',
+                markerId: 'KT_x5F_Roaming_x5F_1',
+                menuLocation: ' 3층 D-E체크인 카운터 사이',
+                businuessHour: '06:00 ~ 22:00',
+                telephone: '02-2190-0901',
+            },
+            {
+                menuTitle: 'LG 유플러스 로밍센터',
+                markerId: 'LG_x5F_Roaming_x5F_1',
+                menuLocation: '3층 D- E체크인 카운터 사이',
+                businuessHour: '06:00 ~ 22:00',
+                telephone: '02-3416-7010',
+            },
+            {
+                menuTitle: 'SKT 로밍센터',
+                markerId: 'SKT_x5F_Roaming_x5F_1',
+                menuLocation: '3층 D-E체크인 카운터 사이',
+                businuessHour: '06:00 ~ 22:00',
+                telephone: '02-6343-9000',
+            },
+            {
+                menuTitle: 'SKT 로밍센터 면세지역',
+                markerId: 'SKT_x5F_Roaming_x5F_2',
+                menuLocation: '3층 면세지역 251번 게이트 맞은편',
+                businuessHour: '07:00 ~ 21:00',
+                telephone: '02-6343-9000',
+            },
+        ],
+        dosirak: [
+            {
+                menuTitle: '와이파이 도시락',
+                markerId: 'Dosirak_x5F_1',
+                menuLocation: '1층 1번 출구 부근',
+                businuessHour: '06:00 ~ 22:00',
+                telephone: '02-2190-0901',
+            },
+        ],
+        usim: [
+            {
+                menuTitle: '공항유심센터 출국장',
+                markerId: 'Usim_x5F_1',
+                menuLocation: '3층 5번 출구 서점(BOOK STORE)',
+                businuessHour: '07:00 ~ 21:00',
+                telephone: '1899-0323',
+            }, {
+                menuTitle: '공항유심센터 면세구역',
+                markerId: 'Usim_x5F_2',
+                menuLocation: '면세구역 동편 254번 게이트 서점(BOOK STORE)',
+                businuessHour: '07:00 ~ 21:00',
+                telephone: '1899-0323',
+            }
+        ],
+        hana: [
+            {
+                menuTitle: '하나은행 환전소 출국장',
+                markerId: 'Hana_x5F_1',
+                menuLocation: '3층 일반지역 H 체크인카운터 부근',
+                businuessHour: '06:00 ~ 22:00',
+                telephone: '032-875-1111',
+            }, {
+                menuTitle: '하나은행 환전소 면세구역',
+                markerId: 'Hana_x5F_2',
+                menuLocation: '3층 면세지역 254번 게이트 부근',
+                businuessHour: '06:00 ~ 22:00',
+                telephone: '032-875-1111',
+            }
+        ],
+        woori: [
+            {
+                menuTitle: '우리은행 환전소 출국장',
+                markerId: 'Woori_x5F_1',
+                menuLocation: '3층 일반지역 11번 출입구 부근',
+                businuessHour: '06:30 ~ 20:00',
+                telephone: '032-743-2050',
+            }, {
+                menuTitle: '우리은행 환전소 면세구역',
+                markerId: 'Woori_x5F_2',
+                menuLocation: '3층 면세지역 252번 게이트 부근',
+                businuessHour: '07:00 ~ 20:00',
+                telephone: '032-743-2050',
+            }
+        ],
+        kookmin: [
+            {
+                menuTitle: '국민은행 환전소 출국장 24H',
+                markerId: 'Kookmin_x5F_1',
+                menuLocation: '3층 일반지역 1번 출국장 부근',
+                businuessHour: '00:00 ~ 24:00',
+                telephone: '032-743-3260',
+            },
+            {
+                menuTitle: '국민은행 환전소 출국장',
+                markerId: 'Kookmin_x5F_2',
+                menuLocation: '3층 일반지역 체크인카운터 H 부근',
+                businuessHour: '06:00 ~ 22:00',
+                telephone: '032-743-3260',
+            },
+        ],
+
+    }
 
 
 
@@ -281,7 +380,7 @@ function RoamingInfoPage() {
                             <MenubarMenu>
                                 <MenubarTrigger className="font-pretendardBold">해외로밍</MenubarTrigger>
                                 <MenubarContent>
-                                    {menuContent.roaming.map((content) =>
+                                    {menuContentT1.roaming.map((content) =>
                                         <div key={content.markerId}>
                                             <MenubarSeparator />
                                             <MenubarItem className="flex flex-col"
@@ -296,7 +395,7 @@ function RoamingInfoPage() {
                             <MenubarMenu>
                                 <MenubarTrigger className="font-pretendardBold">해외유심</MenubarTrigger>
                                 <MenubarContent>
-                                    {menuContent.usim.map((content) =>
+                                    {menuContentT1.usim.map((content) =>
                                         <div key={content.markerId}>
                                             <MenubarSeparator />
                                             <MenubarItem className="flex flex-col"
@@ -311,7 +410,7 @@ function RoamingInfoPage() {
                             <MenubarMenu>
                                 <MenubarTrigger className="font-pretendardBold">포켓와이파이</MenubarTrigger>
                                 <MenubarContent>
-                                    {menuContent.dosirak.map((content) =>
+                                    {menuContentT1.dosirak.map((content) =>
                                         <div key={content.markerId}>
                                             <MenubarSeparator />
                                             <MenubarItem className="flex flex-col"
@@ -345,76 +444,46 @@ function RoamingInfoPage() {
                             <MenubarMenu>
                                 <MenubarTrigger className="font-pretendardBold">해외로밍</MenubarTrigger>
                                 <MenubarContent>
-                                    <MenubarSeparator />
-                                    <MenubarItem className="flex flex-col">
-                                        <P variant="content">우리은행 환전소</P>
-                                        <P size="xs">탑승동 3층 121번 게이트 부근</P>
-                                    </MenubarItem>
-                                    <MenubarSeparator />
+                                    {menuContentT2.roaming.map((content) =>
+                                        <div key={content.markerId}>
+                                            <MenubarSeparator />
+                                            <MenubarItem className="flex flex-col"
+                                                onClick={() => { handleMenuClick(content.markerId); handleInfo(content); }}>
+                                                <P variant="content">{content.menuTitle}</P>
+                                                <P size="xs">{content.menuLocation}</P>
+                                            </MenubarItem>
+                                        </div>
+                                    )}
                                 </MenubarContent>
                             </MenubarMenu>
                             <MenubarMenu>
                                 <MenubarTrigger className="font-pretendardBold">해외유심</MenubarTrigger>
                                 <MenubarContent>
-                                    <MenubarSeparator />
-                                    <MenubarItem className="flex flex-col">
-                                        <P variant="content">우리은행 환전소</P>
-                                        <P size="xs">탑승동 3층 121번 게이트 부근</P>
-                                    </MenubarItem>
-                                    <MenubarSeparator />
+                                    {menuContentT2.usim.map((content) =>
+                                        <div key={content.markerId}>
+                                            <MenubarSeparator />
+                                            <MenubarItem className="flex flex-col"
+                                                onClick={() => { handleMenuClick(content.markerId); handleInfo(content); }}>
+                                                <P variant="content">{content.menuTitle}</P>
+                                                <P size="xs">{content.menuLocation}</P>
+                                            </MenubarItem>
+                                        </div>
+                                    )}
                                 </MenubarContent>
                             </MenubarMenu>
                             <MenubarMenu>
                                 <MenubarTrigger className="font-pretendardBold">포켓와이파이</MenubarTrigger>
                                 <MenubarContent>
-                                    <MenubarSeparator />
-                                    <MenubarItem className="flex flex-col">
-                                        <P variant="content">국민은행 환전소</P>
-                                        <P size="xs">탑승동 3층 121번 게이트 부근</P>
-                                    </MenubarItem>
-                                    <MenubarSeparator />
-                                    <MenubarItem className="flex flex-col">
-                                        <P variant="content">국민은행 환전소</P>
-                                        <P size="xs">제1여객터미널 1층 일반지역 9번 출입구 부근</P>
-                                    </MenubarItem>
-                                    <MenubarSeparator />
-                                    <MenubarItem className="flex flex-col">
-                                        <P variant="content">국민은행 환전소</P>
-                                        <P size="xs">제1여객터미널 3층 일반지역 5번출국장 부근</P>
-                                    </MenubarItem>
-                                    <MenubarSeparator />
-                                    <MenubarItem className="flex flex-col">
-                                        <P variant="content">국민은행 환전소</P>
-                                        <P size="xs">제1여객터미널 3층 일반지역 3번 출국장 부근</P>
-                                    </MenubarItem>
-                                    <MenubarSeparator />
-                                    <MenubarSub>
-                                        <MenubarSubTrigger>
-                                            <P variant="content">우리은행 환전소</P>
-                                        </MenubarSubTrigger>
-                                        <MenubarSubContent>
-                                            <MenubarItem>Search the web</MenubarItem>
+                                    {menuContentT2.dosirak.map((content) =>
+                                        <div key={content.markerId}>
                                             <MenubarSeparator />
-                                            <MenubarItem>Find...</MenubarItem>
-                                            <MenubarItem>Find Next</MenubarItem>
-                                            <MenubarItem>Find Previous</MenubarItem>
-                                        </MenubarSubContent>
-                                    </MenubarSub>
-                                    <MenubarSeparator />
-                                    <MenubarSeparator />
-                                    <MenubarSub>
-                                        <MenubarSubTrigger>
-                                            <P variant="content">하나은행 환전소</P>
-                                        </MenubarSubTrigger>
-                                        <MenubarSubContent>
-                                            <MenubarItem>Search the web</MenubarItem>
-                                            <MenubarSeparator />
-                                            <MenubarItem>Find...</MenubarItem>
-                                            <MenubarItem>Find Next</MenubarItem>
-                                            <MenubarItem>Find Previous</MenubarItem>
-                                        </MenubarSubContent>
-                                    </MenubarSub>
-                                    <MenubarSeparator />
+                                            <MenubarItem className="flex flex-col"
+                                                onClick={() => { handleMenuClick(content.markerId); handleInfo(content); }}>
+                                                <P variant="content">{content.menuTitle}</P>
+                                                <P size="xs">{content.menuLocation}</P>
+                                            </MenubarItem>
+                                        </div>
+                                    )}
                                 </MenubarContent>
                             </MenubarMenu>
                         </Menubar>
@@ -422,7 +491,7 @@ function RoamingInfoPage() {
                     <TransformWrapper
                         initialScale={4}
                         initialPositionX={-517}
-                        initialPositionY={-627}
+                        initialPositionY={-527}
                         wheel={{
                             step: 1,
                             smoothStep: 0.005,
@@ -434,46 +503,31 @@ function RoamingInfoPage() {
                     </TransformWrapper>
                 </TabsContent>
             </Tabs>
+            <P className="text-xs text-gray-400">손가락을 움직여 화면을 움직이거나 크기를 조절할 수 있습니다.</P>
 
-
-            <SectionLayout sectionHeaderText={header}>
-                <ul className="list-disc list-inside">
-                    <li className="py-1 text-base text-text-black font-pretendardBold">탑승 위치 : {location}</li>
-                    <li className="py-1 text-base text-text-black font-pretendardBold">운영시간 : {businuessHour}</li>
-                    <li className="py-1 text-base text-text-black font-pretendardBold">위치 : {location}</li>
-                    <li className="py-1 text-base text-text-black font-pretendardBold">연락처 : {telephone}</li>
-                </ul>
-            </SectionLayout>
+            {header ?
+                <SectionLayout sectionHeaderText={header}>
+                    <ul className="list-disc list-inside">
+                        <li className="py-1 text-base text-text-black font-pretendardBold">탑승 위치 : {location}</li>
+                        <li className="py-1 text-base text-text-black font-pretendardBold">운영시간 : {businuessHour}</li>
+                        <li className="py-1 text-base text-text-black font-pretendardBold">위치 : {location}</li>
+                        <li className="py-1 text-base text-text-black font-pretendardBold">연락처 : {telephone}</li>
+                    </ul>
+                </SectionLayout> : null}
             <SectionLayout sectionHeaderText="로밍 서비스 안내">
                 <P>
-                    인천 공항 내 통신 3사 로밍센터 혹은 이용하시는 통신사 어플에서 로밍 요금제를 알아보고 이용하실 수
-                    있습니다.
+                    본인이 한국에서 사용하는 번호로 외국에서도 전화 및 데이터를 이용할 수 있게 하는 유료 서비스입니다. 인터넷 또는 공항 내 로밍센터에 방문하여 본인에게 맞는 로밍 요금제를 알아보고 이용할 수 있습니다.
                 </P>
             </SectionLayout>
             <SectionLayout sectionHeaderText="유심 서비스 안내">
-                <ol>
-                    <li>
-                        <P>
-                            연중무휴 07:00-21:00 운영시간에 인천공항 북스토 어 모든 매장에서 수령 및 당일 현장 구매가
-                            가능
-                        </P>
-                    </li>
-                    <li>
-                        <P>
-                            {' '}
-                            마이리얼트립/클룩 예약 고객들은 인천공항 1터미널 면세점 구역 안 30번게이트 맞은편 서점(BOOK
-                            & DRINK)에서 수령 가능
-                        </P>
-                    </li>
-                    <li>
-                        <P>
-                            매일 오전7시~9시까지 인천공항 1터미널 3층 8번 출 구 서점은 많이 혼잡하오니 출국심사를 하시고
-                            면세점구역 안 서점을 이용 요망
-                        </P>
-                    </li>
-                </ol>
+                <P>
+                    현재 사용 중인 한국 유심을 잠시 탈착하고 해외에서만 사용 가능한 유심을 삽입하여 전화 및 데이터를 이용할 수 있는 서비스입니다. 한국 유심을 탈착하였기 때문에 한국에서 사용하는 번호로는 통화할 수 없으며 카카오톡이나 SNS 등 데이터를 사용한 서비스는 해외 유심의 데이터 기능으로 정상적으로 사용 가능합니다.
+                </P>
             </SectionLayout>
-            <SectionLayout sectionHeaderText="와이파이 도시락 서비스 안내"></SectionLayout>
+            <SectionLayout sectionHeaderText="와이파이 도시락 서비스 안내">
+                <P>
+                    해외에서 와이파이 통신 기능을 제공하는 단말기를 대여하는 서비스입니다. 기존 스마트폰에서 와이파이를 연결하는 방식으로 사용하면 됩니다.</P>
+            </SectionLayout>
         </div >
     );
 }
