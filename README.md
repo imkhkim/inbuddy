@@ -1,8 +1,9 @@
-
-
-![image(/uploads/200b10dfcefc10a61313e028c304b701/image.png)](https://inbuddy.site:1110/login)
-
 ## [InBuddy ✈ 접속하기!](https://inbuddy.site:1110/login)
+
+![image](/uploads/200b10dfcefc10a61313e028c304b701/image.png)
+
+<img src="/uploads/200b10dfcefc10a61313e028c304b701/image.png" width="600" height="350"/>
+
 <br>
 
 # ✈ InBuddy
