@@ -8,18 +8,17 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "@/components/atoms/dialog"
-import { Input } from "@/components/atoms/input"
-import { P } from "../atoms/P"
-import { useDispatch } from "react-redux"
-import { useState } from "react"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { createJourney } from "@/apis/api/journey"
+} from '@/components/atoms/dialog';
+import { Input } from '@/components/atoms/input';
+import { P } from '../atoms/P';
+import { useDispatch } from 'react-redux';
+import { useState } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { createJourney } from '@/apis/api/journey';
 
 export function JourneyAddDialog() {
-
     const queryClient = useQueryClient();
-    const dispath = useDispatch();
+    const dispatch = useDispatch();
     const [input, setInput] = useState('');
     const handleInputChange = (e) => {
         setInput(e.target.value);
@@ -29,12 +28,12 @@ export function JourneyAddDialog() {
         mutationFn: (journeyName) => createJourney(journeyName),
         onSuccess: (data) => {
             console.log('요청 성공:', data);
-            queryClient.invalidateQueries("journey")
+            queryClient.invalidateQueries('journey');
         },
         onError: (error) => {
             console.error('요청 실패:', error);
-        }
-    })
+        },
+    });
 
     return (
         <Dialog>
@@ -52,11 +51,7 @@ export function JourneyAddDialog() {
                 </DialogHeader>
                 <div className="flex items-center space-x-2">
                     <div className="grid flex-1 gap-2">
-
-                        <Input
-                            defaultValue="여정의 제목을 입력하세요."
-                            onChange={handleInputChange}
-                        />
+                        <Input defaultValue="여정의 제목을 입력하세요." onChange={handleInputChange} />
                     </div>
                 </div>
                 <DialogFooter className="sm:justify-start">
@@ -70,15 +65,14 @@ export function JourneyAddDialog() {
                             type="submit"
                             variant="secondary"
                             onClick={() => {
-                                createJourneyMutation.mutate(input)
-                            }
-                            }
+                                createJourneyMutation.mutate(input);
+                            }}
                         >
                             등록
                         </Button>
                     </DialogClose>
                 </DialogFooter>
             </DialogContent>
-        </Dialog >
-    )
+        </Dialog>
+    );
 }

@@ -11,10 +11,9 @@ import { useEffect } from 'react';
 import { JourneyAllActions } from '@/stores/journeyAllStore';
 import { getJourney, createJourney, deleteJourney, modifyJourney } from '@/apis/api/journey';
 
-
 function JourneyCollectionPage() {
-
     const journeyList = useSelector((state) => state.journeyAll);
+    console.log(journeyList);
 
     const dispatch = useDispatch();
 
@@ -69,8 +68,6 @@ function JourneyCollectionPage() {
         }
     }, [error]);
 
-
-
     const { data: journeyData } = useQuery({
         queryKey: ['journey'],
         queryFn: getJourney,
@@ -79,10 +76,9 @@ function JourneyCollectionPage() {
     useEffect(() => {
         if (journeyData) {
             dispatch(JourneyAllActions.setJourney(journeyData.data)); // 전역 상태에 저장
-            console.log("asdf", journeyData)
-
+            console.log('journeyData', journeyData);
         }
-    },);
+    });
 
     return (
         <>
