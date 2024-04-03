@@ -1,4 +1,4 @@
-import { Info } from 'lucide-react';
+import { Info, MessageSquareWarningIcon } from 'lucide-react';
 import { Badge } from '@/components/atoms/Badge';
 import { Card, CardHeader } from '@/components/atoms/Card';
 import { P } from '@/components/atoms/P';
@@ -31,7 +31,7 @@ export const Spinner = () => {
 };
 
 const FlightDelayInfo = () => {
-    const [prediction, setPrediction] = useState('');
+    const [prediction, setPrediction] = useState('70');
 
     const flightDelayMutation = useMutation({
         mutationFn: (journeyName) => getflightDelayInfo(journeyName),
@@ -71,7 +71,21 @@ const FlightDelayInfo = () => {
                     </Badge>
                 </div>
             </CardHeader>
-            {flightDelayMutation.isPending ? <Spinner /> : <>{prediction}분</>}
+
+            <div className="flex items-center justify-center h-10">
+                {flightDelayMutation.isPending && <Spinner />}
+                {flightDelayMutation.isError && (
+                    <div className="flex gap-2">
+                        <MessageSquareWarningIcon className="stroke-error-400" />
+                        <div className="text-md font-pretendardBold text-error-400">
+                            분석에 필요한 데이터가 부족합니다.
+                        </div>
+                    </div>
+                )}
+                {flightDelayMutation.isSuccess && (
+                    <div className="text-5xl font-pretendardBold text-error-400">{prediction} 분</div>
+                )}
+            </div>
         </Card>
     );
 };
