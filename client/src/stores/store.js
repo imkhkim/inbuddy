@@ -10,6 +10,7 @@ import journeyReducer from '@/stores/journeySlice';
 import itemReducer from '@/stores/itemStore';
 import taskReducer from '@/stores/taskStore';
 import journeyAllReducer from '@/stores/journeyAllStore';
+import flightInfoReducer from '@/stores/flightInfoStore';
 
 const rootReducer = combineReducers({
     counter: counterReducer,
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
     task: taskReducer,
     journey: journeyReducer,
     journeyAll: journeyAllReducer,
+    flightInfo: flightInfoReducer,
 });
 
 const persistConfig = {

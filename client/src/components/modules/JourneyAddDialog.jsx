@@ -18,7 +18,7 @@ import { createJourney } from '@/apis/api/journey';
 
 export function JourneyAddDialog() {
     const queryClient = useQueryClient();
-    const dispath = useDispatch();
+    const dispatch = useDispatch();
     const [input, setInput] = useState('');
     const handleInputChange = (e) => {
         setInput(e.target.value);

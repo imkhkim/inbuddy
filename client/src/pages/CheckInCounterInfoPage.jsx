@@ -7,6 +7,7 @@ import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import { Link } from 'react-router-dom';
 import IconAndP from '@/components/modules/IconAndP';
 import pointerIcon from '@/assets/icons/pointer.svg';
+import { InfoCircledIcon } from '@radix-ui/react-icons';
 function CheckInCounterInfoPage() {
     // 임의설정
     const flightInfo = {
@@ -171,7 +172,6 @@ function CheckInCounterInfoPage() {
                 <div className="grid grid-cols-2">
                     <p>운항사</p>
                     <p className="text-end">
-                        {' '}
                         {airlines.find((airline) => airline.airlineCode == flightInfo.flightNo.substring(0, 2)).name}
                     </p>
                 </div>
@@ -204,8 +204,11 @@ function CheckInCounterInfoPage() {
                     text="혹시 다른 터미널에 계신가요?"
                 />
             </Link>
-            <div className="self-start mx-2">
-                <P variant="content">실제 운항사란?</P>
+            <div className="self-start mx-2 my-4">
+                <div className="flex items-center gap-2 my-1">
+                    <InfoCircledIcon />
+                    <P variant="content">실제 운항사란?</P>
+                </div>
                 <P>
                     공동운항 여부에 따라 예약한 항공사와 실제 운항하는 항공사가 다른 경우가 있어요. 이 경우에 해당편
                     수속은 실제 운항 항공사 카운터에서 담당하게 됩니다.

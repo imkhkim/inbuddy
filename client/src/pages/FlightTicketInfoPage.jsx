@@ -45,7 +45,7 @@ function FlightTicketInfoPage() {
     const [seatNum, setSeatNum] = useState(null);
     const [boardingGate, setBoardingGate] = useState('-');
     const [isOpen, setIsOpen] = useState(false);
-    const [status, setStatus] = useState(statusCode.정상);
+    const [status, setStatus] = useState(statusCode.지연);
     const StatusComponent = status.component;
     const isConcourse = 101 <= Number(boardingGate) && Number(boardingGate) <= 132;
 
