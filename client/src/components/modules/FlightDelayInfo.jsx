@@ -31,16 +31,13 @@ export const Spinner = () => {
 };
 
 const FlightDelayInfo = () => {
-    const [prediction, setPrediction] = useState('70');
+    const [prediction, setPrediction] = useState('');
 
     const flightDelayMutation = useMutation({
         mutationFn: (journeyName) => getflightDelayInfo(journeyName),
         onSuccess: (data) => {
             setPrediction(data.data);
-            console.log('요청 성공:', data);
-        },
-        onError: (error) => {
-            console.error('요청 실패:', error);
+            // console.log('요청 성공:', data);
         },
     });
 
@@ -72,7 +69,7 @@ const FlightDelayInfo = () => {
                 </div>
             </CardHeader>
 
-            <div className="flex items-center justify-center h-10">
+            <div className="flex items-center justify-center h-10 mb-8">
                 {flightDelayMutation.isPending && <Spinner />}
                 {flightDelayMutation.isError && (
                     <div className="flex gap-2">
