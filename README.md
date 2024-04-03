@@ -69,7 +69,7 @@
 ### 🛠기술 소개
 ---
 
-1. `Hadoop`, `Kafka`, `Spark`를 사용하여 항공편 빅데이터 분산 저장 및 읽기
+1. `Hadoop`, `Spark`, `Kafka`를 사용하여 항공편 빅데이터 분산 저장 및 읽기
 
 2. `머신러닝`을 이용하여 날씨에 따른 항공편 지연 예측
 
@@ -162,10 +162,11 @@ Jenkins
 ---
 
 ##### 요구사항 정의, 기능 명세서
-![image](/uploads/6cbef7d852a44305774d525067ea8f1b/image.png)
+![image](/uploads/a0633958c08558f444783307d56dbe80/image.png)
 
 ###### 용어 정리
 
+- `여정 컬렉션`: 사용자의 지난 여정부터 예정된 여정까지 모든 여정이 담겨있는 컬렉션입니다.
 - `준비물 리스트`: 사용자가 공항에 도착하기 전 챙겨야 할 준비물(ITEM) 리스트입니다.
     - 여권, 지갑 등 필수적으로 준비해야 하는 준비물은 제공됩니다.
     - 추가로 준비할 준비물을 사용자가 추가할 수 있습니다.
@@ -175,29 +176,28 @@ Jenkins
     - 추가로 완료해야할 점검 사항을 사용자가 추가할 수 있습니다. 하지만 사용자가 직접 추가한 점검 사항에는 대처 요령은 제공되지 않습니다.
     - 모든 점검 사항을 완료하면, 최종 완료 버튼이 활성화됩니다.
     - 최종 완료 버튼을 누르면 항공편의 운항 현황에 따라 *정상 운항 페이지* 또는 *비정상 운항 페이지*로 넘어갑니다.
-- `여정 컬렉션`: 사용자의 지난 여정부터 예정된 여정까지 모든 여정이 담겨있는 컬렉션입니다.
 
 
 ##### ERD
 
 
-![image](/uploads/eb485255312a191ada6141fe1fffab5a/image.png)
+![image](/uploads/1dcf6817fcb92d3579e3d22973694c6c/image.png)
 
 
 
 ##### 와이어 프레임
-![wireframe](/uploads/22ee8d314777fb6b4cf5b5dcb74adee9/wireframe.PNG)
+![image](/uploads/345b24f20aeb046f0ef31d33f1f0149c/image.png)
 
 <br>
 
 ### 💻팀소개
 ---
-- 김금환
-    - `팀장`, `BE`, `발표`
+- 김금환 `팀장`
+    - `BE`, `발표`
     - ERD 설계
     - Hadoop, Spark Cluster 구축
     - Spark에서 Kafka로부터 과거 항공편 데이터를 가져와 Hadoop HDFS에 누적 적재
-    - Redis 내부의 항공 데이터 프론트와 연결
+    - Redis에 저장된 항공 데이터 Spring Boot와 연동
 - 김성민
     - `FE`
     - 피그마 와이어 프레임 설계
@@ -217,6 +217,7 @@ Jenkins
     - oauth2, jwt, spring security 활용한 소셜 로그인
     - 항공, 날씨 데이터 수집
     - zxing library 활용한 항공편 정보 추출 및 가공
+    - UCC 편집
 - 오상훈
     - `Infra`, `BE`, `ML`
     - 데이터 수집
@@ -226,5 +227,9 @@ Jenkins
     - Kafka Cluster 구축
 - 이예진
     - `BE`
-    - 여정, 점검 리스트, 준비물 리스트, 비행 정보 CRUD 구현 (JPA)
+    - API 명세서 작성
+    - 여정 컬렉션 CRUD 구현 (JPA)
+    - 점검 리스트 CRUD 구현 (JPA)
+    - 준비물 리스트 CRUD 구현 (JPA)
+    - 항공편 정보 CRUD 구현 (JPA)
     - Swagger
