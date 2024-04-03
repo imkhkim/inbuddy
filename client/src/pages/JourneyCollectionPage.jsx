@@ -10,12 +10,13 @@ import { fetchUserProfile, reissueToken } from '@/apis/api/auth';
 import { useEffect } from 'react';
 import { JourneyAllActions } from '@/stores/journeyAllStore';
 import { getJourney, createJourney, deleteJourney, modifyJourney } from '@/apis/api/journey';
+import { getflightInfo } from '@/apis/api/flightInfo';
 
 function JourneyCollectionPage() {
-    const journeyList = useSelector((state) => state.journeyAll);
-    console.log(journeyList);
-
     const dispatch = useDispatch();
+    const journeyList = useSelector((state) => state.journeyAll);
+    // console.log(journeyList);
+    const flightInfoList = useSelector((state) => state.flightInfo);
 
     // 로그인 성공 시 유저 정보를 바탕으로 여정 처음에 가져오는 요청
 
@@ -76,7 +77,7 @@ function JourneyCollectionPage() {
     useEffect(() => {
         if (journeyData) {
             dispatch(JourneyAllActions.setJourney(journeyData.data)); // 전역 상태에 저장
-            console.log('journeyData', journeyData);
+            // console.log('journeyData', journeyData);
         }
     });
 

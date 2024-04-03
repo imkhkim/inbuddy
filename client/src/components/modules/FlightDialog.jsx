@@ -174,11 +174,6 @@ function FlightDialog({ journeyId }) {
         },
     });
 
-    const getFlightInfoQuery = useQuery({
-        queryKey: ['getFlightInfo'],
-        queryFn: () => getflightInfo(1),
-    });
-
     const handleFlightNumberChange = (e) => {
         setFlightNumber(e.target.value);
     };
@@ -188,21 +183,21 @@ function FlightDialog({ journeyId }) {
             `flightDate: ${flightDate}, myAirlineCode: ${myAirlineCode}, flightNumber: ${flightNumber}, ${formattedDate}`
         );
         // console.log(myAirlineCode, flightNumber);
-        createFlightInfoMutation.mutate({
-            journeyId: 1,
+        const newFlightInfo = {
+            journeyId: journeyId,
             flightInfo: {
                 flightCode: flightNumber,
                 airline: myAirlineCode,
                 departureDate: formattedDate,
                 seat: 'not yet',
             },
-        });
+        };
 
-        console.log(getFlightInfoQuery.data);
-        // dispatch(flightInfoActions.initialFlightInfo());
-        dispatch(flightInfoActions.setFlightInfo(getFlightInfoQuery.data.data));
+        createFlightInfoMutation.mutate(newFlightInfo);
+
+        // dispatch(flightInfoActions.initialFlightInfo()); // redux 전역 초기화 필요 시 사용
+        dispatch(flightInfoActions.setFlightInfo(newFlightInfo));
     };
-
     // console.log(
     //     'state.flightInfo',
     //     useSelector((state) => state.flightInfo)

@@ -4,6 +4,7 @@ import { getCookie } from '@/apis/cookies';
 const server = serverAxios();
 
 const getflightInfo = async (journeyId) => {
+    console.log(journeyId);
     return await server
         .get(`/api/journeys/${journeyId}/flight`, {
             headers: {
