@@ -5,7 +5,7 @@ from datetime import datetime
 from logger.logger import log
 from producer.producer import live_weather_producer
 from redis_manager.redis import redis
-from config import WEATHER_API_DOMAIN, WEATHER_DATA_COLUMNS, WEATHER_API_KEY, \
+from config import WEATHER_API_URL, WEATHER_DATA_COLUMNS, WEATHER_API_KEY, \
     LIVE_WEATHER_TOPIC, resource_lock
 
 _last_received = None
@@ -59,7 +59,7 @@ def _request(now):
               "help": 0,
               "authKey": WEATHER_API_KEY}
 
-    url = WEATHER_API_DOMAIN + '?' + '&'.join(
+    url = WEATHER_API_URL + '?' + '&'.join(
             [f"{key}={value}" for key, value in params.items()])
 
     response = requests.get(url).text

@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 from logger.logger import log
 from producer.producer import live_flight_producer
 from redis_manager.redis import redis
-from config import FLIGHT_API_DOMAIN, FLIGHT_DATA_COLUMNS, LIVE_FLIGHT_TOPIC, \
+from config import FLIGHT_API_URL, FLIGHT_DATA_COLUMNS, LIVE_FLIGHT_TOPIC, \
     FLIGHTS_FETCH_SIZE, resource_lock
 
 PREFIX = "ddrivetip('"
@@ -42,7 +42,7 @@ def _request(date_format, dep_arr='D'):
               "current_date": date_format, "airport": "RKSI", "al_icao": "",
               "fp_id": ""}
 
-    url = FLIGHT_API_DOMAIN + '?' + '&'.join(
+    url = FLIGHT_API_URL + '?' + '&'.join(
             [f"{key}={value}" for key, value in params.items()])
 
     response = requests.get(url)

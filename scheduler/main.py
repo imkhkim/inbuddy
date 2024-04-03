@@ -16,6 +16,7 @@ from scheduler.flight_data_fetcher import \
 
 from scheduler.scheduler import scheduler
 from scheduler.weather_data_fetcher import fetch as weather_fetch
+from scheduler.sub_weather_fetcher import fetch as sub_weather_fetch
 from config import *
 
 if __name__ == "__main__":
@@ -48,6 +49,10 @@ if __name__ == "__main__":
             datetime.now().replace(second=0, microsecond=0)), trigger="cron",
                      minute='*',
                      second=30)
+
+    scheduler.create("sub_weather", lambda: sub_weather_fetch(datetime.now()),
+                     trigger="cron",
+                     minute='*/3', second=40)
 
     scheduler.create("batch_save",
                      lambda: save(datetime.today() - timedelta(days=2)),
