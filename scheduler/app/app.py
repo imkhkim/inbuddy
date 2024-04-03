@@ -16,7 +16,7 @@ async def root():
                         status_code=status.HTTP_200_OK)
 
 
-@app.get("/api2/flights/{flight_type}")
+@app.get("/api/flights/{flight_type}")
 def flights(flight_type):
     today = (datetime.datetime.today().strftime('%Y%m%d'))
     redis.select(redis.FLIGHTS_API)
@@ -34,7 +34,7 @@ def flights(flight_type):
     return JSONResponse(content=data, status_code=status_code)
 
 
-@app.post("/api2/predict")
+@app.post("/api/predict")
 def delay_predict(flight_info: PredictRequestEntity):
     flight_code = flight_info.flight_code
 
