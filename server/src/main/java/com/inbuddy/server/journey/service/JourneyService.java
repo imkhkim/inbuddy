@@ -64,4 +64,9 @@ public class JourneyService {
         }
     }
 
+    @Transactional
+    public void updateJourneyDoneStatus() {
+        journeyRepository.updateJourneyDoneStatus();
+    }
+
 }

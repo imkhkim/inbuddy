@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -118,5 +119,9 @@ public class JourneyController {
         }
     }
 
-
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void updateJourneyStatus() {
+        journeyService.updateJourneyDoneStatus();
+        System.out.println("매일 자정에 실행되는 작업");
+    }
 }
