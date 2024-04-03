@@ -1,7 +1,176 @@
-# InBuddy
+##### [InBuddy ✈ 접속하기!](https://inbuddy.site:1110/login)
 
-### 팀원
-- Front-End : 우찬명, 김성민
-- Back-End : 김금환, 이예진, 오상훈, 임서정
-- Infra : 오상훈
+# ✈ InBuddy
 
+1. [프로젝트 소개](#프로젝트-소개)
+2. [Abstract](#Abstract)
+3. [UCC](#UCC)
+3. [주요 기능 소개](#주요-기능-소개)
+4. [기술 소개](#기술-소개)
+5. [기대효과](#기대효과)
+6. [시스템 아키텍처](#시스템-아키텍처)
+7. [개발 환경](#개발-환경)
+8. [팀소개](#팀소개)
+
+### ✨프로젝트 소개
+---
+![image](/uploads/200b10dfcefc10a61313e028c304b701/image.png)
+<br>
+
+> ##### 😖 괜히 해외여행 가기 전에 필요한 무언가를 두고 왔을 거 같애.
+> ##### 😫 공항에 도착했는데 여권을 두고 오다니..!
+> ##### 🤨 오늘 날씨가 별로인데 비행기가 뜰까?
+
+##### 당신의 여정에 차질이 없도록 **InBuddy**
+
+
+### ✨Abstract
+---
+> ##### 😖 I think I left something I needed before I went abroad for no reason.
+> ##### 😫 I just arrived at the airport and I can't believe I left my passport behind...!
+> ##### 🤨 The weather is not good today. Will the plane fly?
+
+###### So that there's no disruption to your journey **InBuddy**
+
+<br>
+
+### 📼UCC
+---
+
+
+<br>
+
+### 🔍주요 기능 소개
+---
+![image](/uploads/e09dbaf39c6377d53937f8870ba9df11/image.png)
+
+
+1. 여정을 등록하고 관리
+
+2. 여정별 준비물 리스트 등록 및 체크
+
+3. 여정별 점검 리스트 등록 및 체크
+
+4. 이슈 발생 시 대처 방법 안내 및 인천국제공항 내 대처 장소 확인
+
+5. 여정별 항공편 등록 및 항공편 현황 확인
+
+6. 인천국제공항, 도착 공항 날씨 실시간 확인
+
+7. 체크인 카운터 확인 및 터미널 간 이동 방법 안내
+
+8. 항공편 지연, 회황, 취소 시 사유 확인
+
+9. 날씨에 의한 지연시 지연 예측
+
+10. 출발 시간 임박 또는 항공편 상태 변경 시 알림 기능
+
+<br>
+
+### 🛠기술 소개
+---
+
+1. Hadoop, Kafka, Spark를 사용하여 항공편 빅데이터 분산 저장 및 읽기
+
+2. 머신러닝을 이용하여 날씨에 따른 항공편 지연 예측
+
+3. Redis를 이용하여 Refresh 토큰과 오늘 이후의 항공편과 날씨 정보를 관리하여 빠른 데이터접근 및 효율성 증대
+
+4. PWA(프로그레시브 웹 앱)를 활용하여 사용자에게 앱과 유사한 경험을 웹에서 제공할 수 있습니다.
+
+#### Lasso 모델
+Lasso(Least Absolute Shrinkage and Selection Operator) 모델은 회귀 분석에서 사용되는 기법으로, 과적합을 방지하며 변수 선택 기능을 가지고 있습니다. 이 모델은 손실 함수에 절대값 기반의 규제 항(L1 규제)을 추가하여, 일부 회귀 계수를 정확히 0으로 만들어 불필요한 변수를 제거합니다. 따라서 모델의 복잡도를 줄이면서도 중요한 변수만을 선택하여 해석력이 높은 모델을 구축할 수 있습니다. Lasso는 특히 변수가 많은 데이터셋에 유용하게 적용됩니다.
+
+InBuddy의 경우 비행기 지연 예측할 때 항공편명, 항공사 등 범주형 데이터들에 대해 one-hot 인코딩을 수행했는데, 데이터의 특성이 너무 많아져 과적합이 될 우려가 있었습니다.
+
+그렇기에 다중 선형 회귀 모델 중 정규화를 포함한 Lasso 모델을 선택했고, 정규화 작업과 교차검증 작업을 통해 과적합을 방지했습니다.
+
+<br>
+
+### ✨기대효과
+---
+1. 체계적인 여행 준비
+2. 신속한 문제 대처
+3. 시간 절약
+
+<br>
+
+### 💡시스템 아키텍처
+---
+![image](/uploads/668797ecb6f1e42273248ea1f0e12333/image.png)
+
+<br>
+
+### ⚙개발 환경
+---
+#### Back End
+Java: 17
+IntelliJ 2023.3.2
+Springboot: 3.2.2
+JVM: 17.0.9
+Fast API: 0.110.0
+
+### Database
+Redis : 7.2.4
+MySQL: 8.0.34
+
+#### Front End
+VS Code: 1.85.1
+React: 18.2.0
+Tailwind CSS: 3.4.1
+Vite: 5.1.6
+Node.js: 20.10.0
+Redux Toolkit: 2.2.2
+TanStack: 5.28.8
+Query v5
+shadcn/ui
+
+#### Big Data
+Hadoop: 3.4.0
+Spark: 3.5.1
+Kafka: 0.10.2 
+
+#### Infra
+AWS EC2 Ubuntu 20.04.6 LTS
+Docker
+Jenkins
+
+<br>
+
+### 💻팀소개
+---
+- 김금환
+    - 팀장, BE, 발표
+    - Hadoop, Spark Cluster 구축, ERD 설계
+    - Spark에서 Kafka로부터 과거 항공편 데이터를 가져와 HDFS에 누적 적재
+    - Redis 내부의 항공 데이터 프론트와 연결
+- 김성민
+    - FE
+    - 피그마 와이어 프레임 설계
+    - PWA
+    - 여정 리스트, 여권, 로밍, 환전 대처 페이지 구현
+    - Adobe illustrator 을 사용한 인천공항 내부 지도 및 주요 편의시설 마커가 포함된 svg 파일 제작
+    - react-panning-zoom libary를 사용한 인천공항 내부 지도 줌, 드래그 기능 구현
+- 우찬명
+    - FE
+    - 피그마 와이어 프레임 설계
+    - PWA
+    - tanstack query
+    - redux toolkit 스켈레톤 템플릿 코드 구현
+    - 점검 리스트, 준비물 리스트 구현
+- 임서정
+    - BE, FE
+    - oauth2, jwt, spring security 활용한 소셜 로그인
+    - 항공, 날씨 데이터 수집
+    - zxing library 활용한 항공편 정보 추출 및 가공
+- 오상훈
+    - Infra, BE, ML
+    - 데이터 수집
+    - 배포 자동화
+    - 테스트서버 구축
+    - 데이터 스케줄러 제작
+    - Kafka Cluster 구축
+- 이예진
+    - BE
+    - 여정, 점검 리스트, 준비물 리스트, 비행 정보 CRUD 구현 (JPA)
+    - Swagger
