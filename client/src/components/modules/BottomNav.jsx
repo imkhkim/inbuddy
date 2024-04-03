@@ -1,6 +1,4 @@
-import { Outlet, Link } from 'react-router-dom';
-import { useState } from 'react';
-
+import { Outlet, Link, useLocation } from 'react-router-dom';
 import homeIcon from '@/assets/icons/home.svg';
 import listChecksIcon from '@/assets/icons/list-checks.svg';
 import baggageClaimIcon from '@/assets/icons/baggage-claim.svg';
@@ -14,54 +12,51 @@ import ticketIconColored from '@/assets/icons/ticket-colored.svg';
 import settingsIconColored from '@/assets/icons/settings-colored.svg';
 
 function BottomNav() {
-    const [isClicked, setIsClicked] = useState([false, false, false, false, false]);
-
-    function handleClick(e, index) {
-        const updatedClickedState = isClicked.map((value, i) => i === index);
-
-        setIsClicked(updatedClickedState); // 상태 업데이트
-    }
+    const location = useLocation();
+    const isActive = (path) => (location.pathname === path ? 'bg-brand-300/10 rounded-3xl' : '');
 
     return (
-        <div className="flex flex-col items-center min-h-screen ">
-            <div className="p-4 overflow-x-hidden overflow-y-auto max-h-[calc(100vh-96px)]">
+        <div className="flex flex-col items-center justify-between min-h-screen ">
+            <div className="mx-4 overflow-x-hidden overflow-y-auto h-[calc(100vh-96px)]">
                 <Outlet />
             </div>
-            <footer className="fixed bottom-0 flex items-center justify-center w-full bg-white border-t-2 border-black min-h-24">
+            <footer className="fixed bottom-0 flex items-center justify-center w-full bg-white border-black shadow-inner shadow-brand-400/10 min-h-24">
                 <div className="flex flex-row items-center w-full justify-evenly">
                     <Link to="/main">
                         <img
-                            src={isClicked[0] ? homeIconColored : homeIcon}
+                            className={`p-3 ${isActive('/main')}`}
+                            src={location.pathname === '/main' ? homeIconColored : homeIcon}
                             alt="홈 아이콘"
-                            onClick={(e) => handleClick(e, 0)}
                         />
                     </Link>
                     <Link to="/checklist">
                         <img
-                            src={isClicked[1] ? listChecksIconColored : listChecksIcon}
+                            className={`p-3 ${isActive('/checklist')}`}
+                            src={location.pathname === '/checklist' ? listChecksIconColored : listChecksIcon}
                             alt="점검 리스트 아이콘"
-                            onClick={(e) => handleClick(e, 1)}
                         />
                     </Link>
                     <Link to="/checkincounterinfo">
                         <img
-                            src={isClicked[2] ? baggageClaimIconColored : baggageClaimIcon}
+                            className={`p-3 ${isActive('/checkincounterinfo')}`}
+                            src={
+                                location.pathname === '/checkincounterinfo' ? baggageClaimIconColored : baggageClaimIcon
+                            }
                             alt="수하물 아이콘"
-                            onClick={(e) => handleClick(e, 2)}
                         />
                     </Link>
                     <Link to="/flightticketinfo">
                         <img
-                            src={isClicked[3] ? ticketIconColored : ticketIcon}
+                            className={`p-3 ${isActive('/flightticketinfo')}`}
+                            src={location.pathname === '/flightticketinfo' ? ticketIconColored : ticketIcon}
                             alt="항공권 아이콘"
-                            onClick={(e) => handleClick(e, 3)}
                         />
                     </Link>
                     <Link to="/settings">
                         <img
-                            src={isClicked[4] ? settingsIconColored : settingsIcon}
+                            className={`p-3 ${isActive('/settings')}`}
+                            src={location.pathname === '/settings' ? settingsIconColored : settingsIcon}
                             alt="설정 아이콘"
-                            onClick={(e) => handleClick(e, 4)}
                         />
                     </Link>
                 </div>

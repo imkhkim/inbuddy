@@ -1,8 +1,8 @@
 import { Button } from '@/components/atoms/Button';
 import { P } from '@/components/atoms/P';
 import { format } from 'date-fns';
-import { useEffect, useState } from 'react';
-import { Calendar as CalendarIcon, Check } from 'lucide-react';
+import { useState } from 'react';
+import { Calendar as CalendarIcon, Check, TicketPlus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Label } from '@/components/atoms/label';
 import { Input } from '@/components/atoms/input';
@@ -234,20 +234,30 @@ function FlightDialog({ journeyId }) {
 
     return (
         <Dialog>
-            <DialogTrigger asChild>
-                <Button variant="outline" className="flex flex-col w-72 h-18 justify-self-center">
-                    <P>등록된 항공편이 아직 없어요!</P>
-                    <P>항공권 추가</P>
-                </Button>
-            </DialogTrigger>
+            <div className="my-auto ">
+                <div className="my-1 ">
+                    <P font="regular" color="neutral" size="xs">
+                        등록된 항공편이 아직 없어요!
+                    </P>
+                </div>
+                <DialogTrigger asChild>
+                    <Button variant="outline" className="mx-auto">
+                        <div className="flex items-center gap-2">
+                            <TicketPlus color="#000000" />
+                            <P>항공편 등록</P>
+                        </div>
+                    </Button>
+                </DialogTrigger>
+            </div>
+
             <DialogContent>
                 {/* 헤더 */}
                 <DialogHeader>
                     <DialogTitle>
                         <P variant="mainHeader">항공편 등록</P>
                     </DialogTitle>
-                    <DialogDescription>
-                        <P>여정에 대한 항공편을 추가해주세요.</P>
+                    <DialogDescription className="mx-auto text-neutral-400">
+                        여정에 대한 항공편을 등록해주세요.
                     </DialogDescription>
                 </DialogHeader>
 
@@ -340,14 +350,16 @@ function FlightDialog({ journeyId }) {
                     onChange={handleFlightNumberChange}
                 ></Input>
 
-                <DialogFooter className="sm:justify-start">
+                <DialogFooter className="gap-2 my-2 sm:justify-end">
                     <DialogClose asChild>
-                        <Button type="submit" onClick={handleAddFlight}>
-                            등록
+                        <Button variant="outline" type="cancel">
+                            취소
                         </Button>
                     </DialogClose>
                     <DialogClose asChild>
-                        <Button type="cancel">취소</Button>
+                        <Button variant="brand" type="submit" onClick={handleAddFlight}>
+                            등록
+                        </Button>
                     </DialogClose>
                 </DialogFooter>
             </DialogContent>

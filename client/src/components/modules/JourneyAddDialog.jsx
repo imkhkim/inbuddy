@@ -38,8 +38,8 @@ export function JourneyAddDialog() {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="destructive" className="w-72 h-18 j">
-                    <P>나의 여정 추가하기</P>
+                <Button variant="brand">
+                    <P className="text-white">나의 여정 추가하기</P>
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-md">
@@ -47,14 +47,16 @@ export function JourneyAddDialog() {
                     <DialogTitle>
                         <P variant="mainHeader">여정 이름 등록</P>
                     </DialogTitle>
-                    <DialogDescription>여정에 대한 이름을 등록하세요.</DialogDescription>
+                    <DialogDescription className="mx-auto text-neutral-400">
+                        여정에 대한 이름을 등록하세요.
+                    </DialogDescription>
                 </DialogHeader>
                 <div className="flex items-center space-x-2">
                     <div className="grid flex-1 gap-2">
                         <Input defaultValue="여정의 제목을 입력하세요." onChange={handleInputChange} />
                     </div>
                 </div>
-                <DialogFooter className="sm:justify-start">
+                <DialogFooter className="gap-2 my-2 sm:justify-end">
                     <DialogClose asChild>
                         <Button type="button" variant="secondary">
                             취소
@@ -62,8 +64,8 @@ export function JourneyAddDialog() {
                     </DialogClose>
                     <DialogClose asChild>
                         <Button
+                            variant="brand"
                             type="submit"
-                            variant="secondary"
                             onClick={() => {
                                 createJourneyMutation.mutate(input);
                             }}

@@ -7,6 +7,7 @@ import { useState, useRef } from 'react';
 
 import { useSelector } from 'react-redux';
 import { checkItemList } from '@/apis/api/itemList';
+import { Delete } from 'lucide-react';
 
 function ToggleSupply({ selected, supply, onToggle, onRemove }) {
     const itemList = useSelector((state) => state.item);
@@ -38,43 +39,25 @@ function ToggleSupply({ selected, supply, onToggle, onRemove }) {
     return (
         <>
             {isSelected ? (
-                <div className="flex flex-row items-center justify-between w-full">
-                    <Div className="w-[80%] mb-4 cursor-pointer bg-border border-border" onClick={handleClick}>
-                        <P ref={supplyRef} className="text-xl line-through font-pretendardBold text-neutral-400 ">
+                <div className="flex flex-row items-center justify-between w-full my-3">
+                    <Div className="w-full mx-2 cursor-pointer bg-border border-border" onClick={handleClick}>
+                        <P ref={supplyRef} className="text-xl line-through font-pretendardBold text-neutral-400">
                             {supply}
                         </P>
                     </Div>
-                    <div className="mb-4">
-                        <Button
-                            className="w-[15%] border border-border bg-border"
-                            variant="ghost"
-                            size="default"
-                            onClick={handleRemoveDiv}
-                        >
-                            <P variant="subHeader" className="text-white">
-                                -
-                            </P>
-                        </Button>
+                    <div onClick={handleRemoveDiv} className="w-[15%]">
+                        <Delete className="stroke-neutral-400" />
                     </div>
                 </div>
             ) : (
-                <div className="flex flex-row items-center justify-between w-full">
-                    <Div className="w-[80%] mb-4 bg-white cursor-pointer border-border" onClick={handleClick}>
+                <div className="flex flex-row items-center justify-between w-full my-3">
+                    <Div className="w-full mx-2 bg-white cursor-pointer border-border" onClick={handleClick}>
                         <P ref={supplyRef} variant="sectionHeader">
                             {supply}
                         </P>
                     </Div>
-                    <div className="mb-4">
-                        <Button
-                            className="w-[15%] border border-border"
-                            variant="ghost"
-                            size="default"
-                            onClick={handleRemoveDiv}
-                        >
-                            <P variant="subHeader" color="error">
-                                -
-                            </P>
-                        </Button>
+                    <div onClick={handleRemoveDiv} className="w-[15%] border-border">
+                        <Delete />
                     </div>
                 </div>
             )}
