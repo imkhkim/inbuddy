@@ -67,4 +67,4 @@ if __name__ == "__main__":
 
     set_model(model, encoder)
 
-    uvicorn.run(app, log_config=UVICORN_LOG_CONFIG)
+    uvicorn.run(app, host=HOST, port=PORT, log_config=UVICORN_LOG_CONFIG)
