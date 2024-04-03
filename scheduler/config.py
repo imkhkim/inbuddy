@@ -20,7 +20,7 @@ if not os.path.exists(LOG_DIRECTORY):
 LOGFILE_PATH = os.path.join(LOG_DIRECTORY, 'scheduler.log')
 
 # Flight API
-FLIGHT_API_DOMAIN = "https://www.airportal.go.kr/life/airinfo/RbHanList.jsp"
+FLIGHT_API_URL = "https://www.airportal.go.kr/life/airinfo/RbHanList.jsp"
 # FLIGHT_DATA_COLUMNS = ["날짜", "항공사", "편명", "도착지", "계획", "예상", "출발", "구분", "현황",
 #                        "사유"]
 FLIGHT_DATA_COLUMNS = ['departure_date', 'airline', 'flight_code',
@@ -31,7 +31,7 @@ FLIGHTS_FETCH_SIZE = int(os.getenv("FLIGHTS_FETCH_SIZE"))
 
 # Weather API
 WEATHER_API_KEY = os.getenv("WEATHER_API_KEY")
-WEATHER_API_DOMAIN = "https://apihub.kma.go.kr/api/typ01/url/amos.php"
+WEATHER_API_URL = "https://apihub.kma.go.kr/api/typ01/url/amos.php"
 WEATHER_DATA_COLUMNS = ["S", "TM", "L_VIS", "R_VIS", "L_RVR", "R_RVR", "CH_MIN",
                         "TA", "TD",
                         "HM", "PS", "PA", "RN", "예비1", "예비2", "WD02",
@@ -39,6 +39,10 @@ WEATHER_DATA_COLUMNS = ["S", "TM", "L_VIS", "R_VIS", "L_RVR", "R_RVR", "CH_MIN",
                         "WS02", "WS02_MAX", "WS02_MIN", "WD10", "WD10_MAX",
                         "WD10_MIN",
                         "WS10", "WS10_MAX", "WS10_MIN"]
+
+# SubWeather API
+ADDITIONAL_DATA_API_KEY = os.getenv("ADDITIONAL_DATA_API_KEY")
+ADDITIONAL_DATA_API_URL = "http://apis.data.go.kr/B551177/StatusOfPassengerWorldWeatherInfo/getPassengerArrivalsWorldWeather"
 
 # Database
 REDIS_HOST = os.getenv("REDIS_HOST")
