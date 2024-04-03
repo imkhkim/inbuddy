@@ -29,10 +29,14 @@ function BottomNav() {
                             alt="홈 아이콘"
                         />
                     </Link>
-                    <Link to="/checklist">
+                    <Link to={`/checklist/${localStorage.getItem('selectedJourneyId')}`}>
                         <img
-                            className={`p-3 ${isActive('/checklist')}`}
-                            src={location.pathname === '/checklist' ? listChecksIconColored : listChecksIcon}
+                            className={`p-3 ${isActive(`/checklist/${localStorage.getItem('selectedJourneyId')}`)}`}
+                            src={
+                                location.pathname === `/checklist/${localStorage.getItem('selectedJourneyId')}`
+                                    ? listChecksIconColored
+                                    : listChecksIcon
+                            }
                             alt="점검 리스트 아이콘"
                         />
                     </Link>

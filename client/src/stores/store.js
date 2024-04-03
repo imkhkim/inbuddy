@@ -6,7 +6,7 @@ import storage from 'redux-persist/lib/storage'; // localStorage를 사용할 �
 import counterReducer from '@/stores/counterStoreTemplate';
 import authReducer from '@/stores/authStore';
 import testReducer from '@/stores/testStore';
-import journeyReducer from '@/stores/journeySlice';
+import journeyReducer from '@/stores/journeyStore';
 import itemReducer from '@/stores/itemStore';
 import taskReducer from '@/stores/taskStore';
 import journeyAllReducer from '@/stores/journeyAllStore';
