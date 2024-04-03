@@ -8,16 +8,15 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "@/components/atoms/dialog"
-import { Input } from "@/components/atoms/input"
-import { P } from "../atoms/P"
-import { useDispatch } from "react-redux"
-import { useState } from "react"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { createJourney } from "@/apis/api/journey"
+} from '@/components/atoms/dialog';
+import { Input } from '@/components/atoms/input';
+import { P } from '../atoms/P';
+import { useDispatch } from 'react-redux';
+import { useState } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { createJourney } from '@/apis/api/journey';
 
 export function JourneyAddDialog() {
-
     const queryClient = useQueryClient();
     const dispath = useDispatch();
     const [input, setInput] = useState('');
@@ -29,12 +28,12 @@ export function JourneyAddDialog() {
         mutationFn: (journeyName) => createJourney(journeyName),
         onSuccess: (data) => {
             console.log('요청 성공:', data);
-            queryClient.invalidateQueries("journey")
+            queryClient.invalidateQueries('journey');
         },
         onError: (error) => {
             console.error('요청 실패:', error);
-        }
-    })
+        },
+    });
 
     return (
         <Dialog>
@@ -48,17 +47,13 @@ export function JourneyAddDialog() {
                     <DialogTitle>
                         <P variant="mainHeader">여정 이름 등록</P>
                     </DialogTitle>
-                    <DialogDescription className="mx-auto">
-                        <P color="neutral">여정에 대한 이름을 등록하세요.</P>
+                    <DialogDescription className="mx-auto text-neutral-400">
+                        여정에 대한 이름을 등록하세요.
                     </DialogDescription>
                 </DialogHeader>
                 <div className="flex items-center space-x-2">
                     <div className="grid flex-1 gap-2">
-
-                        <Input
-                            defaultValue="여정의 제목을 입력하세요."
-                            onChange={handleInputChange}
-                        />
+                        <Input defaultValue="여정의 제목을 입력하세요." onChange={handleInputChange} />
                     </div>
                 </div>
                 <DialogFooter className="gap-2 my-2 sm:justify-end">
@@ -72,15 +67,14 @@ export function JourneyAddDialog() {
                             variant="brand"
                             type="submit"
                             onClick={() => {
-                                createJourneyMutation.mutate(input)
-                            }
-                            }
+                                createJourneyMutation.mutate(input);
+                            }}
                         >
                             등록
                         </Button>
                     </DialogClose>
                 </DialogFooter>
             </DialogContent>
-        </Dialog >
-    )
+        </Dialog>
+    );
 }

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Div } from '@/components/atoms/Div.jsx';
 import { P } from '@/components/atoms/P.jsx';
 
-function ToggleCheck({ iconLeft, title, content, iconRight, footerQuote, check, linkPage, onHandleDivClick }) {
+function ToggleCheck({ iconLeft, title, content, iconRight, footerQuote, check = true, linkPage, onHandleDivClick }) {
     // const [isCheck, setIsCheck] = useState(check);
 
     // const handleClick = () => {
@@ -14,7 +14,7 @@ function ToggleCheck({ iconLeft, title, content, iconRight, footerQuote, check, 
         <>
             <Div
                 borderColor={check ? 'brand' : 'default'}
-                className="flex flex-row justify-between py-10 cursor-pointer"
+                className="flex flex-row justify-between py-10 shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px] cursor-pointer"
                 onClick={onHandleDivClick}
             >
                 {check ? <div className="text-brand-500">{iconLeft} </div> : <div>{iconLeft} </div>}
@@ -28,7 +28,7 @@ function ToggleCheck({ iconLeft, title, content, iconRight, footerQuote, check, 
                 </div>
                 <div>{iconRight} </div>
             </Div>
-            <P className="flex justify-end mb-4" font="font-pretendardRegular" size="sm">
+            <P className="flex justify-end mt-1.5 mb-4" color="brand" font="font-pretendardRegular" size="sm">
                 <Link to={linkPage}>{footerQuote}</Link>
             </P>
         </>
