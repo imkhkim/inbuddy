@@ -6,12 +6,31 @@ import Stamp from '@/assets/stamp.png';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useQuery } from '@tanstack/react-query';
-import { getflightInfo } from '@/apis/api/flightInfo';
+import { getflightInfo, getMyFlight } from '@/apis/api/flightInfo';
 import { useEffect, useState } from 'react';
 import { journeyActions } from '@/stores/journeyStore';
 
 JourneyBox.propTypes = {
     journey: PropTypes.object.isRequired,
+};
+
+// TODO: dummy data
+let flightInfo = {
+    departureDate: '',
+    flightCode: '',
+    departureAirportIATA: 'ICN',
+    arrivalAirportIATA: '',
+    flightTime: '',
+    departureTime: {
+        timeZone: 'UTC+09:00',
+        time: '',
+    },
+    arrivalTime: {
+        timeZone: 'UTC+09:00',
+        time: '',
+    },
+    departureAirportName: '인천',
+    arrivalAirportName: '',
 };
 
 function JourneyBox({ journey }) {
@@ -30,16 +49,49 @@ function JourneyBox({ journey }) {
         queryKey: ['getFlightInfo', journey.journeyId],
         queryFn: () => getflightInfo(journey.journeyId),
     });
+
+    const getMyFlightQuery = useQuery({
+        queryKey: ['myFlight', journey.journeyId],
+        queryFn: () =>
+            getMyFlight(
+                getFlightInfoQuery.data.data.departureDate,
+                getFlightInfoQuery.data.data.airline,
+                getFlightInfoQuery.data.data.flightCode
+            ),
+    });
+
     console.log(getFlightInfoQuery.data);
 
     useEffect(() => {
-        if (getFlightInfoQuery.data) {
+        if (getFlightInfoQuery.data && getFlightInfoQuery.data.data) {
+            // && getMyFlightQuery.data
             // setHasFlightInfo(true);
+            // 여기서 flightInfo 객체 내부 바꿔주기
             const newFlightInfo = {
                 journeyId: journey.journeyId,
                 ...getFlightInfoQuery.data.data,
             };
             console.log(newFlightInfo);
+
+            flightInfo = {
+                departureDate: getFlightInfoQuery.data.data.departureDate,
+                flightCode: getFlightInfoQuery.data.data.airline + getFlightInfoQuery.data.data.flightCode,
+                departureAirportIATA: 'ICN',
+                arrivalAirportIATA: 'xxx',
+                flightTime: 'xxx',
+                departureTime: {
+                    timeZone: 'UTC+09:00',
+                    time: 'xxx',
+                },
+                arrivalTime: {
+                    timeZone: 'UTC+09:00',
+                    time: 'xxx',
+                },
+                departureAirportName: '인천',
+                arrivalAirportName: 'xxx',
+            };
+            console.log('flightInfo', flightInfo);
+
             dispatch(journeyActions.initialJourney(newFlightInfo));
             dispatch(journeyActions.setJourney(newFlightInfo));
         }
@@ -76,7 +128,7 @@ function JourneyBox({ journey }) {
                     그러면 등록해달라는 버튼이 나오면 되는거고 // 정보가 있으면 해당하는
                     정보 보여주면 됨 journey.flightInfo*/}
                 {getFlightInfoQuery.data && getFlightInfoQuery.data.data ? (
-                    <FlightBox flightInfo={getFlightInfoQuery.data.data} />
+                    <FlightBox flightInfo={flightInfo} />
                 ) : (
                     <FlightDialog journeyId={journey.journeyId} />
                 )}

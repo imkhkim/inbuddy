@@ -40,7 +40,7 @@ function FlightBox({ flightInfo }) {
                 <div className="text-center">
                     <P className="text-sm text-gray-400">서울/인천</P>
                     <P className="text-5xl font-pretendardBold">ICN</P>
-                    <P>{flightInfo.departureTime}</P>
+                    <P>{flightInfo.departureTime.time}</P>
                 </div>
 
                 <div className="flex flex-col justify-center text-center">
@@ -52,6 +52,9 @@ function FlightBox({ flightInfo }) {
                     <P className="text-sm text-gray-400">..</P>
                     <P className="text-5xl font-pretendardBold">..</P>
                     <P>..</P>
+                    {/* <P className="text-sm text-gray-400">{flightInfo.arrivalAirportName}</P>
+                    <P className="text-5xl font-pretendardBold">{flightInfo.arrivalAirportIATA}</P>
+                    <P>{flightInfo.arrivalTime.time}</P> */}
                 </div>
             </div>
         </div>
