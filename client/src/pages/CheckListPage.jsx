@@ -58,13 +58,13 @@ function CheckListPage() {
 
     const { data: itemListData, refetch: refetchItemListData } = useQuery({
         queryKey: ['item'],
-        queryFn: async () => getItemList(localStorage.getItem('selectedJourneyId')),
+        queryFn: async () => getItemList(1),
         enabled: true, // useQuery가 즉시 실행되도록 설정
     });
 
     const { data: taskListData } = useQuery({
         queryKey: ['task'],
-        queryFn: async () => getTaskList(localStorage.getItem('selectedJourneyId')),
+        queryFn: async () => getTaskList(1),
         enabled: true,
     });
     //console.log(useSelector((state) => state.task));
@@ -170,16 +170,16 @@ function CheckListPage() {
                 const taskNameEvent = event.target.innerText.slice(0, 2);
                 if (taskNameDB === taskNameEvent) {
                     if (taskNameEvent === '여권') {
-                        checkTaskList(localStorage.getItem('selectedJourneyId'), task.taskId);
+                        checkTaskList(1, task.taskId);
                         setCheckPassport(!checkPassport);
                     } else if (taskNameEvent === '탑승') {
-                        checkTaskList(localStorage.getItem('selectedJourneyId'), task.taskId);
+                        checkTaskList(1, task.taskId);
                         setCheckCheckIn(!checkCheckIn);
                     } else if (taskNameEvent === '환전') {
-                        checkTaskList(localStorage.getItem('selectedJourneyId'), task.taskId);
+                        checkTaskList(1, task.taskId);
                         setCheckExchange(!checkExchange);
                     } else if (taskNameEvent === '로밍') {
-                        checkTaskList(localStorage.getItem('selectedJourneyId'), task.taskId);
+                        checkTaskList(1, task.taskId);
                         setCheckRoaming(!checkRoaming);
                     }
                 }
@@ -192,10 +192,7 @@ function CheckListPage() {
         if (inputValue !== '') {
             // 입력 값이 비어있지 않을 경우에만 실행
             const newDivs = [...divs]; // 기존 div 배열 복사
-            createItemList(localStorage.getItem('selectedJourneyId'), {
-                journeyId: `${localStorage.getItem('selectedJourneyId')}`,
-                itemName: inputValue,
-            });
+            createItemList(1, { journeyId: 1, itemName: inputValue });
             newDivs.push(
                 <ToggleSupply
                     selected={false}

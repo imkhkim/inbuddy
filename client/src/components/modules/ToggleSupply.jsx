@@ -21,7 +21,7 @@ function ToggleSupply({ selected, supply, onToggle, onRemove }) {
         itemList.map((item) => {
             if (item.itemName === supplyRef.current.innerText) {
                 // console.log(item);
-                checkItemList(localStorage.getItem('selectedJourneyId'), item.itemId);
+                checkItemList(1, item.itemId);
                 onToggle();
             }
         });

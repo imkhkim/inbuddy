@@ -174,6 +174,11 @@ function FlightDialog({ journeyId }) {
         },
     });
 
+    const getFlightInfoQuery = useQuery({
+        queryKey: ['getFlightInfo'],
+        queryFn: () => getflightInfo(1),
+    });
+
     const handleFlightNumberChange = (e) => {
         setFlightNumber(e.target.value);
     };
@@ -183,49 +188,49 @@ function FlightDialog({ journeyId }) {
             `flightDate: ${flightDate}, myAirlineCode: ${myAirlineCode}, flightNumber: ${flightNumber}, ${formattedDate}`
         );
         // console.log(myAirlineCode, flightNumber);
-        const newFlightInfo = {
-            journeyId: journeyId,
+        createFlightInfoMutation.mutate({
+            journeyId: 1,
             flightInfo: {
                 flightCode: flightNumber,
                 airline: myAirlineCode,
                 departureDate: formattedDate,
                 seat: 'not yet',
             },
-        };
+        });
 
-        createFlightInfoMutation.mutate(newFlightInfo);
-
-        // dispatch(flightInfoActions.initialFlightInfo()); // redux 전역 초기화 필요 시 사용
-        dispatch(flightInfoActions.setFlightInfo(newFlightInfo));
+        console.log(getFlightInfoQuery.data);
+        // dispatch(flightInfoActions.initialFlightInfo());
+        dispatch(flightInfoActions.setFlightInfo(getFlightInfoQuery.data.data));
     };
+
     // console.log(
     //     'state.flightInfo',
     //     useSelector((state) => state.flightInfo)
     // );
 
-    // const addFlight = () => ({
-    //     type: 'journey/addFlight',
-    //     payload: {
-    //         journeyId: journeyId,
-    //         flightInfo: {
-    //             departureDate: flightDate.toLocaleDateString(),
-    //             flightCode: `${myAirlineCode}${flightNumber}`,
-    //             departureAirportIATA: 'ICN',
-    //             arrivalAirportIATA: '미완',
-    //             flightTime: '미완',
-    //             departureTime: {
-    //                 timeZone: 'UTC+09:00',
-    //                 time: '10:20',
-    //             },
-    //             arrivalTime: {
-    //                 timeZone: 'UTC+09:00',
-    //                 time: '12:50',
-    //             },
-    //             departureAirportName: '인천',
-    //             arrivalAirportName: '미완',
-    //         },
-    //     },
-    // });
+    const addFlight = () => ({
+        type: 'journey/addFlight',
+        payload: {
+            journeyId: journeyId,
+            flightInfo: {
+                departureDate: flightDate.toLocaleDateString(),
+                flightCode: `${myAirlineCode}${flightNumber}`,
+                departureAirportIATA: 'ICN',
+                arrivalAirportIATA: '미완',
+                flightTime: '미완',
+                departureTime: {
+                    timeZone: 'UTC+09:00',
+                    time: '10:20',
+                },
+                arrivalTime: {
+                    timeZone: 'UTC+09:00',
+                    time: '12:50',
+                },
+                departureAirportName: '인천',
+                arrivalAirportName: '미완',
+            },
+        },
+    });
 
     return (
         <Dialog>
