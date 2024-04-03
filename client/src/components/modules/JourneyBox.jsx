@@ -5,12 +5,18 @@ import FlightDialog from './FlightDialog';
 import Stamp from '@/assets/stamp.png';
 import { useNavigate } from 'react-router-dom';
 
+import { useSelector } from 'react-redux';
+
 JourneyBox.propTypes = {
     journey: PropTypes.object.isRequired,
 };
 
 function JourneyBox({ journey }) {
     const navigate = useNavigate(); // useNavigate 훅 사용
+    const flightInfoList = useSelector((state) => state.flightInfo);
+    console.log(flightInfoList);
+    // 여정 id 번호 저장.. 같은거 flightInfoLIst 와 journeyLIst비교해서 해당 인자에 넣어주기
+
     // 박스 공통 레이아웃
     const commonClassName =
         'rounded-md flex flex-col mx-8 my-10 py-10 h-80 p-3 shadow-[rgba(13,_38,_76,_0.19)_0px_9px_20px] text-center w-[80%]';
@@ -29,7 +35,11 @@ function JourneyBox({ journey }) {
 
     return (
         <>
-            <div className={commonClassName} style={journey.journeyDone ? pastJourneystyle : null} onClick={handleJourneyClick}>
+            <div
+                className={commonClassName}
+                style={journey.journeyDone ? pastJourneystyle : null}
+                onClick={handleJourneyClick}
+            >
                 <P variant="mainHeader" className="my-4">
                     {journey.journeyName}
                 </P>

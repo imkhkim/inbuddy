@@ -9,6 +9,9 @@ import { Input } from '@/components/atoms/input';
 import { Calendar } from '@/components/atoms/calendar';
 import { useDispatch } from 'react-redux';
 import { ScrollArea } from '@/components/atoms/scroll-area';
+
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
 import {
     Dialog,
     DialogContent,
@@ -28,7 +31,9 @@ import {
     CommandItem,
     CommandList,
 } from '@/components/atoms/command';
-import { createflightInfo } from '@/apis/api/flightInfo';
+import { createflightInfo, getflightInfo } from '@/apis/api/flightInfo';
+import { flightInfoActions } from '@/stores/flightInfoStore';
+import { useSelector } from 'react-redux';
 
 const airlines = [
     { name: 'ITA항공', airlineCode: 'AZ', terminal: 1, selfCheckIn: false },
@@ -132,6 +137,9 @@ const airlines = [
 ];
 
 function FlightDialog({ journeyId }) {
+    const dispatch = useDispatch();
+    const queryClient = useQueryClient();
+
     const [flightDate, setFlightDate] = useState();
     const [openCalander, setOpenCalander] = useState(false);
 
@@ -141,16 +149,64 @@ function FlightDialog({ journeyId }) {
 
     const [flightNumber, setFlightNumber] = useState('');
 
+    const originalDate = new Date(flightDate);
+
+    // 년, 월, 일, 시, 분, 초 추출
+    const year = originalDate.getFullYear();
+    const month = (originalDate.getMonth() + 1).toString().padStart(2, '0');
+    const day = originalDate.getDate().toString().padStart(2, '0');
+    // const hour = originalDate.getHours().toString().padStart(2, '0');
+    // const minute = originalDate.getMinutes().toString().padStart(2, '0');
+    // const second = originalDate.getSeconds().toString().padStart(2, '0');
+    // const milliseconds = originalDate.getMilliseconds().toString().padStart(3, '0');
+
+    // datetime 형식으로 조합
+    const formattedDate = `${year}-${month}-${day}`; // ${hour}:${minute}:${second}.${milliseconds}`;
+
+    const createFlightInfoMutation = useMutation({
+        mutationFn: (params) => createflightInfo(params),
+        onSuccess: (data) => {
+            console.log('요청 성공:', data);
+            // queryClient.invalidateQueries('createFlightInfo');
+        },
+        onError: (error) => {
+            console.error('요청 실패:', error);
+        },
+    });
+
+    const getFlightInfoQuery = useQuery({
+        queryKey: ['getFlightInfo'],
+        queryFn: () => getflightInfo(1),
+    });
+
     const handleFlightNumberChange = (e) => {
         setFlightNumber(e.target.value);
     };
 
-    const dispath = useDispatch();
-
     const handleAddFlight = () => {
-        dispath(addFlight());
-        console.log(`${flightDate}${myAirlineCode}${flightNumber}`);
+        console.log(
+            `flightDate: ${flightDate}, myAirlineCode: ${myAirlineCode}, flightNumber: ${flightNumber}, ${formattedDate}`
+        );
+        // console.log(myAirlineCode, flightNumber);
+        createFlightInfoMutation.mutate({
+            journeyId: 1,
+            flightInfo: {
+                flightCode: flightNumber,
+                airline: myAirlineCode,
+                departureDate: formattedDate,
+                seat: 'not yet',
+            },
+        });
+
+        console.log(getFlightInfoQuery.data);
+        // dispatch(flightInfoActions.initialFlightInfo());
+        dispatch(flightInfoActions.setFlightInfo(getFlightInfoQuery.data.data));
     };
+
+    // console.log(
+    //     'state.flightInfo',
+    //     useSelector((state) => state.flightInfo)
+    // );
 
     const addFlight = () => ({
         type: 'journey/addFlight',
