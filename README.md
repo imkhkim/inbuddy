@@ -44,8 +44,7 @@
 
 ### 🔍주요 기능 소개
 ---
-![image](/uploads/e09dbaf39c6377d53937f8870ba9df11/image.png)
-
+![image](/uploads/79b8820ee54a6e898b06db6f5e3b1ad5/image.png)
 
 1. 여정을 등록하고 관리
 
