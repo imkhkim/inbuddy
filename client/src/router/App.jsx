@@ -43,7 +43,7 @@ const App = () => {
                     element: <JourneyCollectionPage />,
                 },
                 {
-                    path: '/checklist/:journeyId',
+                    path: '/checklist',
                     element: <CheckListPage />,
                 },
                 {
