@@ -43,7 +43,6 @@ function CheckListPage() {
     const taskList = useSelector((state) => state.task);
 
     const [divs, setDivs] = useState([]); // div들을 관리할 배열 상태 변수
-    const [showInput, setShowInput] = useState(false); // input 상태 변수 생성
     const [activeTab, setActiveTab] = useState('checks');
 
     const inputRef = useRef(null);
@@ -161,14 +160,6 @@ function CheckListPage() {
         );
         return () => clearTimeout(timer);
     }, [checkPassport, checkCheckIn, checkExchange, checkRoaming]);
-
-    const handleShowInput = () => {
-        setShowInput(true);
-    };
-
-    const handleHideInput = () => {
-        setShowInput(false);
-    };
 
     const handleDivClick = (event) => {
         //console.log('클릭', event.target.innerText.slice(0, 2));
@@ -290,31 +281,14 @@ function CheckListPage() {
                         </Link>
                     </div>
 
-                    <Progress className="mb-4" value={progressItem} />
-                    <div>
-                        {showInput && (
-                            <div className="flex flex-row w-full mb-4">
-                                <Input ref={inputRef} className="w-36" type="input" placeholder="준비물 입력" />
-                                <div className="w-5"></div>
-                                {/* 공백을 위한 div */}
-                                <Button variant="brand" onClick={handleAddDiv}>
-                                    입력
-                                </Button>
-                                <div className="w-2"></div>
-                                {/* 공백을 위한 div */}
-                                <Button variant="error" onClick={handleHideInput}>
-                                    취소
-                                </Button>
-                            </div>
-                        )}
-                        <Button
-                            className="mb-4 border-2 border-border"
-                            variant="ghost"
-                            size="default"
-                            onClick={handleShowInput}
-                        >
-                            <P variant="sectionHeader">+</P>
-                        </Button>
+                    <Progress className="my-4" value={progressItem} />
+                    <div className="py-2">
+                        <div className="flex flex-row justify-between gap-3 my-4">
+                            <Input ref={inputRef} className="w-full ml-1" type="input" placeholder="준비물 입력" />
+                            <Button variant="brand" onClick={handleAddDiv}>
+                                입력
+                            </Button>
+                        </div>
 
                         <DragDropContext onDragEnd={onDragEnd}>
                             <Droppable droppableId="droppable">
@@ -338,6 +312,8 @@ function CheckListPage() {
                                 )}
                             </Droppable>
                         </DragDropContext>
+                    </div>
+                    <div className="my-6 ">
                         {checkAllItem ? (
                             <PAndButton
                                 tabsContentValue="supplies"
@@ -358,14 +334,10 @@ function CheckListPage() {
                             </>
                         )}
                     </div>
+                    {/* </div> */}
                 </TabsContent>
 
-                <TabsContent
-                    value="checks"
-                    forceMount={true}
-                    hidden={'checks' !== activeTab}
-                    className="flex flex-col justify-between mt-4 "
-                >
+                <TabsContent value="checks" forceMount={true} hidden={'checks' !== activeTab}>
                     <div className="">
                         <P className="mb-2" variant="mainHeader">
                             탑승 전 점검 리스트
@@ -458,7 +430,7 @@ function CheckListPage() {
                         ) : (
                             <PAndButton
                                 tabsContentValue="checks"
-                                firstContent="모든 점검이 완료되지 않았어요"
+                                firstContent="모든 점검이 완료되지 않았어요!"
                                 secondContent="빠진 것은 없는지 다시 한 번 확인해 주세요"
                                 buttonContent="출국 준비 완료"
                                 isReady={false}
