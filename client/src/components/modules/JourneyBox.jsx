@@ -110,7 +110,9 @@ function JourneyBox({ journey }) {
 
     const handleJourneyClick = () => {
         localStorage.setItem('selectedJourneyId', journey.journeyId); // localStorage에 journeyId 저장
+        navigate('/checklist'); // useNavigate를 사용하여 CheckListPage로 이동
     };
+
     return (
         <>
             <div
