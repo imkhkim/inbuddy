@@ -4,6 +4,10 @@ from threading import Lock
 
 load_dotenv()
 
+# Host
+HOST = str(os.getenv("HOST"))
+PORT = int(os.getenv("PORT"))
+
 # Resource Lock
 resource_lock = Lock()
 
@@ -17,8 +21,13 @@ LOGFILE_PATH = os.path.join(LOG_DIRECTORY, 'scheduler.log')
 
 # Flight API
 FLIGHT_API_DOMAIN = "https://www.airportal.go.kr/life/airinfo/RbHanList.jsp"
-FLIGHT_DATA_COLUMNS = ["날짜", "항공사", "편명", "도착지", "계획", "예상", "출발", "구분", "현황",
-                       "사유"]
+# FLIGHT_DATA_COLUMNS = ["날짜", "항공사", "편명", "도착지", "계획", "예상", "출발", "구분", "현황",
+#                        "사유"]
+FLIGHT_DATA_COLUMNS = ['departure_date', 'airline', 'flight_code',
+                       'destination', 'departure_time_plan',
+                       'departure_time_expected', 'departure_time_real',
+                       'division', 'flight_status', 'cause']
+FLIGHTS_FETCH_SIZE = int(os.getenv("FLIGHTS_FETCH_SIZE"))
 
 # Weather API
 WEATHER_API_KEY = os.getenv("WEATHER_API_KEY")
@@ -38,6 +47,12 @@ REDIS_PORT = os.getenv("REDIS_PORT")
 # Message Broker
 KAFKA_HOST = os.getenv("KAFKA_HOST")
 KAFKA_BROKER_PORTS = os.getenv("KAFKA_BROKER_PORTS")
+
+# Topic
+LIVE_FLIGHT_TOPIC = os.getenv("LIVE_FLIGHT_TOPIC")
+LIVE_WEATHER_TOPIC = os.getenv("LIVE_WEATHER_TOPIC")
+BATCH_FLIGHT_TOPIC = os.getenv("BATCH_FLIGHT_TOPIC")
+BATCH_WEATHER_TOPIC = os.getenv("BATCH_WEATHER_TOPIC")
 
 # Logger
 LOG_FORMAT = "%(log_color)s%(asctime)s - %(levelname)-5s - %(message)s"
@@ -84,3 +99,19 @@ UVICORN_LOG_CONFIG = {
                               "level": "DEBUG"},
     },
 }
+
+# Predict Model Path
+ML_MODEL_PATH = os.getenv('ML_MODEL_PATH')
+ENCODER_PATH = os.getenv('ENCODER_PATH')
+
+INPUT_COLUMNS = [
+    'airline',
+    'flight_code',
+    'destination',
+    'cause',
+    'temperature',
+    'wind_speed_10m_avg_kt',
+    'cumulative_precipitation_mm',
+    'mor_10m_avg_km',
+    'term',
+]

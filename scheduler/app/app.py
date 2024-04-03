@@ -1,9 +1,11 @@
 import datetime
 import json
 
-from app.redis.redis import redis
+from redis_manager.redis import redis
 from fastapi import FastAPI, status
 from fastapi.responses import JSONResponse
+from app.models import PredictRequestEntity, PredictResponseEntity
+from app.predict import predict
 
 app = FastAPI()
 
@@ -32,6 +34,15 @@ def flights(flight_type):
     return JSONResponse(content=data, status_code=status_code)
 
 
-@app.get("/hello/{name}")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}
+@app.post("/api/predict")
+def delay_predict(flight_info: PredictRequestEntity):
+    flight_code = flight_info.flight_code
+
+    result = predict(flight_code)
+
+    http_status, message, data = 200, "예측 성공", result
+
+    if result is None:
+        http_status, message, data = 400, "예측 실패", None
+
+    return PredictResponseEntity(status=http_status, message=message, data=data)

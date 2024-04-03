@@ -59,7 +59,7 @@ Temporary Items
 # Credentials
 .env
 
-app/logger/logs
+logger/logs
 
 # Generated files
 .idea/**/contentModel.xml
