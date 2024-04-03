@@ -5,8 +5,8 @@ from threading import Lock
 load_dotenv()
 
 # Host
-HOST = os.getenv("HOST")
-PORT = os.getenv("PORT")
+HOST = str(os.getenv("HOST"))
+PORT = int(os.getenv("PORT"))
 
 # Resource Lock
 resource_lock = Lock()
