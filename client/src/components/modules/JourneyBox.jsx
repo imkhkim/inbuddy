@@ -3,19 +3,47 @@ import FlightBox from './FlightBox';
 import PropTypes from 'prop-types';
 import FlightDialog from './FlightDialog';
 import Stamp from '@/assets/stamp.png';
-import { useNavigate } from 'react-router-dom';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useQuery } from '@tanstack/react-query';
+import { getflightInfo } from '@/apis/api/flightInfo';
+import { useEffect, useState } from 'react';
+import { journeyActions } from '@/stores/journeyStore';
 
 JourneyBox.propTypes = {
     journey: PropTypes.object.isRequired,
 };
 
 function JourneyBox({ journey }) {
-    const navigate = useNavigate(); // useNavigate 훅 사용
-    const flightInfoList = useSelector((state) => state.flightInfo);
-    console.log(flightInfoList);
-    // 여정 id 번호 저장.. 같은거 flightInfoLIst 와 journeyLIst비교해서 해당 인자에 넣어주기
+    const dispatch = useDispatch();
+
+    // const flightInfoList = useSelector((state) => state.flightInfo);
+    // const journeyList = useSelector((state) => state.journey);
+    //console.log(journey);
+    console.log('map 내부', journey.journeyId);
+    // const [hasFlightInfo, setHasFlightInfo] = useState(false);
+
+    // console.log(flightInfoList);
+    // console.log(journeyList);
+
+    const getFlightInfoQuery = useQuery({
+        queryKey: ['getFlightInfo', journey.journeyId],
+        queryFn: () => getflightInfo(journey.journeyId),
+    });
+    console.log(getFlightInfoQuery.data);
+
+    useEffect(() => {
+        if (getFlightInfoQuery.data) {
+            // setHasFlightInfo(true);
+            const newFlightInfo = {
+                journeyId: journey.journeyId,
+                ...getFlightInfoQuery.data.data,
+            };
+            console.log(newFlightInfo);
+            dispatch(journeyActions.initialJourney(newFlightInfo));
+            dispatch(journeyActions.setJourney(newFlightInfo));
+        }
+    }, [getFlightInfoQuery.data]);
 
     // 박스 공통 레이아웃
     const commonClassName =
@@ -30,9 +58,7 @@ function JourneyBox({ journey }) {
 
     const handleJourneyClick = () => {
         localStorage.setItem('selectedJourneyId', journey.journeyId); // localStorage에 journeyId 저장
-        navigate('/checklist'); // useNavigate를 사용하여 CheckListPage로 이동
     };
-
     return (
         <>
             <div
@@ -43,9 +69,14 @@ function JourneyBox({ journey }) {
                 <P variant="mainHeader" className="my-4">
                     {journey.journeyName}
                 </P>
-
-                {journey.flightInfo ? (
-                    <FlightBox flightInfo={journey.flightInfo} />
+                {/* 여기서 내가 지금 가진 journey.id를 쏴. api로.
+                    그럼 journey.id에 등록된 항공편 정보가 들어오겠지.
+                    그럼 그 정보를 journey.flightInfo에 담아.
+                    이러면 journey.id에 등록된 항공편 정보가 없었다면 null이나 뭐 다른게 반환될꺼고
+                    그러면 등록해달라는 버튼이 나오면 되는거고 // 정보가 있으면 해당하는
+                    정보 보여주면 됨 journey.flightInfo*/}
+                {getFlightInfoQuery.data && getFlightInfoQuery.data.data ? (
+                    <FlightBox flightInfo={getFlightInfoQuery.data.data} />
                 ) : (
                     <FlightDialog journeyId={journey.journeyId} />
                 )}
