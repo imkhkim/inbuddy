@@ -3,7 +3,6 @@ import json
 from datetime import datetime
 import pandas as pd
 
-from config import INPUT_COLUMNS
 from redis_manager.redis import redis
 from scheduler.weather_data_fetcher import get_last_received_time
 

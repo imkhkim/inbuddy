@@ -41,8 +41,8 @@ WEATHER_DATA_COLUMNS = ["S", "TM", "L_VIS", "R_VIS", "L_RVR", "R_RVR", "CH_MIN",
                         "WS10", "WS10_MAX", "WS10_MIN"]
 
 # SubWeather API
-SUB_WEATHER_API_KEY = os.getenv("SUB_WEATHER_API_KEY")
-SUB_WEATHER_API_URL = "http://apis.data.go.kr/B551177/StatusOfPassengerWorldWeatherInfo"
+ADDITIONAL_DATA_API_KEY = os.getenv("ADDITIONAL_DATA_API_KEY")
+ADDITIONAL_DATA_API_URL = "http://apis.data.go.kr/B551177/StatusOfPassengerWorldWeatherInfo/getPassengerArrivalsWorldWeather"
 
 # Database
 REDIS_HOST = os.getenv("REDIS_HOST")
