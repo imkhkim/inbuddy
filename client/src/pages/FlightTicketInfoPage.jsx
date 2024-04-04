@@ -18,11 +18,11 @@ import { Button } from '@/components/atoms/Button';
 
 // TODO: dummy data
 const flightInfo = {
-    departureDate: '2024-03-08',
-    flightCode: 'TW213',
+    departureDate: '2024-04-11',
+    flightCode: 'TW291',
     departureAirportIATA: 'ICN',
     arrivalAirportIATA: 'NRT',
-    flightTime: '2h 30m',
+    flightTime: '1h 25m',
     departureTime: {
         timeZone: 'UTC+09:00',
         time: '10:20',
@@ -189,7 +189,7 @@ function FlightTicketInfoPage() {
                                         </P>
                                         {/* TODO : 예정 출발 시간  */}
                                         <P variant="content" size="xl" className="py-1 text-center" font="regular">
-                                            21:30
+                                            11:30
                                         </P>
                                     </div>
                                     <div className="flex flex-col w-1/2 mx-3 my-2">

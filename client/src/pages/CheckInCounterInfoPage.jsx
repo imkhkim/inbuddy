@@ -11,10 +11,10 @@ import { InfoCircledIcon } from '@radix-ui/react-icons';
 function CheckInCounterInfoPage() {
     // 임의설정
     const flightInfo = {
-        flightNo: 'KE5869',
-        realFlightNo: 'MU2044',
-        terminalNo: '2',
-        checkinCounter: 'F01-F18',
+        flightNo: 'TW291',
+        realFlightNo: 'TW291',
+        terminalNo: '1',
+        checkinCounter: 'F01-F36',
     };
 
     const airlines = [
@@ -121,19 +121,19 @@ function CheckInCounterInfoPage() {
     const counterMapStyle =
         flightInfo.terminalNo == '1'
             ? {
-                  initialScale: 1.7,
-                  initialPositionX: -130,
-                  initialPositionY: -76,
-                  mapSrc: T1counter,
-                  mapLabelSrc: T1counterlabel,
-              }
+                initialScale: 1.7,
+                initialPositionX: -130,
+                initialPositionY: -76,
+                mapSrc: T1counter,
+                mapLabelSrc: T1counterlabel,
+            }
             : {
-                  initialScale: 1.7,
-                  initialPositionX: -122,
-                  initialPositionY: -95,
-                  mapSrc: T2counter,
-                  mapLabelSrc: T2counterlabel,
-              };
+                initialScale: 1.7,
+                initialPositionX: -122,
+                initialPositionY: -95,
+                mapSrc: T2counter,
+                mapLabelSrc: T2counterlabel,
+            };
 
     return (
         <div className="flex flex-col items-center justify-end w-full">
