@@ -1,26 +1,25 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { Div } from '@/components/atoms/Div.jsx';
 import { P } from '@/components/atoms/P.jsx';
 
-function ToggleCheck({ iconLeft, title, content, iconRight, footerQuote, check, linkPage }) {
-    const [isCheck, setIsCheck] = useState(check);
+function ToggleCheck({ iconLeft, title, content, iconRight, footerQuote, check = true, linkPage, onHandleDivClick }) {
+    // const [isCheck, setIsCheck] = useState(check);
 
-    const handleClick = () => {
-        setIsCheck(!isCheck);
-    };
+    // const handleClick = () => {
+    //     setIsCheck(!isCheck);
+    // };
     return (
         <>
             <Div
-                borderColor={isCheck ? 'brand' : 'default'}
-                className="flex flex-row justify-between py-10 cursor-pointer"
-                onClick={handleClick}
+                borderColor={check ? 'brand' : 'default'}
+                className="flex flex-row justify-between py-10 shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px] cursor-pointer"
+                onClick={onHandleDivClick}
             >
-                {isCheck ? <div className="text-brand-500">{iconLeft} </div> : <div>{iconLeft} </div>}
+                {check ? <div className="text-brand-500">{iconLeft} </div> : <div>{iconLeft} </div>}
                 <div className="items-start px-4">
-                    <P font="font-pretendardRegular" size="lg" color={isCheck ? 'brand' : 'black'}>
+                    <P font="font-pretendardRegular" size="lg" color={check ? 'brand' : 'black'}>
                         {title}
                     </P>
                     <P font="font-pretendardRegular" size="xs" color="neutral">
@@ -29,7 +28,7 @@ function ToggleCheck({ iconLeft, title, content, iconRight, footerQuote, check, 
                 </div>
                 <div>{iconRight} </div>
             </Div>
-            <P className="flex justify-end mb-4" font="font-pretendardRegular" size="sm">
+            <P className="flex justify-end mt-1.5 mb-4" color="brand" font="font-pretendardRegular" size="sm">
                 <Link to={linkPage}>{footerQuote}</Link>
             </P>
         </>
@@ -44,6 +43,7 @@ ToggleCheck.propTypes = {
     footerQuote: PropTypes.string,
     check: PropTypes.bool,
     linkPage: PropTypes.string,
+    onHandleDivClick: PropTypes.func,
 };
 
 export default ToggleCheck;
