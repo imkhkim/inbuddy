@@ -42,13 +42,15 @@ def fetch(now):
         redis.select(redis.FLIGHTS_API)
         flight_data = json.loads(redis.get(today_date_format + 'D'))
 
-        for document in response:
-            flight_code = document['flightId']
-            if flight_code not in flight_data:
-                continue
+    for document in response:
+        flight_code = document['flightId']
+        if flight_code not in flight_data:
+            continue
 
-            flight_data[flight_code] = {key: document[key] for key in KEYS}
+        flight_data[flight_code] = {key: document[key] for key in KEYS}
 
+    with resource_lock:
+        redis.select(redis.FLIGHTS_API)
         redis.set(today_date_format + 'D', json.dumps(flight_data))
 
     log.info("Added Additional Data to Flight(Departure) Data")
