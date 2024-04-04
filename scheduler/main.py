@@ -37,8 +37,8 @@ if __name__ == "__main__":
     log.info("Starting scheduler")
     scheduler.create("flights_departure",
                      lambda: flight_fetch(datetime.today()),
-                     trigger="cron",
-                     minute='*/3', second=50)
+                     trigger="interval",
+                     minutes=3, jitter=10)
 
     scheduler.create("flights_departure_scheduled",
                      lambda: flight_fetch_scheduled(datetime.now() + timedelta(
@@ -46,14 +46,14 @@ if __name__ == "__main__":
                      trigger="cron", hour="0-5", minute=0, second=30)
 
     scheduler.create("weather", lambda: weather_fetch(
-            datetime.now().replace(second=0, microsecond=0)), trigger="cron",
-                     minute='*',
-                     second=45)
+            datetime.now().replace(second=0, microsecond=0)),
+                     trigger="interval",
+                     minutes=1, jitter=10)
 
     scheduler.create("additional_data",
                      lambda: additional_data_fetch(datetime.now()),
-                     trigger="cron",
-                     minute='*/3', second=0)
+                     trigger="interval",
+                     minutes=3, jitter=10)
 
     scheduler.create("batch_save",
                      lambda: save(datetime.today() - timedelta(days=2)),

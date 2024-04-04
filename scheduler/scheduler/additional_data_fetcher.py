@@ -1,3 +1,4 @@
+import datetime
 import json
 import requests
 
@@ -47,10 +48,18 @@ def fetch(now):
         if flight_code not in flight_data:
             continue
 
-        flight_data[flight_code] = {key: document[key] for key in KEYS}
+        flight_data[flight_code].update({key: document[key] for key in KEYS})
 
     with resource_lock:
         redis.select(redis.FLIGHTS_API)
         redis.set(today_date_format + 'D', json.dumps(flight_data))
 
     log.info("Added Additional Data to Flight(Departure) Data")
+
+
+def test():
+    redis.set_connection('localhost', 6379)
+    fetch(datetime.datetime.now())
+
+
+test()
