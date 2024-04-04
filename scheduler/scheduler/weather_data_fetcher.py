@@ -81,18 +81,19 @@ def fetch(now):
 
     log.info("Fetched Weather Data")
 
-    with resource_lock:
-        redis.select(redis.WEATHERS_BATCH)
-        for line in csv_data:
+    for line in csv_data:
+        with resource_lock:
+            redis.select(redis.WEATHERS_BATCH)
             redis.set(line[1], ','.join(line))
 
-        redis.select(redis.WEATHERS_API)
-        for document in json_data:
-            dump = json.dumps(document, ensure_ascii=False)
+    for document in json_data:
+        dump = json.dumps(document, ensure_ascii=False)
+        with resource_lock:
+            redis.select(redis.WEATHERS_API)
             redis.set(document["TM"], dump)
 
-            key = str(document["TM"])
-            _last_received = datetime.strptime(key, _DATE_FORMAT_MINUTE)
-            live_weather_producer.produce(topic=LIVE_WEATHER_TOPIC,
-                                          value=dump,
-                                          key=key)
+        key = str(document["TM"])
+        _last_received = datetime.strptime(key, _DATE_FORMAT_MINUTE)
+        live_weather_producer.produce(topic=LIVE_WEATHER_TOPIC,
+                                      value=dump,
+                                      key=key)
