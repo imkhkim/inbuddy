@@ -174,10 +174,10 @@ function FlightDialog({ journeyId }) {
         },
     });
 
-    const getFlightInfoQuery = useQuery({
-        queryKey: ['getFlightInfo'],
-        queryFn: () => getflightInfo(1),
-    });
+    // const getFlightInfoQuery = useQuery({
+    //     queryKey: ['getFlightInfo'],
+    //     queryFn: () => getflightInfo(localStorage.getItem('selectedJourneyId')),
+    // });
 
     const handleFlightNumberChange = (e) => {
         setFlightNumber(e.target.value);
@@ -189,7 +189,7 @@ function FlightDialog({ journeyId }) {
         );
         // console.log(myAirlineCode, flightNumber);
         createFlightInfoMutation.mutate({
-            journeyId: 1,
+            journeyId: `${localStorage.getItem('selectedJourneyId')}`,
             flightInfo: {
                 flightCode: flightNumber,
                 airline: myAirlineCode,
@@ -198,9 +198,9 @@ function FlightDialog({ journeyId }) {
             },
         });
 
-        console.log(getFlightInfoQuery.data);
+        //console.log(getFlightInfoQuery.data);
         // dispatch(flightInfoActions.initialFlightInfo());
-        dispatch(flightInfoActions.setFlightInfo(getFlightInfoQuery.data.data));
+        //dispatch(flightInfoActions.setFlightInfo(getFlightInfoQuery.data.data));
     };
 
     // console.log(
