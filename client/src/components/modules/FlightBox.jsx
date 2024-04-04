@@ -49,9 +49,9 @@ function FlightBox({ flightInfo }) {
                 </div>
 
                 <div className="text-center">
-                    <P className="text-sm text-gray-400">..</P>
-                    <P className="text-5xl font-pretendardBold">..</P>
-                    <P>..</P>
+                    <P className="text-sm text-gray-400">후쿠오카</P>
+                    <P className="text-5xl font-pretendardBold">FUK</P>
+                    <P>11:30</P>
                     {/* <P className="text-sm text-gray-400">{flightInfo.arrivalAirportName}</P>
                     <P className="text-5xl font-pretendardBold">{flightInfo.arrivalAirportIATA}</P>
                     <P>{flightInfo.arrivalTime.time}</P> */}

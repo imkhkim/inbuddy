@@ -77,18 +77,18 @@ function JourneyBox({ journey }) {
                 departureDate: getFlightInfoQuery.data.data.departureDate,
                 flightCode: getFlightInfoQuery.data.data.airline + getFlightInfoQuery.data.data.flightCode,
                 departureAirportIATA: 'ICN',
-                arrivalAirportIATA: 'xxx',
-                flightTime: 'xxx',
+                arrivalAirportIATA: 'FUK',
+                flightTime: '1h 25m',
                 departureTime: {
                     timeZone: 'UTC+09:00',
-                    time: 'xxx',
+                    time: '10:05',
                 },
                 arrivalTime: {
                     timeZone: 'UTC+09:00',
-                    time: 'xxx',
+                    time: '11:30',
                 },
                 departureAirportName: '인천',
-                arrivalAirportName: 'xxx',
+                arrivalAirportName: '후쿠오카',
             };
             console.log('flightInfo', flightInfo);
 
