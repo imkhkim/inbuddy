@@ -18,7 +18,7 @@ def flight_save(old_flight_date):
         old_flight_data = redis.get(old_flight_data_key)
         redis.delete(old_flight_data_key)
 
-        log.info(f"Old Flight Data: {old_flight_data_key} Deleted From Redis")
+    log.info(f"Old Flight Data: {old_flight_data_key} Deleted From Redis")
 
     old_flight_data = {} if old_flight_data is None else json.loads(
             old_flight_data)
@@ -45,18 +45,20 @@ def weather_save(old_weather_date):
     with resource_lock:
         redis.select(redis.WEATHERS_BATCH)
 
-        while date < end_date:
-            data_key = date.strftime(_DATE_FORMAT_MINUTE)
+    while date < end_date:
+        data_key = date.strftime(_DATE_FORMAT_MINUTE)
+
+        with resource_lock:
             data = redis.get(data_key)
             redis.delete(data_key)
 
-            if data is not None:
-                data = data.decode("utf-8")
-                old_weather_data.append(data)
+        if data is not None:
+            data = data.decode("utf-8")
+            old_weather_data.append(data)
 
-            date += timedelta(minutes=1)
+        date += timedelta(minutes=1)
 
-        log.info(f"Old Weather Data: {old_weather_data_key} Deleted From Redis")
+    log.info(f"Old Weather Data: {old_weather_data_key} Deleted From Redis")
 
     if old_weather_data:
         batch_weather_producer.produce(topic=BATCH_WEATHER_TOPIC,
