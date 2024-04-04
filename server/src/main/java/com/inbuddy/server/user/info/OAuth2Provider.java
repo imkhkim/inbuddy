@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum OAuth2Provider {
     DEFAULT("default"),
+    NAVER("naver"),
     KAKAO("kakao");
 
     private final String registrationId;

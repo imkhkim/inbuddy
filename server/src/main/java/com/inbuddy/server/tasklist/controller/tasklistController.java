@@ -1,19 +1,19 @@
-package com.inbuddy.server.takelist.controller;
+package com.inbuddy.server.tasklist.controller;
 
 import com.inbuddy.server.global.message.Message;
-import com.inbuddy.server.takelist.entity.Task;
-import com.inbuddy.server.takelist.service.TasklistService;
+import com.inbuddy.server.tasklist.entity.Task;
+import com.inbuddy.server.tasklist.service.TasklistService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin("*")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/journeys/{journey_id}/tasklist")
-public class tasklsitController {
+public class tasklistController {
 
     private final TasklistService tasklistService;
 

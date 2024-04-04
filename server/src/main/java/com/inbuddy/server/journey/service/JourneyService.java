@@ -3,7 +3,7 @@ package com.inbuddy.server.journey.service;
 import com.inbuddy.server.itemlist.service.ItemService;
 import com.inbuddy.server.journey.entity.Journey;
 import com.inbuddy.server.journey.repository.JourneyRepository;
-import com.inbuddy.server.takelist.service.TasklistService;
+import com.inbuddy.server.tasklist.service.TasklistService;
 import com.inbuddy.server.user.entity.User;
 import com.inbuddy.server.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +39,9 @@ public class JourneyService {
 
         tasklistService.createTasklist(journey.getJourneyId(), "여권챙김?");
         tasklistService.createTasklist(journey.getJourneyId(), "탑승수속");
-        tasklistService.createTasklist(journey.getJourneyId(), "비행기타기");
+        tasklistService.createTasklist(journey.getJourneyId(), "환전완료");
+        tasklistService.createTasklist(journey.getJourneyId(), "로밍신청");
+
     }
 
     @Transactional
@@ -60,6 +62,11 @@ public class JourneyService {
         } else {
             throw new NoSuchElementException("해당 ID에 대한 여정을 찾을 수 없습니다.");
         }
+    }
+
+    @Transactional
+    public void updateJourneyDoneStatus() {
+        journeyRepository.updateJourneyDoneStatus();
     }
 
 }

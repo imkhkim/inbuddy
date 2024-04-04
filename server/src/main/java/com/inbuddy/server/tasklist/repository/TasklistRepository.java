@@ -1,6 +1,6 @@
-package com.inbuddy.server.takelist.repository;
+package com.inbuddy.server.tasklist.repository;
 
-import com.inbuddy.server.takelist.entity.Task;
+import com.inbuddy.server.tasklist.entity.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

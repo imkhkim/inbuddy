@@ -10,6 +10,7 @@ import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Optional;
 
@@ -22,11 +23,11 @@ public class FlightService {
     private final FlightRepository flightRepository;
 
     @Transactional
-    public void createFlightInfo(int journeyId, String flightCode, String airline, Date departureDate) {
-        if (flightRepository.existsByJourneyJourneyId(journeyId)){
+    public void createFlightInfo(int journeyFlightId, String flightCode, String airline, LocalDate departureDate) {
+        if (flightRepository.existsByJourneyJourneyId(journeyFlightId)){
             throw new DataIntegrityViolationException("이미 해당 여정에 대한 비행기 정보가 생성되었습니다.");
         }
-        Journey journey = journeyRepository.findByJourneyId(journeyId);
+        Journey journey = journeyRepository.findByJourneyId(journeyFlightId);
         FlightInfo flight = FlightInfo.builder()
                 .journey(journey)
                 .flightCode(flightCode)
@@ -37,8 +38,8 @@ public class FlightService {
     }
 
     @Transactional
-    public void modifyFlightInfo(int flightId, String flightCode, String airline, Date departureDate) throws ChangeSetPersister.NotFoundException {
-        Optional<FlightInfo> flightInfo = flightRepository.findById(flightId);
+    public void modifyFlightInfo(int journeyFlightId, String flightCode, String airline, LocalDate departureDate) throws ChangeSetPersister.NotFoundException {
+        Optional<FlightInfo> flightInfo = flightRepository.findById(journeyFlightId);
         if(flightInfo.isPresent()){
             flightInfo.get().updateFlightInfo(flightCode,airline,departureDate);
         }else{
@@ -47,14 +48,29 @@ public class FlightService {
     }
 
     @Transactional
-    public void deleteFlightInfo(int flightId){
-        FlightInfo flightInfo = flightRepository.findById(flightId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 비행정보를 찾을 수 없습니다. ID: " + flightId));
+    public void deleteFlightInfo(int journeyFlightId){
+        FlightInfo flightInfo = flightRepository.findById(journeyFlightId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 비행정보를 찾을 수 없습니다. ID: " + journeyFlightId));
         flightRepository.delete(flightInfo);
     }
 
     @Transactional
     public FlightInfo readFlightInfo(int journeyId){
         return flightRepository.findByJourney_JourneyId(journeyId);
+    }
+
+    @Transactional
+    public void updateSeat(int journeyFlightId,String seat) throws ChangeSetPersister.NotFoundException {
+        Optional<FlightInfo> flightInfo = flightRepository.findById(journeyFlightId);
+        if (flightInfo.isPresent()) {
+            flightInfo.get().updateSeat(seat);
+        } else {
+            throw new ChangeSetPersister.NotFoundException();
+        }
+    }
+
+    @Transactional
+    public FlightInfo getSeat(int journeyFlightId){
+        return flightRepository.findByJourney_JourneyId(journeyFlightId);
     }
 }

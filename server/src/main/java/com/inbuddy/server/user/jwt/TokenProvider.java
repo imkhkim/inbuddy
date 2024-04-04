@@ -37,7 +37,6 @@ public class TokenProvider {
     public static final String REFRESH_TOKEN_NAME = "refresh_token";
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String BEARER_PREFIX = "Bearer ";
-
     public static final long ACCESS_TOKEN_EXPIRE_TIME_IN_MILLISECONDS = 1000L * 60L * 30L; // 30min
     public static final int ACCESS_TOKEN_EXPIRE_TIME_IN_SECONDS = 60 * 30; // 30min
     public static final long REFRESH_TOKEN_EXPIRE_TIME_IN_MILLISECONDS =
@@ -54,7 +53,6 @@ public class TokenProvider {
     @PostConstruct
     public void init() {
         // 시크릿 값을 복호화(decode) 하여 키 변수에 할당
-
         byte[] keyBytes = Decoders.BASE64.decode(secret);
         this.key = Keys.hmacShaKeyFor(keyBytes);
         this.key = Jwts.SIG.HS512.key().build();
@@ -157,5 +155,18 @@ public class TokenProvider {
         return new OAuth2AuthenticationToken(user, Collections.emptyList(),
                 OAuth2Provider.DEFAULT.getRegistrationId());
 
+    }
+
+    public long getTokenExpireTime(String token) {
+        Claims payload = Jwts.parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+
+        long exp = payload.getExpiration().getTime();
+        long now = System.currentTimeMillis();
+
+        return (exp - now) / 1000;
     }
 }
