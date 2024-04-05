@@ -55,11 +55,3 @@ def fetch(now):
         redis.set(today_date_format + 'D', json.dumps(flight_data))
 
     log.info("Added Additional Data to Flight(Departure) Data")
-
-
-def test():
-    redis.set_connection('localhost', 6379)
-    fetch(datetime.datetime.now())
-
-
-test()
