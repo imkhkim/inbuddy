@@ -1,0 +1,7 @@
+FROM openjdk:17-jdk-slim
+
+WORKDIR /app
+
+# COPY ./wait-for-it.sh ./
+
+ENTRYPOINT ["./wait-for-it.sh", "mysql:3306", "--", "./wait-for-it.sh", "redis:6379", "--", "java", "-jar", "build/libs/server-0.0.1-SNAPSHOT.jar"]

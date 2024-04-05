@@ -1,0 +1,9 @@
+FROM python:3.12
+
+WORKDIR /app
+
+COPY ./requirements.txt ./start.sh ./
+
+# RUN chmod +x ./start.sh
+
+ENTRYPOINT ["./wait-for-it.sh", "redis:6379", "--", "./start.sh"]

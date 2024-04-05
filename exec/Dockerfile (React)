@@ -1,0 +1,5 @@
+FROM node:20.11.0
+
+WORKDIR /app
+
+ENTRYPOINT ["npx", "http-server", "./dist", "--port", "5173", "-P", "http://localhost:5173?"]
