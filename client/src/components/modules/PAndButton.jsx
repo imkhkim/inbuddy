@@ -32,15 +32,17 @@ function PAndButton({ tabsContentValue, firstContent, secondContent, buttonConte
     }
 
     return (
-        <>
-            <P variant="sectionHeader" size="sm">
-                {firstContent}
-            </P>
-            <P className="mb-2" variant="sectionHeader" size="sm">
-                {secondContent}
-            </P>
+        <div className="flex flex-col gap-2 pt-4 pb-2">
+            <div className="my-2">
+                <P variant="sectionHeader" size="sm" className={isReady ? '' : 'text-error-500'}>
+                    {firstContent}
+                </P>
+                <P variant="sectionHeader" size="sm" className={isReady ? '' : 'text-error-500'}>
+                    {secondContent}
+                </P>
+            </div>
             {content}
-        </>
+        </div>
     );
 }
 
