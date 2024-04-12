@@ -40,7 +40,7 @@ function FlightBox({ flightInfo }) {
                 <div className="text-center">
                     <P className="text-sm text-gray-400">서울/인천</P>
                     <P className="text-5xl font-pretendardBold">ICN</P>
-                    <P>{flightInfo.departureTime.time}</P>
+                    <P>{flightInfo.departureTime.timeExpected}</P>
                 </div>
 
                 <div className="flex flex-col justify-center text-center">
@@ -49,9 +49,9 @@ function FlightBox({ flightInfo }) {
                 </div>
 
                 <div className="text-center">
-                    <P className="text-sm text-gray-400">후쿠오카</P>
-                    <P className="text-5xl font-pretendardBold">FUK</P>
-                    <P>11:30</P>
+                    <P className="text-sm text-gray-400">{flightInfo.arrivalAirportName}</P>
+                    <P className="text-5xl font-pretendardBold">{flightInfo.arrivalAirportIATA}</P>
+                    <P>{/* 도착 시간은 알 수 없음 */}</P>
                     {/* <P className="text-sm text-gray-400">{flightInfo.arrivalAirportName}</P>
                     <P className="text-5xl font-pretendardBold">{flightInfo.arrivalAirportIATA}</P>
                     <P>{flightInfo.arrivalTime.time}</P> */}

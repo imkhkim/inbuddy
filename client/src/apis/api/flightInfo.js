@@ -29,19 +29,6 @@ const createflightInfo = async (params) => {
         });
 };
 
-const getMyFlight = async (departureDate, airLine, flightCode) => {
-    return await server
-        .get(`/api/myflight/${departureDate}/${airLine + flightCode}`, {
-            headers: {
-                Authorization: `Bearer ${getCookie('refresh_token')}`,
-            },
-        })
-        .then((response) => response.data)
-        .catch((error) => {
-            throw new Error(`API request failed: ${error}`);
-        });
-};
-
 const modifyflightInfo = async (journeyId, flightInfoId) => {
     return await server
         .put(`/api/journeys/${journeyId}/flight/${flightInfoId}/modify`, {})
@@ -91,12 +78,4 @@ const modifyflightInfoSeat = async (journeyId, flightInfo) => {
         });
 };
 
-export {
-    getMyFlight,
-    getflightInfo,
-    modifyflightInfo,
-    createflightInfo,
-    deleteflightInfo,
-    getflightInfoSeat,
-    modifyflightInfoSeat,
-};
+export { getflightInfo, modifyflightInfo, createflightInfo, deleteflightInfo, getflightInfoSeat, modifyflightInfoSeat };

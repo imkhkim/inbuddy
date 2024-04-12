@@ -4,7 +4,7 @@ import { Card, CardHeader } from '@/components/atoms/Card';
 import { P } from '@/components/atoms/P';
 import { useEffect, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { getflightDelayInfo } from '@/apis/api/flightDelayInfo';
+import { getflightDelayInfo } from '@/apis/api/flightStatusInfo';
 
 export const Spinner = () => {
     return (

@@ -6,16 +6,20 @@ import Stamp from '@/assets/stamp.png';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useQuery } from '@tanstack/react-query';
-import { getflightInfo, getMyFlight } from '@/apis/api/flightInfo';
 import { useEffect, useState } from 'react';
+
 import { journeyActions } from '@/stores/journeyStore';
+
+import { getflightInfo } from '@/apis/api/flightInfo';
+import { getFlightStatusInfo } from '@/apis/api/flightStatusInfo';
+import { flightInfoActions } from '@/stores/flightInfoStore';
 
 JourneyBox.propTypes = {
     journey: PropTypes.object.isRequired,
 };
 
 // TODO: dummy data
-let flightInfo = {
+export let flightInfo = {
     departureDate: '',
     flightCode: '',
     departureAirportIATA: 'ICN',
@@ -23,15 +27,32 @@ let flightInfo = {
     flightTime: '',
     departureTime: {
         timeZone: 'UTC+09:00',
-        time: '',
+        timeExpected: '',
+        timePlan: '',
     },
     arrivalTime: {
         timeZone: 'UTC+09:00',
-        time: '',
+        timeExpected: '',
+        timePlan: '',
     },
     departureAirportName: '인천',
     arrivalAirportName: '',
+    flight_status: '',
 };
+
+function transformString(str) {
+    // 정규 표현식을 사용하여 괄호 안의 내용을 추출하고 공백을 기준으로 첫 번째와 두 번째 단어를 '/'로 연결
+    const result = str.replace(/\(([^)]+)\)/, (match, p1) => {
+        // p1은 괄호 안의 내용을 나타냄
+        const parts = p1.split(' '); // 공백을 기준으로 문자열을 분리
+        if (parts.length >= 2) {
+            return `${parts[0]}/${parts[1]}`; // 첫 번째와 두 번째 단어를 '/'로 연결
+        }
+        return p1; // 만약 분리된 부분이 2개 미만이라면 원본 문자열의 괄호 안 내용을 반환
+    });
+
+    return result;
+}
 
 function JourneyBox({ journey }) {
     const dispatch = useDispatch();
@@ -50,52 +71,77 @@ function JourneyBox({ journey }) {
         queryFn: () => getflightInfo(journey.journeyId),
     });
 
-    const getMyFlightQuery = useQuery({
-        queryKey: ['myFlight', journey.journeyId],
-        queryFn: () =>
-            getMyFlight(
-                getFlightInfoQuery.data.data.departureDate,
-                getFlightInfoQuery.data.data.airline,
-                getFlightInfoQuery.data.data.flightCode
-            ),
+    if (getFlightInfoQuery.isSuccess) {
+        console.log(getFlightInfoQuery.data.data);
+        if (getFlightInfoQuery.data.data !== null) {
+            flightInfo.departureDate = getFlightInfoQuery.data.data.departureDate;
+            flightInfo.flightCode = getFlightInfoQuery.data.data.airline + getFlightInfoQuery.data.data.flightCode;
+        }
+    }
+    //console.log('getFlightInfoQuery 이후의 flightInfo 정보', flightInfo);
+
+    const getFlightStatusQuery = useQuery({
+        queryKey: ['flightStatusInfo', journey.journeyId],
+        queryFn: () => getFlightStatusInfo(flightInfo.flightCode.slice(0, 2), flightInfo.flightCode.slice(2, 5)),
+        enabled: true,
     });
 
-    console.log(getFlightInfoQuery.data);
+    if (getFlightStatusQuery.isSuccess) {
+        if (getFlightStatusQuery.data.data.data !== null) {
+            flightInfo.arrivalAirportIATA = getFlightStatusQuery.data.data.data.destination.slice(0, 3);
+            flightInfo.departureTime.timeExpected = getFlightStatusQuery.data.data.data.departure_time_expected;
+            flightInfo.departureTime.timePlan = getFlightStatusQuery.data.data.data.departure_time_plan;
+            flightInfo.arrivalAirportName = transformString(getFlightStatusQuery.data.data.data.destination.slice(3));
 
-    useEffect(() => {
-        if (getFlightInfoQuery.data && getFlightInfoQuery.data.data) {
-            // && getMyFlightQuery.data
-            // setHasFlightInfo(true);
-            // 여기서 flightInfo 객체 내부 바꿔주기
-            const newFlightInfo = {
-                journeyId: journey.journeyId,
-                ...getFlightInfoQuery.data.data,
-            };
-            console.log(newFlightInfo);
+            // const copyFlightInfo = { ...flightInfo };
+            // console.log('copyFlightInfo', copyFlightInfo);
+            // dispatch(flightInfoActions.initialFlightInfo());
+            // dispatch(flightInfoActions.setFlightInfo({ ...copyFlightInfo }));
 
-            flightInfo = {
-                departureDate: getFlightInfoQuery.data.data.departureDate,
-                flightCode: getFlightInfoQuery.data.data.airline + getFlightInfoQuery.data.data.flightCode,
-                departureAirportIATA: 'ICN',
-                arrivalAirportIATA: 'FUK',
-                flightTime: '1h 25m',
-                departureTime: {
-                    timeZone: 'UTC+09:00',
-                    time: '10:05',
-                },
-                arrivalTime: {
-                    timeZone: 'UTC+09:00',
-                    time: '11:30',
-                },
-                departureAirportName: '인천',
-                arrivalAirportName: '후쿠오카',
-            };
-            console.log('flightInfo', flightInfo);
-
-            dispatch(journeyActions.initialJourney(newFlightInfo));
-            dispatch(journeyActions.setJourney(newFlightInfo));
+            getFlightInfoQuery.refetch();
         }
-    }, [getFlightInfoQuery.data]);
+    }
+
+    console.log('getFlightStatusQuery 이후의 flightInfo 정보', flightInfo);
+
+    console.log(
+        '지금',
+        useSelector((state) => state.flightInfo)
+    );
+    // useEffect(() => {
+    //     if (getFlightInfoQuery.data && getFlightInfoQuery.data.data) {
+    //         // && getMyFlightQuery.data
+    //         // setHasFlightInfo(true);
+    //         // 여기서 flightInfo 객체 내부 바꿔주기
+    //         const newFlightInfo = {
+    //             journeyId: journey.journeyId,
+    //             ...getFlightInfoQuery.data.data,
+    //         };
+    //         console.log(newFlightInfo);
+
+    //         flightInfo = {
+    //             departureDate: getFlightInfoQuery.data.data.departureDate,
+    //             flightCode: getFlightInfoQuery.data.data.airline + getFlightInfoQuery.data.data.flightCode,
+    //             departureAirportIATA: 'ICN',
+    //             arrivalAirportIATA: 'FUK',
+    //             flightTime: '1h 25m',
+    //             departureTime: {
+    //                 timeZone: 'UTC+09:00',
+    //                 time: '10:05',
+    //             },
+    //             arrivalTime: {
+    //                 timeZone: 'UTC+09:00',
+    //                 time: '11:30',
+    //             },
+    //             departureAirportName: '인천',
+    //             arrivalAirportName: '후쿠오카',
+    //         };
+    //         console.log('flightInfo', flightInfo);
+
+    //         dispatch(journeyActions.initialJourney(newFlightInfo));
+    //         dispatch(journeyActions.setJourney(newFlightInfo));
+    //     }
+    // }, [getFlightInfoQuery.data]);
 
     // 박스 공통 레이아웃
     const commonClassName =

@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 import { Label } from '@/components/atoms/label';
 import { Input } from '@/components/atoms/input';
 import { Calendar } from '@/components/atoms/calendar';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ScrollArea } from '@/components/atoms/scroll-area';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -31,9 +31,9 @@ import {
     CommandItem,
     CommandList,
 } from '@/components/atoms/command';
-import { createflightInfo, getflightInfo } from '@/apis/api/flightInfo';
+import { createflightInfo } from '@/apis/api/flightInfo';
 import { flightInfoActions } from '@/stores/flightInfoStore';
-import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const airlines = [
     { name: 'ITA항공', airlineCode: 'AZ', terminal: 1, selfCheckIn: false },
@@ -137,8 +137,8 @@ const airlines = [
 ];
 
 function FlightDialog({ journeyId }) {
+    let navigate = useNavigate();
     const dispatch = useDispatch();
-    const queryClient = useQueryClient();
 
     const [flightDate, setFlightDate] = useState();
     const [openCalander, setOpenCalander] = useState(false);
@@ -198,39 +198,27 @@ function FlightDialog({ journeyId }) {
             },
         });
 
-        //console.log(getFlightInfoQuery.data);
-        // dispatch(flightInfoActions.initialFlightInfo());
-        //dispatch(flightInfoActions.setFlightInfo(getFlightInfoQuery.data.data));
+        // console.log(getFlightInfoQuery.data);
+
+        dispatch(flightInfoActions.initialFlightInfo());
+        dispatch(
+            flightInfoActions.setFlightInfo({
+                journeyId: `${localStorage.getItem('selectedJourneyId')}`,
+                flightInfo: {
+                    flightCode: flightNumber,
+                    airline: myAirlineCode,
+                    departureDate: formattedDate,
+                    seat: 'not yet',
+                },
+            })
+        );
+        navigate('/main');
     };
 
     // console.log(
     //     'state.flightInfo',
     //     useSelector((state) => state.flightInfo)
     // );
-
-    const addFlight = () => ({
-        type: 'journey/addFlight',
-        payload: {
-            journeyId: journeyId,
-            flightInfo: {
-                departureDate: flightDate.toLocaleDateString(),
-                flightCode: `${myAirlineCode}${flightNumber}`,
-                departureAirportIATA: 'ICN',
-                arrivalAirportIATA: '미완',
-                flightTime: '미완',
-                departureTime: {
-                    timeZone: 'UTC+09:00',
-                    time: '10:20',
-                },
-                arrivalTime: {
-                    timeZone: 'UTC+09:00',
-                    time: '12:50',
-                },
-                departureAirportName: '인천',
-                arrivalAirportName: '미완',
-            },
-        },
-    });
 
     return (
         <Dialog>
