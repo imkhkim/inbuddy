@@ -60,13 +60,13 @@ function FlightTicketInfoPage() {
         enabled: true,
     });
 
-    useEffect(() => {
-        console.log('flightInfo', flightInfo);
-        console.log(flightInfo.status);
-        if (flightInfo.status === undefined || flightInfo.status === '') {
-            alert('현재 항공권 상태를 알 수 없습니다.');
-        }
-    }, []);
+    // useEffect(() => {
+    //     console.log('flightInfo', flightInfo);
+    //     console.log(flightInfo.status);
+    //     if (flightInfo.status === undefined || flightInfo.status === '') {
+    //         alert('현재 항공권 상태를 알 수 없습니다.');
+    //     }
+    // }, []);
 
     useEffect(() => {
         if (getFlightStatusQuery.isSuccess) {
