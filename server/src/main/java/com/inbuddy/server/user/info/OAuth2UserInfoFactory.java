@@ -11,6 +11,8 @@ public class OAuth2UserInfoFactory {
 
         if (OAuth2Provider.KAKAO.getRegistrationId().equals(registrationId)) {
             return new KakaoOAuth2UserInfo(accessToken, attributes);
+        } else if (OAuth2Provider.NAVER.getRegistrationId().equals(registrationId)) {
+            return new NaverOAuth2UserInfo(accessToken, attributes);
         } else {
             throw new OAuth2AuthenticationPrepareException(
                     "Login with " + registrationId + " is not supported");

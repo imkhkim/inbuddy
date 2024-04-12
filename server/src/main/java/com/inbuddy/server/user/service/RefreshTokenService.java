@@ -10,32 +10,32 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
 public class RefreshTokenService {
 
+    public static final String USER_PREFIX = "user";
     private final RedisTemplate<String, String> redisTemplate;
+
+    private String buildUserRefreshTokenKey(String providerId) {
+        return USER_PREFIX + ":" + providerId;
+    }
 
     @Transactional
     public void saveRefreshToken(String refreshToken) {
-        redisTemplate.opsForValue().set(AuthenticationUtils.getCurrentProviderId(), refreshToken,
+        String key = buildUserRefreshTokenKey(AuthenticationUtils.getCurrentProviderId());
+        redisTemplate.opsForValue().set(key, refreshToken,
                 Duration.ofSeconds(REFRESH_TOKEN_EXPIRE_TIME_IN_SECONDS));
     }
 
     @Transactional
     public String findRefreshTokenByProviderId(String providerId) {
-        return Optional.ofNullable(redisTemplate.opsForValue().get(providerId))
+        String key = buildUserRefreshTokenKey(providerId);
+        return Optional.ofNullable(redisTemplate.opsForValue().get(key))
                 .orElseThrow(RefreshTokenExpiredException::new);
     }
-
-    @Transactional
-    public String getProviderIdFromRefreshToken(String providerId) {
-        return redisTemplate.opsForValue()
-                .get(Optional.ofNullable(redisTemplate.opsForValue().get(providerId))
-                        .orElseThrow(RefreshTokenExpiredException::new));
-    }
-
 
     @Transactional
     public String findCurrentUserRefreshToken() {
@@ -59,14 +59,17 @@ public class RefreshTokenService {
 
     @Transactional
     public void deleteRefreshTokenByProviderId(String providerId) {
-        redisTemplate.delete(providerId);
+        String key = buildUserRefreshTokenKey(providerId);
+        redisTemplate.delete(key);
     }
 
     @Transactional
     public void deleteCurrentUserRefreshToken() {
 
         String providerId = AuthenticationUtils.getCurrentProviderId();
-        deleteRefreshTokenByProviderId(providerId);
+        if (StringUtils.hasText(providerId)) {
+            deleteRefreshTokenByProviderId(providerId);
+        }
     }
 
 

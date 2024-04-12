@@ -1,6 +1,6 @@
 from confluent_kafka import Producer
 
-from app.producer.ack import ack
+from producer.ack import ack
 
 
 class KafkaProducer:

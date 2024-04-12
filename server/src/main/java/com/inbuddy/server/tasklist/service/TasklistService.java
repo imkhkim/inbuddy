@@ -1,9 +1,9 @@
-package com.inbuddy.server.takelist.service;
+package com.inbuddy.server.tasklist.service;
 
 import com.inbuddy.server.journey.entity.Journey;
 import com.inbuddy.server.journey.repository.JourneyRepository;
-import com.inbuddy.server.takelist.entity.Task;
-import com.inbuddy.server.takelist.repository.TasklistRepository;
+import com.inbuddy.server.tasklist.entity.Task;
+import com.inbuddy.server.tasklist.repository.TasklistRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

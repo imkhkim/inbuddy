@@ -1,4 +1,4 @@
-package com.inbuddy.server.takelist.entity;
+package com.inbuddy.server.tasklist.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;

@@ -53,7 +53,7 @@ public class SecurityConfig {
                         .successHandler(oAuth2AuthenticationSuccessHandler)
                         .failureHandler(oAuth2AuthenticationFailureHandler)
                 ).logout(logoutConfigurer -> logoutConfigurer
-                        .logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/api/logout", "POST"))
                         .addLogoutHandler(customLogoutHandler)
                         .logoutSuccessHandler(customLogoutSuccessHandler)
                         .deleteCookies("JSESSIONID", "access_token", "refresh_token")

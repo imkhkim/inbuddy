@@ -54,7 +54,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         }
 
         clearAuthenticationAttributes(request, response);
-        // TODO: 배포 후 url: targetUrl로 변경
         getRedirectStrategy().sendRedirect(request, response, client + targetUrl);
     }
 

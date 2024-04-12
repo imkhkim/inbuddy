@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class AuthenticationUtils {
 
     public static String getCurrentProviderId() {
+        System.out.println(22222);
         return Optional.ofNullable(
                         Optional.ofNullable(
                                         SecurityContextHolder.getContext().getAuthentication().getPrincipal())
@@ -17,6 +18,5 @@ public class AuthenticationUtils {
                                 .orElseThrow(NotAuthenticatedException::new)
                                 .getUserInfo().getProviderId())
                 .orElseThrow(NotAuthenticatedException::new);
-
     }
 }

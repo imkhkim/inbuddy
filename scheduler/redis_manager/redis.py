@@ -7,6 +7,7 @@ class RedisManager:
     WEATHERS_API = 1
     FLIGHTS_BATCH = 2
     WEATHERS_BATCH = 3
+    SCHEDULED_FLIGHTS_API = 4
 
     def __new__(cls):
         if cls._instance is None:
