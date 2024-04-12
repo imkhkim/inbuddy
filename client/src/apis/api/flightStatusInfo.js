@@ -17,7 +17,7 @@ const getFlightStatusInfo = (airLine, flightCode) => {
     console.log(`${airLine + flightCode}`);
 
     return server
-        .get(`http://localhost:8000/api/flights/${airLine + flightCode}`)
+        .get(`http://localhost:8080/api/flights/${airLine + flightCode}`)
         .then((response) => response)
         .catch((error) => {
             throw new Error(`API request failed: ${error}`);
