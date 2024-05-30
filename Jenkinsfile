@@ -128,7 +128,7 @@ pipeline {
         //   endpoint: '', // 'MM 주소',
         //   icon: 'https://www.notion.so/image/https%3A%2F%2Fcdn.icon-icons.com%2Ficons2%2F2699%2FPNG%2F512%2Fjenkins_logo_icon_170552.png?table=block&id=575d933c-a155-4d41-987e-887b341928ba&spaceId=0f7cf07a-b632-46e9-b39b-7c12c129b0d0&userId=fcb99ecb-2346-4edb-9302-eea7d618e9d4&cache=v2',
         //   channel: 'b110-jenkins-notification'
-        )
+        // )
       }
     }
   }
