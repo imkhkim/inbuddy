@@ -1,6 +1,6 @@
 ## [InBuddy ✈ 접속하기!](https://inbuddy.site:1110/login)
 
-![image](/uploads/200b10dfcefc10a61313e028c304b701/image.png)
+<img src="https://github.com/user-attachments/assets/1a79a69f-fd63-45d7-b059-db1e89090f1c" width="50%">
 
 <br>
 
@@ -46,7 +46,7 @@
 
 ---
 
-[![이미지 텍스트](/uploads/283946223a961b6b0b5d85c3b9c9a5be/image.png)](https://drive.google.com/file/d/1I8hpLC0rNQqLs66ZnpKi5NPBKmFfAvZa/view?usp=sharing)
+[![이미지 텍스트](https://github.com/user-attachments/assets/b1e8ebbe-e388-4e02-acc2-94169a8aa06a)](https://drive.google.com/file/d/1I8hpLC0rNQqLs66ZnpKi5NPBKmFfAvZa/view?usp=sharing)
 
 _위의 사진을 클릭하면 영상 링크로 이동합니다._
 
@@ -84,7 +84,7 @@ _위의 사진을 클릭하면 영상 링크로 이동합니다._
 
 <br>
 
-![image](/uploads/79b8820ee54a6e898b06db6f5e3b1ad5/image.png)
+![image](https://github.com/user-attachments/assets/52d922a8-1811-4b21-bdf2-fb523088c7a7)
 
 1. 여정을 등록하고 관리
 
@@ -142,7 +142,7 @@ InBuddy의 경우 비행기 지연 예측할 때 항공편명, 항공사 등 범
 
 ---
 
-![image](/uploads/849dbd3acd604e07eb4603eea30be724/image.png)
+![image](https://github.com/user-attachments/assets/c01a962d-6528-490f-bcaa-b345ddf4b8e8)
 
 <br>
 
@@ -212,7 +212,7 @@ Jenkins
 
 ##### 요구사항 정의, 기능 명세서
 
-![image](/uploads/a0633958c08558f444783307d56dbe80/image.png)
+![image](https://github.com/user-attachments/assets/bbc4ed9c-3e72-4669-b383-c5fd3e0a0f9b)
 
 ###### 용어 정리
 
@@ -229,11 +229,11 @@ Jenkins
 
 ##### ERD
 
-![image](/uploads/1dcf6817fcb92d3579e3d22973694c6c/image.png)
+![image](https://github.com/user-attachments/assets/a74c7c92-4133-4906-98ad-5a66c8eb5f05)
 
 ##### 와이어 프레임
 
-![image](/uploads/345b24f20aeb046f0ef31d33f1f0149c/image.png)
+![image](https://github.com/user-attachments/assets/9a62c210-8367-4171-9cf3-b8d779cde193)
 
 <br>
 
